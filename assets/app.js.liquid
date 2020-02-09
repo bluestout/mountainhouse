@@ -1176,3 +1176,24 @@ $(document)
       $('a.mega-menu-parent[data-dropdown-rel="' + megaMenuParent + '"]').parents('header').removeClass('editor-hover--true');
     }
 });
+
+$(document).ready(function(){
+  $('.video_overlay .play').on('click', function(e){
+    e.preventDefault();
+    $.fancybox.open($('.js-video-popup'), {
+      baseClass: 'video__lightbox',
+      hash: false,
+      infobar : false,
+      toolbar: false,
+      loop: true,
+      smallBtn : true,
+      mobile: {
+        preventCaptionOverlap: false,
+        toolbar: true,
+        buttons: [
+          "close"
+        ]
+      }
+    });
+  });
+});

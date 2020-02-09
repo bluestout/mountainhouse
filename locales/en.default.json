@@ -39,8 +39,8 @@
       "subscriber_first_name": "First Name",
       "subscriber_last_name": "Last Name",
       "success_text": "Thank you for joining our mailing list!",
-      "placeholder": "Enter your email address...",
-      "submit": "Sign Up"
+      "placeholder": "",
+      "submit": "Subscribe"
     },
     "breadcrumbs": {
       "home": "Home",
@@ -62,6 +62,9 @@
       "placeholder": "Search...",
       "placeholder_with_shop_name": "Search {{ shop_name }}...",
       "submit": "Search"
+    },
+    "buttons": {
+      "discover": "Discover"
     }
   },
   "blogs": {
@@ -390,7 +393,7 @@
       "go_to_cart": "Go to cart",
       "checkout": "Checkout",
       "continue_shopping": "Continue",
-      "empty_cart": "Your Cart is Empty",
+      "empty_cart": "Your Shopping bag is feeling empty.",
       "cart_note": "Order Notes",
       "subtotal": "Subtotal",
       "savings": "Total Savings",

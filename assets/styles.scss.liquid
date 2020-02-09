@@ -57,6 +57,101 @@ Description: Shopify Theme (https://www.shopify.com/&ref=out-of-the-sandbox)
 #Font-Face
 #Custom Styles */
 
+@font-face {
+  font-family: 'American Captain';
+  src: url({{'AmericanCaptain.eot' | asset_url }});
+  src: url({{'AmericanCaptain.eot?#iefix' | asset_url }}) format('embedded-opentype'),
+    url({{'AmericanCaptain.woff2' | asset_url }}) format('woff2'),
+    url({{'AmericanCaptain.woff' | asset_url }}) format('woff'),
+    url({{'AmericanCaptain.svg#AmericanCaptain' | asset_url }}) format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'CocogooseCompressed';
+  src: url({{'CocogooseCompressed-Light.eot' | asset_url }});
+  src: url({{'CocogooseCompressed-Light.eot?#iefix' | asset_url }}) format('embedded-opentype'),
+    url({{'CocogooseCompressed-Light.woff2' | asset_url }}) format('woff2'),
+    url({{'CocogooseCompressed-Light.woff' | asset_url }}) format('woff'),
+    url({{'CocogooseCompressed-Light.ttf' | asset_url }}) format('truetype'),
+    url({{'CocogooseCompressed-Light.svg#CocogooseCompressed-Light' | asset_url }}) format('svg');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'CocogooseCompressed';
+  src: url({{'CocogooseCompressed-SemiLight.eot' | asset_url }});
+  src: url({{'CocogooseCompressed-SemiLight.eot?#iefix' | asset_url }}) format('embedded-opentype'),
+    url({{'CocogooseCompressed-SemiLight.woff2' | asset_url }}) format('woff2'),
+    url({{'CocogooseCompressed-SemiLight.woff' | asset_url }}) format('woff'),
+    url({{'CocogooseCompressed-SemiLight.ttf' | asset_url }}) format('truetype'),
+    url({{'CocogooseCompressed-SemiLight.svg#CocogooseCompressed-SemiLight' | asset_url }}) format('svg');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'CocogooseNarrow';
+  src: url({{'CocogooseNarrow-SemiLight.eot' | asset_url }});
+  src: url({{'CocogooseNarrow-SemiLight.eot?#iefix' | asset_url }}) format('embedded-opentype'),
+    url({{'CocogooseNarrow-SemiLight.woff2' | asset_url }}) format('woff2'),
+    url({{'CocogooseNarrow-SemiLight.woff' | asset_url }}) format('woff'),
+    url({{'CocogooseNarrow-SemiLight.ttf' | asset_url }}) format('truetype'),
+    url({{'CocogooseNarrow-SemiLight.svg#CocogooseNarrow-SemiLight' | asset_url }}) format('svg');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'CocogooseCompressed';
+  src: url({{'CocogooseCompressed-Regular.eot' | asset_url }});
+  src: url({{'CocogooseCompressed-Regular.eot?#iefix' | asset_url }}) format('embedded-opentype'),
+    url({{'CocogooseCompressed-Regular.woff2' | asset_url }}) format('woff2'),
+    url({{'CocogooseCompressed-Regular.woff' | asset_url }}) format('woff'),
+    url({{'CocogooseCompressed-Regular.ttf' | asset_url }}) format('truetype'),
+    url({{'CocogooseCompressed-Regular.svg#CocogooseCompressed-Regular' | asset_url }}) format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Cocogoose';
+  src: url({{'Cocogoose.eot' | asset_url }});
+  src: url({{'Cocogoose.eot?#iefix' | asset_url }}) format('embedded-opentype'),
+    url({{'Cocogoose.woff2' | asset_url }}) format('woff2'),
+    url({{'Cocogoose.woff' | asset_url }}) format('woff'),
+    url({{'Cocogoose.ttf' | asset_url }}) format('truetype'),
+    url({{'Cocogoose.svg#Cocogoose' | asset_url }}) format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Cocogoose';
+  src: url({{'Cocogoose-Light.eot' | asset_url }});
+  src: url({{'Cocogoose-Light.eot?#iefix' | asset_url }}) format('embedded-opentype'),
+    url({{'Cocogoose-Light.woff2' | asset_url }}) format('woff2'),
+    url({{'Cocogoose-Light.woff' | asset_url }}) format('woff'),
+    url({{'Cocogoose-Light.ttf' | asset_url }}) format('truetype'),
+    url({{'Cocogoose-Light.svg#Cocogoose-Light' | asset_url }}) format('svg');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+    font-family: 'COCOGOOSEDEMI';
+    src: url({{'COCOGOOSE-DemiBold.eot' | asset_url }});
+    src: url({{'COCOGOOSE-DemiBold.eot?#iefix' | asset_url }}) format('embedded-opentype'),
+        url({{'COCOGOOSE-DemiBold.woff2' | asset_url }}) format('woff2'),
+        url({{'COCOGOOSE-DemiBold.woff' | asset_url }}) format('woff'),
+        url({{'COCOGOOSE-DemiBold.ttf' | asset_url }}) format('truetype'),
+        url({{'COCOGOOSE-DemiBold.svg#COCOGOOSE-DemiBold' | asset_url }}) format('svg');
+    font-weight: 600;
+    font-style: normal;
+}
+
 /* #Variables
 ================================================== */
 
@@ -387,9 +482,8 @@ $breakpoints: (
 }
 
 @mixin headline-style($font-size: $font-size-header) {
-  font-family: {{ settings.headline__font.family }}, {{ settings.headline__font.fallback_families }};
+  font-family: 'American Captain';
   font-weight: {{ settings.headline__font.weight }};
-  font-style: {{ settings.headline__font.style }};
   font-size: $font-size * 1px;
   text-transform: {{ settings.headline_font_style }};
   line-height: 1.5;
@@ -11048,26 +11142,6 @@ input[type="button"].highlight-false--dark {
       font-size: inherit;
     }
   }
-  .button {
-    height: auto;
-    background-color: transparent;
-    color: $image-with-text-color;
-    border: 1px solid $image-with-text-color;
-    transition: background-color 0.2s cubic-bezier(0.55, 0.09, 0.68, 0.53), color 0.3s linear, border 0.2s cubic-bezier(0.55, 0.09, 0.68, 0.53);
-    line-height: 1.5;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    &:hover {
-      background-color: $image-with-text-color;
-      color: {{ settings.featured_links_background }};
-      border: 1px solid $image-with-text-color;
-    }
-  }
-
-
-
-
-
 }
 
 .image-align--right.featured_collections.across-1 .featured-link--section:nth-child(odd) {
@@ -11667,3 +11741,49 @@ $delay: 0;
 
 /* #Custom Styles
 ================================================== */
+li.search_container {
+    display: flex;
+}
+.mini_cart, .nav a.mini_cart{background:transparent !important;}
+.nav a.mini_cart img {
+    width: 32px;
+    /* height: 32px; */
+}
+.cart_container.clearfix {
+    display: flex;
+    align-items: center;
+  padding:12px 0px 0px 0px;
+}
+a.icon-user2 {
+    padding: 0;
+}
+a.icon-user2 img {
+    width: 30px;
+}
+a.icon-search2.dropdown_link {
+        padding: 0 20px;
+height:auto !important;
+}
+a.icon-search2.dropdown_link img {
+    width: 35px;
+}
+a.mini_cart.dropdown_link {
+    padding: 0;
+    height: auto !important;
+}
+span.cart_count {
+    padding: 0px !important;
+    left: -3px;
+    top: 4px;
+}
+.custom_search {
+    position: absolute;
+    top: 90px;
+    background: red;
+    width: 320px;
+    right: 0;
+    z-index: 9;
+}
+li.search_container {
+    position: static;
+}

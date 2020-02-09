@@ -974,7 +974,7 @@
         "id": "slideshow_headline_size",
         "label": "Base size",
         "min": 20,
-        "max": 60,
+        "max": 70,
         "default": 56,
         "unit": "px"
       },

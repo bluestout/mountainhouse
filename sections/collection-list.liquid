@@ -13,7 +13,7 @@
         <h2 class="title">
           {{ section.settings.title }}
         </h2>
-        <div class="feature_divider"></div>
+        <p class="subtitle">{{ section.settings.sub_title }}</p>
       </div>
     {% endif %}
     <div class="sixteen columns">
@@ -65,45 +65,17 @@
                   {{ 'collection-' | append: num | placeholder_svg_tag: 'placeholder-svg' }}
                 {% endif %}
 
-                <a href="{{ collection.url }}" class="hidden-product-link">
-                  {% if collection != blank %}
-                    {{ collection.title }}
-                  {% else %}
-                    {{ "homepage.onboarding.collection_title" | t }}
-                  {% endif %}
-                </a>
-                {% if settings.thumbnail_hover_enabled %}
-                  <div class="thumbnail-overlay">
-                    <a href="{{ collection.url }}" class="hidden-product-link">
-                      {% if collection != blank %}
-                        {{ collection.title }}
-                      {% else %}
-                        {{ "homepage.onboarding.collection_title" | t }}
-                      {% endif %}
-                    </a>
-                    <div class="info">
-                      <div class="collection-details">
-                        <span class="title">
-                          {% if collection != blank %}
-                            {{ collection.title }}
-                          {% else %}
-                            {{ "homepage.onboarding.collection_title" | t }}
-                          {% endif %}
-                        </span>
-                      </div>
-                      <a href="{{ collection.url }}"><span class="view_all">{{ 'collections.general.view_all' | t }}</span></a>
-                    </div>
-                  </div>
-                {% endif %}
-                <a class="collection-info__caption {% if settings.thumbnail_hover_enabled %}hidden{% endif %}" href="{{ collection.url }}">
-                  <span class="title">
+                <div class="collection-info__caption" href="{{ collection.url }}">
+                  <p class="subtitle">
                     {% if collection != blank %}
                       {{ collection.title }}
                     {% else %}
                       {{ "homepage.onboarding.collection_title" | t }}
                     {% endif %}
-                  </span>
-                </a>
+                  </p>
+                  <div class="content">{{ collection.description }}</div>
+                  <a href="{{ collection.url }}" class="button">{{ 'general.buttons.discover' | t }}</a>
+                </div>
               </div>
             </div>
 
@@ -143,6 +115,12 @@
       "id": "title",
       "label": "Heading",
       "default": "Collection list"
+    },
+    {
+      "type": "text",
+      "id": "sub_title",
+      "label": "Sub Heading",
+      "default": "Life moves pretty fast. If you don’t stop and look around once in awhile, you could miss it."
     },
     {
       "type": "checkbox",
