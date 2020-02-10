@@ -272,3 +272,196 @@ a.button {
     }
   }
 }
+
+.bg-black{
+  background-color: #030303;
+}
+.bg-black.icons{
+  .columns a{
+    float: none;
+  }
+  .columns a div{
+    color: #FFFFFF;	
+  }
+  .columns{
+    margin: 50px 0px;
+  }
+}
+.icons{
+  min-height:127px;
+  .columns{
+    margin: 20px 0px;
+  }
+  .columns a{
+    float: left;
+    display: table;
+    margin: auto;
+  }
+  .columns a img{
+    height: 28px;
+    width: auto;
+    float: left;
+  }
+  .columns a div{
+    height: 21px;	
+    color: black;	
+    font-family: 'CocogooseNarrow';	
+    font-size: 13px;	
+    letter-spacing: 0.85px;	
+    line-height: 21px;
+    float: left;
+    margin-top: 5px;
+    margin-left: 20px;
+  }
+}
+.bg-grey{
+  background-color: #FAFAFA;
+  .product-wrap{
+    background: white;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.03137254901960784);
+  }
+}
+div.products-slide-section{
+  div.products-slide{
+    padding: 125px 0px 135px;
+    background: url({{ 'mountains.png' | asset_url }}) no-repeat;
+    background-position: -212px 247px;
+    background-size: 699px 488px;
+    .info{
+      margin-top: 35px;
+      padding-left: 7%;
+      img{
+        width:150px;
+        height:150px;
+      }
+      p{
+        overflow-wrap: break-word;
+      }
+    } 
+    .slider-gallery{
+      padding: 0px 70px;
+      .gallery-cell:nth-child(odd){
+        margin-top: 20px;
+      }
+      .gallery-cell{
+        .product-desc{
+          padding: 20px;
+          .product-details{
+            padding-bottom: 40px;
+            .title{
+              font-family: "CocogooseNarrow";	
+              font-size: 14px;	
+              font-weight: 300;	
+              letter-spacing: 0.44px;	
+              line-height: 19px;	
+              text-align: center;
+              width: 100%;
+            }
+            .price{
+              font-family: Helvetica;	
+              font-size: 18px;	
+              font-weight: bold;	
+              line-height: 22px;
+              float: left;
+              padding-top: 17px;
+              .money{
+                color: #030303;	
+              }
+            }
+          }
+          .button-field{
+            position: absolute;
+            width: 100%;
+            padding: 0px 5px;
+            left: 0;
+            bottom: 10px;
+            .quick_shop{
+              width: 45%;
+            }
+            .quick_shop.white{
+              padding: 7px 10px;
+              background: white;
+              color: black;
+              font-family: "CocogooseNarrow";
+            }
+            .quick_shop.red{
+              padding: 7px 10px;
+              background-color: #BA0C2F;
+              color: white;
+              font-family: "CocogooseNarrow";
+            }
+          }
+        } 
+        
+      }
+      .flickity-button{
+        min-width: auto;
+        width: auto;
+      }
+      .flickity-prev-next-button.previous{
+        left: -10px;
+      }
+      .flickity-prev-next-button.next{
+        right: -10px;
+      }
+    } 
+  }
+}
+.product-image{
+  padding: 115px 0px!important;
+  .featured-collection__products{
+    padding: 0px 20px;
+  }
+  .equal-columns--outside-trim .eight{
+    width: calc(50% - (40px / 2));
+  }
+  .columns{
+    margin-right: calc(37px / 2);
+  }
+}
+.button.white{
+  background: transparent;
+  border-color: black;
+  color: black;
+}
+.button.white:hover{
+  background: black;
+  color: white;
+}
+.caption{
+  .headline.title-btn{
+    font-family: 'American Captain';
+    border: 4px solid;
+    padding: 25px 68px 30px 26px;
+    width: 287px;
+    text-align: left;
+    line-height: 40px;
+    font-size: 45px;
+    
+  }
+}
+
+.product-image{
+  .product-details{
+    .title{
+      font-family: Helvetica;	
+      font-size: 14px;	
+      letter-spacing: 1px;	
+      line-height: 20px;	
+      text-align: center;
+    }
+
+    .price {
+      float: left;
+      padding-top: 20px;
+      .money{
+        color: #030303;
+        font-family: 'CocogooseNarrow';	
+        font-size: 16px;	
+        letter-spacing: 1.06px;	
+        line-height: 25px;	
+        text-align: center;
+      }
+    }
+  }
+}

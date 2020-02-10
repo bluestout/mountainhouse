@@ -1,0 +1,98 @@
+{% if type == 'block' %}
+  {% assign title = block.settings.title %}
+  {% assign settingCollection = block.settings.collection %}
+  {% assign collection_style = block.settings.collection_style %}
+  {% assign collection_description = block.settings.collection_description %}
+  {% assign products_per = block.settings.products_per %}
+  {% assign products_limit = block.settings.products_limit %}
+{% else %}
+  {% assign title = section.settings.title %}
+  {% assign settingCollection = section.settings.collection %}
+  {% assign collection_style = section.settings.collection_style %}
+  {% assign collection_description = section.settings.collection_description %}
+  {% assign products_per = section.settings.products_per %}
+  {% assign products_limit = section.settings.products_limit %}
+{% endif %}
+
+{% if settingCollection == blank %}
+  {%- assign section_onboarding = true -%}
+  {% comment %}assign product length to be selected limit for onboarding{% endcomment %}
+  {% assign products_length = products_limit | plus: 0 %}
+{% else %}
+  {%- assign section_onboarding = false -%}
+{% endif %}
+
+{% assign limit = products_limit %}
+<div class="container full-width--true bg-grey product-image">
+  <div class="featured-link--half">
+      {% assign limit = products_limit %}
+      {% assign collection = collections[settingCollection] %}
+      {% assign products = collections[settingCollection].products %}
+      {% assign products_per_row = products_per %}
+      <div class="container featured-collection__products content">
+        <div class="sixteen columns">
+          <div itemtype="http://schema.org/ItemList" class="product-list {{ matrixType }} clearfix equal-columns--clear equal-columns--outside-trim">
+            {% for product in products limit: limit %}
+              {% if product.id != skip_product.id %}
+              <div class="
+                {% if products_per_row == 2 %}
+                  eight columns
+                {% elsif products_per_row == 3 %}
+                  one-third column
+                {% elsif products_per_row == 4 %}
+                  four columns
+                {% elsif products_per_row == 5 %}
+                  one-fifth column
+                {% elsif products_per_row == 6 %}
+                  one-sixth column
+                {% else %}
+                  one-seventh column
+                {% endif %}
+                {% if settings.mobile_products_per_row == '1' %}
+                  medium-down--one-half
+                  small-down--one-whole
+                {% else %}
+                  medium-down--one-half
+                  small-down--one-half
+                {% endif %}
+                thumbnail
+                {% cycle collection_group_mobile: 'even', 'odd' %}
+                {% if settings.quick_shop_enabled %}
+                  quick-shop-style--{{ settings.quick_shop_style }}
+                {% endif %}
+                product-{{ product.id }}">
+                  <div class="product-wrap">
+                    <div class="image__container">
+                      {% include 'image-element', image: product.featured_image, alt: alt_text, object_fit: settings.align_height, max_height: section.settings.collection_height %}
+                    </div>
+
+                    {% assign collection_handles = product.collections | map: 'handle' %}
+                    {% if settings.thumbnail_hover_enabled or settings.quick_shop_enabled and settings.quick_shop_style == 'popup' %}
+                      <div class="product-desc">
+                        <a href="{{ product.url | within: collection }}" itemprop="url" class="hidden-product-link">{{ product.title }}</a>
+                        <div class="info">
+                          {% if settings.thumbnail_hover_enabled %}
+                            {% include "product-info" %}
+                          {% endif %}
+                        </div>
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+        <div class="content featured-collection_button">
+          <a href="{{ collection.url }}" class="button white">Discover all new flavors</a>
+        </div>
+      </div>
+      
+  </div>
+  <div class="featured-link--half">
+    {% include 'include-image-with-products' %}
+  </div>
+</div>
+
+
+

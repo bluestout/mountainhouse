@@ -1,0 +1,72 @@
+{% comment %}
+** Single Products Slide - homepage partial **
+- Draggable section
+{% endcomment %}
+<div class="products-slide-section bg-grey">
+  {% include 'include-products-slide' %}
+</div>
+{% schema %}
+{
+  "name": "Products slide",
+  "class": "featured-collection-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Products Slide"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Text",
+      "default": "<p>Share blog posts, products, or promotions with your customers. Use this text to describe products, share details on availability and style, or as a space to display recent reviews or FAQs.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "collection_description",
+      "label": "Show description",
+      "default": true
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "header",
+      "content": "Products"
+    },
+    {
+      "type": "range",
+      "id": "products_per",
+      "label": "Products per row",
+      "min": 2,
+      "max": 7,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "label": "Limit products",
+      "min": 2,
+      "max": 50,
+      "step": 1,
+      "default": 9
+    }
+  ],
+  "presets": [{
+    "name": "Products slide",
+    "category": "Collection",
+    "settings": {
+
+    }
+  }]
+}
+{% endschema %}

@@ -3,6 +3,7 @@
 - Draggable section
 - Uses blocks
 {% endcomment %}
+
 {% if section.settings.frontpage_grid_style == false %}
   <div class="container">
     <div class="sixteen columns">
@@ -44,6 +45,40 @@
                       {{ block.settings.button_label }}
                   </a>
                 {% endif %}
+                <div class="icons">
+                  {% if block.settings.icon_title_1 != blank %}
+                    <div class="one-half columns small-down--one-whole">
+                      <a href="{{ block.settings.icon_link_1 }}" >
+                        <img src="{{ block.settings.icon_image_1 | img_url: "original" }}">
+                        <div>{{ block.settings.icon_title_1 }}</div>
+                      </a>
+                    </div>
+                  {% endif %}
+                  {% if block.settings.icon_title_2 != blank %}
+                    <div class="one-half columns small-down--one-whole">
+                      <a href="{{ block.settings.icon_link_2 }}" >
+                        <img src="{{ block.settings.icon_image_2 | img_url: "original" }}">
+                        <div>{{ block.settings.icon_title_2 }}</div>
+                      </a>
+                    </div>
+                  {% endif %}
+                  {% if block.settings.icon_title_3 != blank %}
+                    <div class="one-half columns small-down--one-whole">
+                      <a href="{{ block.settings.icon_link_3 }}" >
+                        <img src="{{ block.settings.icon_image_3 | img_url: "original" }}">
+                        <div>{{ block.settings.icon_title_3 }}</div>
+                      </a>
+                    </div>
+                  {% endif %}
+                  {% if block.settings.icon_title_4 != blank %}
+                    <div class="one-half columns small-down--one-whole">
+                      <a href="{{ block.settings.icon_link_4 }}" >
+                        <img src="{{ block.settings.icon_image_4 | img_url: "original" }}">
+                        <div>{{ block.settings.icon_title_4 }}</div>
+                      </a>
+                    </div>
+                  {% endif %}
+                </div>
               </div>
             </div>
           </section>
@@ -270,6 +305,74 @@
           "type": "color",
           "id": "text_color",
           "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image_1",
+          "label": "Icon Image",
+          "info": "1024 x 1024px recommended"
+        },
+        {
+          "type": "text",
+          "id": "icon_title_1",
+          "label": "Icon Title",
+          "default": "Your headline"
+        },
+        {
+          "type": "url",
+          "id": "icon_link_1",
+          "label": "Icon Url"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image_2",
+          "label": "Icon Image",
+          "info": "1024 x 1024px recommended"
+        },
+        {
+          "type": "text",
+          "id": "icon_title_2",
+          "label": "Icon Title",
+          "default": "Your headline"
+        },
+        {
+          "type": "url",
+          "id": "icon_link_2",
+          "label": "Icon Url"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image_3",
+          "label": "Icon Image",
+          "info": "1024 x 1024px recommended"
+        },
+        {
+          "type": "text",
+          "id": "icon_title_3",
+          "label": "Icon Title",
+          "default": "Your headline"
+        },
+        {
+          "type": "url",
+          "id": "icon_link_3",
+          "label": "Icon Url"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image_4",
+          "label": "Icon Image",
+          "info": "1024 x 1024px recommended"
+        },
+        {
+          "type": "text",
+          "id": "icon_title_4",
+          "label": "Icon Title",
+          "default": "Your headline"
+        },
+        {
+          "type": "url",
+          "id": "icon_link_4",
+          "label": "Icon Url"
         }
       ]
     }

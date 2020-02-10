@@ -1,0 +1,80 @@
+{% comment %}
+** List of collections - homepage partial **
+- Draggable section
+- Uses blocks
+{% endcomment %}
+
+{% assign collections_per_row = section.settings.frontpage_collections_per_row %}
+
+<div class="icons bg-black">
+  {% if section.blocks.size > 0 %}
+    <div class="sixteen">
+      <div class="section list-collection-wrapper">
+        <div class="list-collections clearfix equal-columns--outside-trim equal-columns--clear">
+          {% for block in section.blocks %}
+            <div class="one-third columns small-down--one-whole">
+              <a href="{{ block.settings.url }}" >
+                <img src="{{ block.settings.image | img_url: "original" }}">
+                <div>{{ block.settings.title }}</div>
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Icons",
+  "class": "bar-section",
+  "max_blocks": 3,
+  "settings": [
+
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Icon"
+        },
+         {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Subscribe"
+        },
+        {
+          "type": "text",
+          "id": "url",
+          "label": "Url",
+          "default": "Subscribe"
+        }
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Icons",
+    "category": "Layout",
+    "settings": {
+
+    },
+    "blocks": [
+      {
+        "type": "collection"
+      },
+      {
+        "type": "collection"
+      },
+      {
+        "type": "collection"
+      }
+    ]
+  }]
+}
+{% endschema %}
