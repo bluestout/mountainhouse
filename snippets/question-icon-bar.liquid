@@ -1,0 +1,60 @@
+{% style %}
+    .icon-bar{
+        background: {{section.settings.bg_color}};
+    }
+    .icon-bar .columns a{
+        float: none;
+    }
+    .icon-bar .columns a div{
+        color: {{section.settings.title_color}};	
+    }
+    .bar-large .columns{
+        margin: 50px 0px;
+    }
+    .bar-small .columns{
+        margin: 15px 0px;
+    } 
+{% endstyle %}
+{%if section.blocks.size == 2%}
+    {% assign class_name = 'one-two' %}
+{% elsif section.blocks.size == 3 %}
+  {% assign class_name = 'one-third' %}
+{% elsif section.blocks.size == 4 %}
+  {% assign class_name = 'one-fourth' %}
+{% else %}
+{% assign class_name = 'one-fifth' %}
+{% endif %}
+
+<div class="icons icon-bar bar-{{section.settings.bar_size}}">
+  {% if section.settings.icon_header_title != blank %}
+    <h1 class="headline">{{section.settings.icon_header_title}}</h1>
+  {% endif %}
+  {% if section.settings.icon_sub_title != blank %}
+    <div class="subtitle">{{section.settings.icon_sub_title}}</div>
+  {% endif %}
+  {% if section.blocks.size > 0 %}
+    <div class="sixteen">
+      <div class="section list-collection-wrapper">
+        <div class="list-collections clearfix equal-columns--outside-trim equal-columns--clear">
+          {% for block in section.blocks %}
+            {% if block.type == 'icon' %}
+              <div class="{{ class_name }} columns small-down--one-whole">
+                {% if section.settings.image_center %}
+                  <a class="image-center" href="{{ block.settings.url }}" >
+                    <img  src="{{ block.settings.image | img_url: "original" }}">
+                    <div>{{ block.settings.title }}</div>
+                  </a>
+                {% else %}
+                  <a href="{{ block.settings.url }}" >
+                    <img  src="{{ block.settings.image | img_url: "original" }}">
+                    <div>{{ block.settings.title }}</div>
+                  </a>
+                {% endif %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</div>

@@ -1,0 +1,25 @@
+
+
+{% assign item_per_slide = section.settings.item_per %}
+{% assign item_limit = section.settings.item_limit %}
+<div class="container js-product-slider homepage-product-slider full-width--true featured-collection__products">
+    <div class="slider-gallery products-slider products-length-{{ item_limit }}"
+        data-products-per-slide="{{ item_per_slide }}" data-products-limit="{{ item_limit }}" data-products-available="{{ item_limit }}">
+    {% for block in section.blocks %}
+    
+    {% assign item_per_slide = item_per_slide | plus: 0 %}
+        <div class="gallery-cell  no-margin
+        {% if item_limit > item_per_slide %}visible-{{ item_per_slide }}{% else %}visible-{{ item_limit }}{% endif %}
+        ">
+        <div class="product-wrap">
+            <div class="relative product_image">
+            <a href="{{blogs[block.settings.blog_widget_select].url}}">
+                <img src="{{ block.settings.slide_image |  img_url: "original"  }}">
+                <p class="overlay-title">{{block.settings.blog_widget_select}}</p>
+            </a>
+            </div>
+        </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>

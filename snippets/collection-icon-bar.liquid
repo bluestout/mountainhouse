@@ -1,0 +1,43 @@
+{% style %}
+    .icon-bar{
+        background: {{section.settings.bg_color}};
+    }
+    .icon-bar .columns a{
+        float: none;
+    }
+    .icon-bar .columns a div{
+        color: {{section.settings.title_color}};	
+    }
+    .bar-large .columns{
+        margin: 50px 0px;
+    }
+    .bar-small .columns{
+        margin: 15px 0px;
+    }
+{% endstyle %}
+<div class="icons icon-bar bar-{{section.settings.bar_size}}">
+    <div class="sixteen">
+      <div class="section list-collection-wrapper">
+        <div class="list-collections clearfix equal-columns--outside-trim equal-columns--clear">
+            <div class="one-third columns small-down--one-whole">
+              <a href="{{ section.settings.icon_url_1 }}" >
+                <img src="{{ section.settings.icon_image_1 | img_url: 'original' }}">
+                <div>{{ section.settings.icon_title_1 }}</div>
+              </a>
+            </div>
+            <div class="one-third columns small-down--one-whole">
+              <a href="{{ section.settings.icon_url_2 }}" >
+                <img src="{{ section.settings.icon_image_2 | img_url: 'original' }}">
+                <div>{{ section.settings.icon_title_2 }}</div>
+              </a>
+            </div>
+            <div class="one-third columns small-down--one-whole">
+              <a href="{{ section.settings.icon_url_3 }}" >
+                <img src="{{ section.settings.icon_image_3 | img_url: 'original' }}">
+                <div>{{ section.settings.icon_title_3 }}</div>
+              </a>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>

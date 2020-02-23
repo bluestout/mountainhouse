@@ -1,0 +1,21 @@
+
+{% if section.settings.image %}
+  {% assign image = section.settings.image %}
+{% endif %}
+
+{% style %}
+  .page_banner_contact{
+    background: url({{ image | img_url: '2000x' }}) no-repeat 50% 50% / cover;
+  }
+{% endstyle %}
+
+<header class="banner center page_banner_contact dark-overlay-{{ section.settings.image_darken }}">
+    {% comment %} {% include 'image-element', image: image, alt: collection.title, stretch_width: true, progressive: true %} {% endcomment %}
+    {% if section.settings.title != blank %}
+      <div class="caption captionOverlay--true" style="background-color: {{section.settings.bg_color}};">
+        
+        <h2 class="headline" style="color: {{section.settings.title_color}};">{{ section.settings.title }}</h2>
+        <p>{{ section.settings.text }}</p>
+      </div>
+    {% endif %}
+</header>

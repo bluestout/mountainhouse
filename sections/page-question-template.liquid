@@ -1,0 +1,703 @@
+{% comment %}
+** FAQ page - custom view **
+- Page template
+- Uses blocks
+{% endcomment %}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {% for block in section.blocks %}
+      {% unless block.type == 'heading' %}
+        {
+          "@type": "Question",
+          "name": "{{ block.settings.title | escape }}",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "{{ block.settings.subtitle | strip_html }}"
+          }
+        }{% unless forloop.last %},{% endunless %}
+      {% endunless %}
+    {% endfor %}
+  ]
+}
+</script>
+{% include 'question-image-text' %}
+{% include 'question-icon-bar' %}
+{% if section.settings.show_banner %}
+
+  <section id="banner-{{section.id}}" class="banner page_banner">
+    {% if section.settings.image != nil %}
+      {% include 'image-element', image: section.settings.image, alt: section.settings.image.alt, stretch_width: true %}
+    {% else %}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg placeholder-svg--banner' }}
+    {% endif %}
+    {% unless section.settings.button1_link != blank and section.settings.button2_link != blank %}
+      {% if section.settings.button1_link != blank %}
+        <a href="{{ section.settings.button1_link }}" class="banner-full-link">
+          {{ section.settings.button1 }}
+        </a>
+      {% endif %}
+      {% if section.settings.button2_link != blank %}
+        <a href="{{ section.settings.button2_link }}" class="banner-full-link">
+          {{ section.settings.button2 }}
+        </a>
+      {% endif %}
+    {% endunless %}
+    {% unless section.settings.pretext == blank and section.settings.title == blank and section.settings.subtitle == blank and section.settings.button1 == blank and section.settings.button2 == blank %}
+      <div class="position-{{ section.settings.text_position }} caption js-caption">
+        <div class="caption-content caption-background-{{ section.settings.caption_background }} caption-transparency-{{ section.settings.caption_background_transparency }} align-{{ section.settings.text_align }}">
+          {% if section.settings.caption_icon != blank %}
+            <div class="text_align_left">
+              <img src="{{ section.settings.caption_icon | img_url: "original" }}">
+            </div>
+          {% endif %}
+          {% if section.settings.title != blank %}
+            <h1 class="headline">
+              {{ section.settings.title }}
+            </h1>
+          {% endif %}
+          {% if section.settings.subtitle != blank %}
+            <div class="subtitle">
+              {{ section.settings.subtitle }}
+            </div>
+          {% endif %}
+          {% if section.settings.button1 != blank %}
+            <a {% if section.settings.button1_link != blank %}href="{{ section.settings.button1_link }}"{% endif %} class="action_button first_button highlight-{{ section.settings.button1_highlight }}">
+              {{ section.settings.button1 }}
+            </a>
+          {% endif %}
+          {% if section.settings.button2 != blank %}
+            <a {% if section.settings.button2_link != blank %}href="{{ section.settings.button2_link }}"{% endif %} class="action_button second_button highlight-{{ section.settings.button2_highlight }}">
+              {{ section.settings.button2 }}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    {% endunless %}
+  </section>
+
+{% endif %}
+
+<a name="pagecontent" id="pagecontent"></a>
+
+<div class="container main content">
+  <div class="sixteen columns page clearfix">
+    {% unless section.settings.show_banner %}
+      <h1>
+        {{ page.title }}
+      </h1>
+      <div class="feature_divider"></div>
+    {% endunless %}
+    <div>
+      {% include 'page-multi-column', content: page.content %}
+    </div>
+  </div>
+  <div class="sixteen columns main-content">
+    {% if section.blocks.size > 0 %}
+      {% if section.settings.feature_tab == true%}
+        <ul class="tabs">
+          <li><a data-toggle="pill" href="#menu1" class="active">General</a></li>
+          <li><a data-toggle="pill" href="#menu2">Outdoor Recreation</a></li>
+          <li><a data-toggle="pill" href="#menu3">Simple Sensations</a></li>
+          <li><a data-toggle="pill" href="#menu4">Just In case…(r)</a></li>
+          <li><a data-toggle="pill" href="#menu5">Pro-pak</a></li>
+        </ul>
+        
+        <div class="tab-content">
+          <div id="menu1" class="tab-pane fade in active">
+            <dl class="faqAccordion">
+              {% for block in section.blocks %}
+                {% if block.settings.faq_tab_index == '1' %}
+                  {% if block.type == "heading" %}
+                    {% if block.settings.heading != blank %}
+                      <h2 class="title faq--heading">{{ block.settings.heading }}</h2>
+                    {% endif %}
+                  {% endif %}
+                  {% if block.settings.title != blank %}
+                    <dt><button type="button" aria-controls="panel-01" aria-expanded="true">{{ block.settings.title }}</button></dt>
+                    <dd id="panel-01" aria-hidden="false">
+                      {{ block.settings.subtitle }}
+                    </dd>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            </dl>
+          </div>
+          <div id="menu2" class="tab-pane fade">
+            <dl class="faqAccordion">
+              {% for block in section.blocks %}
+                {% if block.settings.faq_tab_index == '2' %}
+                  {% if block.type == "heading" %}
+                    {% if block.settings.heading != blank %}
+                      <h2 class="title faq--heading">{{ block.settings.heading }}</h2>
+                    {% endif %}
+                  {% endif %}
+                  {% if block.settings.title != blank %}
+                    <dt><button type="button" aria-controls="panel-01" aria-expanded="true">{{ block.settings.title }}</button></dt>
+                    <dd id="panel-01" aria-hidden="false">
+                      {{ block.settings.subtitle }}
+                    </dd>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            </dl>
+          </div>
+          <div id="menu3" class="tab-pane fade">
+            <dl class="faqAccordion">
+              {% for block in section.blocks %}
+                {% if block.settings.faq_tab_index == '3' %}
+                  {% if block.type == "heading" %}
+                    {% if block.settings.heading != blank %}
+                      <h2 class="title faq--heading">{{ block.settings.heading }}</h2>
+                    {% endif %}
+                  {% endif %}
+                  {% if block.settings.title != blank %}
+                    <dt><button type="button" aria-controls="panel-01" aria-expanded="true">{{ block.settings.title }}</button></dt>
+                    <dd id="panel-01" aria-hidden="false">
+                      {{ block.settings.subtitle }}
+                    </dd>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            </dl>
+          </div>
+          <div id="menu4" class="tab-pane fade">
+            <dl class="faqAccordion">
+              {% for block in section.blocks %}
+                {% if block.settings.faq_tab_index == '4' %}
+                  {% if block.type == "heading" %}
+                    {% if block.settings.heading != blank %}
+                      <h2 class="title faq--heading">{{ block.settings.heading }}</h2>
+                    {% endif %}
+                  {% endif %}
+                  {% if block.settings.title != blank %}
+                    <dt><button type="button" aria-controls="panel-01" aria-expanded="true">{{ block.settings.title }}</button></dt>
+                    <dd id="panel-01" aria-hidden="false">
+                      {{ block.settings.subtitle }}
+                    </dd>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            </dl>
+          </div>
+          <div id="menu5" class="tab-pane fade">
+            <dl class="faqAccordion">
+              {% for block in section.blocks %}
+                {% if block.settings.faq_tab_index == '5' %}
+                  {% if block.type == "heading" %}
+                    {% if block.settings.heading != blank %}
+                      <h2 class="title faq--heading">{{ block.settings.heading }}</h2>
+                    {% endif %}
+                  {% endif %}
+                  {% if block.settings.title != blank %}
+                    <dt><button type="button" aria-controls="panel-01" aria-expanded="true">{{ block.settings.title }}</button></dt>
+                    <dd id="panel-01" aria-hidden="false">
+                      {{ block.settings.subtitle }}
+                    </dd>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            </dl>
+          </div>
+        </div>
+      {% else %}
+      <dl class="faqAccordion">
+        {% for block in section.blocks %}
+            {% if block.type == "heading" %}
+              {% if block.settings.heading != blank %}
+                <h2 class="title faq--heading">{{ block.settings.heading }}</h2>
+              {% endif %}
+            {% endif %}
+            {% if block.settings.title != blank and block.type == "Content"%}
+              <dt><button type="button" aria-controls="panel-01" aria-expanded="true">{{ block.settings.title }}</button></dt>
+              <dd id="panel-01" aria-hidden="false">
+                {{ block.settings.subtitle }}
+              </dd>
+            {% endif %}
+        {% endfor %}
+      </dl>
+      {% endif %}
+    {% endif %}
+  </div>
+  <div class="sixteen columns bottom-content">
+    <p>If you think you can abide by the rules and you have the kind of content that matches our products, click the big ‘Apply’ button!</p>
+    <a href="#" class="action_button apply_btn"> Apply Now </a>
+  </div>
+</div>
+
+<style>
+  {% if section.settings.show_banner %}
+    .mobile_nav-fixed--true #pagecontent, .mobile_nav-fixed--false #pagecontent {
+      padding: 0;
+    }
+    @media only screen and (max-width: 479px) {
+      div.content {
+        padding-top: 0;
+      }
+    }
+  {% endif %}
+</style>
+
+{% schema %}
+
+{
+  "name": "Question content",
+  "class": "faq-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "image-text-header"
+    },
+    {
+      "type": "select",
+      "id": "frontpage_image_position",
+      "label": "First image position",
+      "info": "Subsequent images will appear staggered",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_banner",
+      "label": "Show banner",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "1800 x 1000px recommended"
+    },
+    {
+      "type": "image_picker",
+      "id": "caption_icon",
+      "label": "icon"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subheading"
+    },
+    {
+      "type": "checkbox",
+      "id": "caption_background",
+      "label": "Display solid text background",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "caption_background_transparency",
+      "label": "Enable background transparency"
+    },
+    {
+      "type": "select",
+      "id": "text_position",
+      "label": "Text position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "button1",
+      "label": "First button label"
+    },
+    {
+      "type": "url",
+      "id": "button1_link",
+      "label": "First button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "button1_highlight",
+      "label": "Highlight first button"
+    },
+    {
+      "type": "text",
+      "id": "button2",
+      "label": "Second button label"
+    },
+    {
+      "type": "url",
+      "id": "button2_link",
+      "label": "Second button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "button2_highlight",
+      "label": "Highlight second button"
+    },
+    {
+      "type": "checkbox",
+      "id": "feature_tab",
+      "label": "Feature tab"
+    },
+    {
+      "type": "header",
+      "content": "Icon bar header"
+    },
+    {
+      "type": "text",
+      "id": "icon_header_title",
+      "label": "Icon bar header",
+      "default": "icon bar header"
+    },
+    {
+      "type": "richtext",
+      "id": "icon_sub_title",
+      "label": "icon bar title",
+      "default": "<p>sub title</p>"
+    },
+    {
+      "type": "select",
+      "id": "bar_size",
+      "label": "Bar size",
+      "options": [
+        {
+          "value": "large",
+          "label": "Large"
+        },
+        {
+          "value": "small",
+          "label": "Small"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color"
+    },
+    {
+      "type": "checkbox",
+      "id": "image_center",
+      "label": "Image center",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Heading",
+      "type": "heading",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Title"
+        }
+      ]
+    },
+    {
+      "type": "icon",
+      "name": "Icons",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Icon"
+        },
+         {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Subscribe"
+        },
+        {
+          "type": "text",
+          "id": "url",
+          "label": "Url",
+          "default": "Subscribe"
+        }
+      ]
+    },
+    {
+      "name": "Questions",
+      "type": "Content",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Question",
+          "default": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "subtitle",
+          "label": "Answer",
+          "default": "<p>Include a helpful and informative answer to the frequently asked question here.</p>"
+        },
+        {
+          "type": "select",
+          "id": "faq_tab_index",
+          "label": "Tab index",
+          "options": [
+            {
+              "value": "1",
+              "label": "GENERAL"
+            },
+            {
+              "value": "2",
+              "label": "Outdoor Recreation"
+            },
+            {
+              "value": "3",
+              "label": "Simple Sensations"
+            },
+            {
+              "value": "4",
+              "label": "Just In case…(r)"
+            },
+            {
+              "value": "5",
+              "label": "Pro-pak"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Image with text",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "1024 x 1024px recommended"
+        },
+        {
+          "type": "select",
+          "id": "image_crop",
+          "label": "Image cropping",
+          "default": "none",
+          "info": "Only applied when text area is taller than image.",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "none",
+              "label": "None"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Your headline"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Promotion description appears here.</p>"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "View all"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_donation_button",
+          "label": "Donation"
+        },
+        {
+          "type": "text",
+          "id": "donation_count",
+          "label": "Donation Count",
+          "default": "1234"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Colors"
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "label": "Background"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image_1",
+          "label": "Icon Image",
+          "info": "1024 x 1024px recommended"
+        },
+        {
+          "type": "text",
+          "id": "icon_title_1",
+          "label": "Icon Title",
+          "default": "Your headline"
+        },
+        {
+          "type": "url",
+          "id": "icon_link_1",
+          "label": "Icon Url"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image_2",
+          "label": "Icon Image",
+          "info": "1024 x 1024px recommended"
+        },
+        {
+          "type": "text",
+          "id": "icon_title_2",
+          "label": "Icon Title",
+          "default": "Your headline"
+        },
+        {
+          "type": "url",
+          "id": "icon_link_2",
+          "label": "Icon Url"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image_3",
+          "label": "Icon Image",
+          "info": "1024 x 1024px recommended"
+        },
+        {
+          "type": "text",
+          "id": "icon_title_3",
+          "label": "Icon Title",
+          "default": "Your headline"
+        },
+        {
+          "type": "url",
+          "id": "icon_link_3",
+          "label": "Icon Url"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image_4",
+          "label": "Icon Image",
+          "info": "1024 x 1024px recommended"
+        },
+        {
+          "type": "text",
+          "id": "icon_title_4",
+          "label": "Icon Title",
+          "default": "Your headline"
+        },
+        {
+          "type": "url",
+          "id": "icon_link_4",
+          "label": "Icon Url"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "settings": {
+      "title": "Page FAQ Template",
+      "subtitle": "<p>Create an amazing FAQ page with a full-width banner</p>",
+      "text_position": "center",
+      "text_align": "center"
+    },
+    "blocks": [
+      {
+        "type": "heading",
+        "settings": {
+          "heading": "Section"
+        }
+      },
+      {
+        "type": "Content",
+        "settings": {
+          "title": "Title",
+          "subtitle": "<p>Include a helpful and informative answer to the frequently asked question here.</p>"
+        }
+      },
+      {
+        "type": "Content",
+        "settings": {
+          "title": "Title",
+          "subtitle": "<p>Include a helpful and informative answer to the frequently asked question here.</p>"
+        }
+      },
+      {
+        "type": "Content",
+        "settings": {
+          "title": "Title",
+          "subtitle": "<p>Include a helpful and informative answer to the frequently asked question here.</p>"
+        }
+      }
+    ]
+  }
+}
+
+{% endschema %}

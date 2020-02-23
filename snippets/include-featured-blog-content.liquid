@@ -1,0 +1,44 @@
+{% if type == 'block' %}
+  {% assign title = block.settings.title %}
+  {% assign blog_widget_select = block.settings.blog_widget_select %}
+  {% assign home_page_articles = block.settings.home_page_articles %}
+  {% assign blog_tags = block.settings.blog_tags %}
+  {% assign blog_author = block.settings.blog_author %}
+  {% assign blog_date = block.settings.blog_date %}
+  {% assign blog_comment_count = block.settings.blog_comment_count %}
+  {% assign read_more_link = block.settings.read_more_link %}
+{% else %}
+
+  {% assign title = section.settings.title %}
+  {% assign blog_widget_select = section.settings.blog_widget_select %}
+  {% assign home_page_articles = section.settings.home_page_articles %}
+  {% assign blog_tags = section.settings.blog_tags %}
+  {% assign blog_author = section.settings.blog_author %}
+  {% assign blog_date = section.settings.blog_date %}
+  {% assign blog_comment_count = section.settings.blog_comment_count %}
+  {% assign read_more_link = section.settings.read_more_link %}
+{% endif %}
+
+{% if articles != blank %}
+  {% for article in articles %}
+  {% assign handles = article.handle | split: '/' %}
+    {% if article.url != blank %}
+      <div class="blog-item {% if home_page_articles == 2 %}eight columns{% elsif home_page_articles == 3 %}one-third column{% else %}four columns{% endif %} article medium-down--one-whole">
+        {% if article.image %}
+          <a href="{{ article.url }}">
+            {% include 'image-element', image: article.image, alt: article.image.alt,back_to_image:true %}
+          </a>
+        {% endif %}
+        <span class="category">{{ handles[0] }}</span>
+        <p class="sub_title">
+          <a href="{{ article.url }}">{{ article.title }}</a>
+        </p>
+        <p class="blog_meta">
+          <span>{{ article.published_at | date: format: "month_day_year" }}</span> | <span>{{ 'blogs.article.by_author' | t: author: article.author }}</span>
+        </p>
+      </div>
+    {% endif %}
+  {% endfor %}
+
+{% endif %}
+

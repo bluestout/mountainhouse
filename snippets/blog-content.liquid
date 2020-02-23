@@ -1,0 +1,10 @@
+{% assign items_per_row = section.settings.items_per_row %}
+
+<div class="container blog-content">  
+    <div class="sixteen columns" data-blog-size="">
+        {% for block in section.blocks %}
+            {% assign articles = articles | concat: blogs[ block.settings.blog_widget_select].articles %}
+        {% endfor %}
+        {% include 'include-featured-blog-content', type: 'block', back_to_image:true %}     
+    </div>
+</div>

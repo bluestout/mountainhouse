@@ -1,0 +1,36 @@
+
+<div class="image-with-text
+            featured_collections
+            clearfix image-align--{{ section.settings.frontpage_image_position }}
+            full-width--{{ section.settings.frontpage_grid_style }}
+            ">
+  <section class="featured-link--section featured-link--image section-{{ forloop.index }}" {{ section.settings.shopify_attributes }}>
+    <div class="featured-link--half featured-link--image featured-link--margin image-crop--{{ section.settings.image_text_crop }}">
+      <div class="featured-link--wrap">
+        <a {% if section.settings.image_text_link != blank %}href="{{ section.settings.image_text_link }}"{% endif %} title="{{ section.settings.image_text_title }}">
+          {% if section.settings.image_text_image %}
+            {% include 'image-element', image: section.settings.image_text_image, alt: section.settings.image_text_image.alt, stretch_width: true %}
+          {% else %}
+            {% capture i %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
+            {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--promotions' }}
+          {% endif %}
+        </a>
+      </div>
+    </div>
+    <div class="featured-link--half">
+      <div class="info text-align--{{section.settings.frontpage_text_align}}">
+        <a {% if section.settings.image_text_link != blank %}href="{{ section.settings.image_text_link }}"{% endif %} class="collection_title">
+          {{ section.settings.image_text_title }}
+        </a>
+        {% if section.settings.image_text_desc != blank %}
+          <div class="description">{{ section.settings.image_text_desc }}</div>
+        {% endif %}
+        {% if section.settings.image_text_button_label != blank %}
+          <a {% if section.settings.image_text_link != blank %}href="{{ section.settings.image_text_link }}"{% endif %} class="button donation_button_red collection-brand">
+              {{ section.settings.image_text_button_label }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+</div>

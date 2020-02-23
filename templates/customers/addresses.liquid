@@ -1,24 +1,29 @@
 <a name="pagecontent" id="pagecontent"></a>
 
 <header class="account-header clearfix">
-  <div class="eight columns account-header-title">
-    <h1>{{ 'customer.addresses.title' | t }}</h1>
+  <div class="sixteen columns account-header-title">
+    <h1 class="text-align--center">My Account Ditails</h1>
   </div>
-  <div class="eight columns account-header-logout">
+  <!-- <div class="eight columns account-header-logout">
     <a href="{{ routes.account_url }}">{{ 'customer.account.return' | t }}</a> / <span><a href="{{ routes.account_logout_url }}" id="customer_logout_link">{{ 'layout.customer.log_out' | t }}</a></span>
-  </div>
+  </div> -->
 </header>
-<div class="feature_divider"></div>
 
-<div class="section clearfix">
+
+<div class="section clearfix account-content">
   <aside class="five columns account-sidebar">
-    <div id="action" class="action_link action_add note"><a href="#" class="action_button" onclick="Shopify.CustomerAddress.toggleNewForm(); return false;">{{ 'customer.addresses.add_new' | t }}</a></div>
+    <a href="/account">Dashboard</a>
+    <a href="/account/order">Order History</a>
+    <a href="/account/addresses" class="active">Account ditails</a>
   </aside>
+  <select class="account-options">
+    <option value="">Dashboard</option>
+    <option value="order">Order History</option>
+    <option value="addresses" selected>Account ditails</option>
+  </select>
   <main class="eleven columns account-main">
     <div id="add_address" class="customer_address edit_address" style="display:none;">
       {% form 'customer_address', customer.new_address %}
-        <h4 id="add_address_title">{{ 'customer.addresses.add_new' | t }}</h4>
-
         <div>
           <div>
             <label for="address_first_name_new">{{ 'customer.addresses.first_name' | t }}</label>
@@ -86,10 +91,12 @@
         {% for address in customer.addresses %}
         <div class="address_table">
           <div id="view_address_{{address.id}}" class="customer_address">
-            <h4 class="address_title">
-              {{ address.first_name | capitalize }} {{address.last_name | capitalize }}
-              {% if address == customer.default_address %}({{ 'customer.addresses.default' | t }}){% endif %}
-            </h4>
+            <b>Address</b>
+            <a href="#" class="f-right" onclick="Shopify.CustomerAddress.toggleNewForm(); return false;">{{ 'customer.addresses.add_new' | t }}</a>
+            <div class="feature_divider"></div>
+            <b class="address_title">
+              {% if address == customer.default_address %}{{ 'customer.addresses.default' | t }}{% endif %}
+            </b>
             <p class="view_address">
               {{ address.company }}<br>
               {{ address.street }}<br>
@@ -99,8 +106,8 @@
             </p>
 
             <p class="address_actions">
-              <span class="action_button action_edit">{{ 'customer.addresses.edit' | t | edit_customer_address_link: address.id }}</span>
-              <span class="action_button action_delete">{{ 'customer.addresses.delete' | t | delete_customer_address_link: address.id }}</span>
+              <span>{{ 'customer.addresses.edit' | t | edit_customer_address_link: address.id }}</span> | 
+              <span>{{ 'customer.addresses.delete' | t | delete_customer_address_link: address.id }}</span>
             </p>
 
           </div>

@@ -1,0 +1,22 @@
+{% assign items_per_row = section.settings.items_per_row %}
+
+<div class="container blog-content">  
+    <div class="sixteen columns" data-blog-size="">
+        {% for block in section.blocks %}
+        {{block.heading_title}}
+            <div class="blog-item {% if items_per_row == 2 %}eight columns{% elsif items_per_row == 3 %}one-third column{% else %}four columns{% endif %} article medium-down--one-whole">
+            {% if block.image %}
+              <a href="{{ block.url }}">
+                {% include 'image-element', image: block.image, alt: block.image.alt, back_to_image:true %}
+              </a>
+            {% endif %}
+            <p class="sub_title">
+              <a href="{{ block.url }}">{{ block.heading_title }}</a>
+            </p>
+            <p class="blog_meta">
+              <span>{{ block.author }}</span>
+            </p>
+          </div>
+        {% endfor %}  
+    </div>
+</div>

@@ -94,23 +94,138 @@
       {% include 'page-multi-column', content: page.content %}
     </div>
   </div>
-  <div class="sixteen columns">
+  <div class="sixteen columns main-content">
     {% if section.blocks.size > 0 %}
+      {% if section.settings.feature_tab == true%}
+        <select class="faq-select">
+          <option value="#menu1">General</option>
+          <option value="#menu2">Outdoor Recreation</option>
+          <option value="#menu3">Simple Sensations</option>
+          <option value="#menu4">Just In case…(r)</option>
+          <option value="#menu5">Pro-pak</option>
+        </select>
+        <ul class="tabs">
+          <li><a data-toggle="pill" href="#menu1" class="active">General</a></li>
+          <li><a data-toggle="pill" href="#menu2">Outdoor Recreation</a></li>
+          <li><a data-toggle="pill" href="#menu3">Simple Sensations</a></li>
+          <li><a data-toggle="pill" href="#menu4">Just In case…(r)</a></li>
+          <li><a data-toggle="pill" href="#menu5">Pro-pak</a></li>
+        </ul>
+        
+        <div class="tab-content">
+          <div id="menu1" class="tab-pane fade in active">
+            <dl class="faqAccordion">
+              {% for block in section.blocks %}
+                {% if block.settings.faq_tab_index == '1' %}
+                  {% if block.type == "heading" %}
+                    {% if block.settings.heading != blank %}
+                      <h2 class="title faq--heading">{{ block.settings.heading }}</h2>
+                    {% endif %}
+                  {% endif %}
+                  {% if block.settings.title != blank %}
+                    <dt><button type="button" aria-controls="panel-01" aria-expanded="true">{{ block.settings.title }}</button></dt>
+                    <dd id="panel-01" aria-hidden="false">
+                      {{ block.settings.subtitle }}
+                    </dd>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            </dl>
+          </div>
+          <div id="menu2" class="tab-pane fade">
+            <dl class="faqAccordion">
+              {% for block in section.blocks %}
+                {% if block.settings.faq_tab_index == '2' %}
+                  {% if block.type == "heading" %}
+                    {% if block.settings.heading != blank %}
+                      <h2 class="title faq--heading">{{ block.settings.heading }}</h2>
+                    {% endif %}
+                  {% endif %}
+                  {% if block.settings.title != blank %}
+                    <dt><button type="button" aria-controls="panel-01" aria-expanded="true">{{ block.settings.title }}</button></dt>
+                    <dd id="panel-01" aria-hidden="false">
+                      {{ block.settings.subtitle }}
+                    </dd>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            </dl>
+          </div>
+          <div id="menu3" class="tab-pane fade">
+            <dl class="faqAccordion">
+              {% for block in section.blocks %}
+                {% if block.settings.faq_tab_index == '3' %}
+                  {% if block.type == "heading" %}
+                    {% if block.settings.heading != blank %}
+                      <h2 class="title faq--heading">{{ block.settings.heading }}</h2>
+                    {% endif %}
+                  {% endif %}
+                  {% if block.settings.title != blank %}
+                    <dt><button type="button" aria-controls="panel-01" aria-expanded="true">{{ block.settings.title }}</button></dt>
+                    <dd id="panel-01" aria-hidden="false">
+                      {{ block.settings.subtitle }}
+                    </dd>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            </dl>
+          </div>
+          <div id="menu4" class="tab-pane fade">
+            <dl class="faqAccordion">
+              {% for block in section.blocks %}
+                {% if block.settings.faq_tab_index == '4' %}
+                  {% if block.type == "heading" %}
+                    {% if block.settings.heading != blank %}
+                      <h2 class="title faq--heading">{{ block.settings.heading }}</h2>
+                    {% endif %}
+                  {% endif %}
+                  {% if block.settings.title != blank %}
+                    <dt><button type="button" aria-controls="panel-01" aria-expanded="true">{{ block.settings.title }}</button></dt>
+                    <dd id="panel-01" aria-hidden="false">
+                      {{ block.settings.subtitle }}
+                    </dd>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            </dl>
+          </div>
+          <div id="menu5" class="tab-pane fade">
+            <dl class="faqAccordion">
+              {% for block in section.blocks %}
+                {% if block.settings.faq_tab_index == '5' %}
+                  {% if block.type == "heading" %}
+                    {% if block.settings.heading != blank %}
+                      <h2 class="title faq--heading">{{ block.settings.heading }}</h2>
+                    {% endif %}
+                  {% endif %}
+                  {% if block.settings.title != blank %}
+                    <dt><button type="button" aria-controls="panel-01" aria-expanded="true">{{ block.settings.title }}</button></dt>
+                    <dd id="panel-01" aria-hidden="false">
+                      {{ block.settings.subtitle }}
+                    </dd>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            </dl>
+          </div>
+        </div>
+      {% else %}
       <dl class="faqAccordion">
         {% for block in section.blocks %}
-          {% if block.type == "heading" %}
-            {% if block.settings.heading != blank %}
-              <h2 class="title faq--heading">{{ block.settings.heading }}</h2>
+            {% if block.type == "heading" %}
+              {% if block.settings.heading != blank %}
+                <h2 class="title faq--heading">{{ block.settings.heading }}</h2>
+              {% endif %}
             {% endif %}
-          {% endif %}
-          {% if block.settings.title != blank %}
-            <dt><button type="button" aria-controls="panel-01" aria-expanded="true">{{ block.settings.title }}</button></dt>
-            <dd id="panel-01" aria-hidden="false">
-              {{ block.settings.subtitle }}
-            </dd>
-          {% endif %}
+            {% if block.settings.title != blank %}
+              <dt><button type="button" aria-controls="panel-01" aria-expanded="true">{{ block.settings.title }}</button></dt>
+              <dd id="panel-01" aria-hidden="false">
+                {{ block.settings.subtitle }}
+              </dd>
+            {% endif %}
         {% endfor %}
       </dl>
+      {% endif %}
     {% endif %}
   </div>
 </div>
@@ -239,6 +354,11 @@
       "type": "checkbox",
       "id": "button2_highlight",
       "label": "Highlight second button"
+    },
+    {
+      "type": "checkbox",
+      "id": "feature_tab",
+      "label": "Feature tab"
     }
   ],
   "blocks": [
@@ -269,6 +389,33 @@
           "id": "subtitle",
           "label": "Answer",
           "default": "<p>Include a helpful and informative answer to the frequently asked question here.</p>"
+        },
+        {
+          "type": "select",
+          "id": "faq_tab_index",
+          "label": "Tab index",
+          "options": [
+            {
+              "value": "1",
+              "label": "GENERAL"
+            },
+            {
+              "value": "2",
+              "label": "Outdoor Recreation"
+            },
+            {
+              "value": "3",
+              "label": "Simple Sensations"
+            },
+            {
+              "value": "4",
+              "label": "Just In case…(r)"
+            },
+            {
+              "value": "5",
+              "label": "Pro-pak"
+            }
+          ]
         }
       ]
     }

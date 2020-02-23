@@ -2,39 +2,32 @@
   <a name="pagecontent" id="pagecontent"></a>
 
   <header class="account-header clearfix">
-    <div class="eight columns account-header-title">
-      <h1>{{ 'customer.account.details' | t }}</h1>
+    <div class="sixteen columns account-header-title">
+      <h1 class="text-align--center">{{ 'customer.account.details' | t }}</h1>
     </div>
-    <div class="eight columns account-header-logout">
+    <!-- <div class="eight columns account-header-logout">
       <span><a href="{{ routes.account_logout_url }}" id="customer_logout_link">{{ 'layout.customer.log_out' | t }}</a></span>
-    </div>
+    </div> -->
   </header>
-  <div class="feature_divider"></div>
+  
 
-  <div class="section clearfix">
+  <div class="section clearfix account-content">
     <aside class="five columns account-sidebar">
-      <h4 class="name"><a href="{{ routes.account_url }}" title="{{ 'layout.customer.my_account' | t }}">{{ customer.name }}</a></h4>
-      <p class="email note">{{ customer.email }}</p>
-      <h4>{{ 'customer.addresses.primary' | t }}</h4>
-      <div class="address note">
-        {% if customer.default_address != nil %}
-          <p>{{ customer.default_address.address1 }}</p>
-          {% if customer.default_address.address2 != "" %}
-            <p>{{ customer.default_address.address2 }}</p>
-          {% endif %}
-          <p>{{ customer.default_address.city}}{% if customer.default_address.province_code %}, {{customer.default_address.province_code}}{% endif %} {{ customer.default_address.zip}}</p>
-          <p>{{customer.default_address.country}}</p>
-          <p>{{ customer.default_address.phone }}</p>
-        {% else %}
-          <p>{{ 'customer.addresses.no_addresses' | t }}</p>
-        {% endif %}
-          <p><a href="{{ routes.account_addresses_url }}">{{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})</a></p>
-      </div>
+      <!-- <h4 class="name"><a href="{{ routes.account_url }}" title="{{ 'layout.customer.my_account' | t }}">{{ customer.name }}</a></h4>
+      <p class="email note">{{ customer.email }}</p> -->
+      <a href="/account" class="active">Dashboard</a>
+      <a href="/account/order">Order History</a>
+      <a href="/account/addresses">Account ditails</a>
     </aside>
+    <select class="account-options">
+      <option value="" selected>Dashboard</option>
+      <option value="order">Order History</option>
+      <option value="addresses">Account ditails</option>
+    </select>
     <main class="eleven columns account-main">
       <div id="customer_orders">
-        <h4>{{ 'customer.orders.title' | t }}</h4>
-
+        <b>Order History</b>
+        <div class="feature_divider"></div>
         {% if customer.orders.size != 0 %}
         <table width="100%">
           <thead>
@@ -65,6 +58,24 @@
         {% endif %}
 
         {% include 'pagination' with true %}
+      </div>
+      <div id="customer_address">
+        <b>Account Details</b>
+        <div class="feature_divider"></div>
+        <div class="address note">
+          {% if customer.default_address != nil %}
+            <p>{{ customer.default_address.address1 }}</p>
+            {% if customer.default_address.address2 != "" %}
+              <p>{{ customer.default_address.address2 }}</p>
+            {% endif %}
+            <p>{{ customer.default_address.city}}{% if customer.default_address.province_code %}, {{customer.default_address.province_code}}{% endif %} {{ customer.default_address.zip}}</p>
+            <p>{{customer.default_address.country}}</p>
+            <p>{{ customer.default_address.phone }}</p>
+          {% else %}
+            <p>{{ 'customer.addresses.no_addresses' | t }}</p>
+          {% endif %}
+            <p><a href="{{ routes.account_addresses_url }}">{{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})</a></p>
+        </div>
       </div>
     </main>
   </div>

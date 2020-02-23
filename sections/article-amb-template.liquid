@@ -1,0 +1,42 @@
+{% comment %}
+** Article (blog post) - default view **
+- Template section
+- Uses blocks
+{% endcomment %}
+
+<div class="article">
+  <div class="container main content">
+    <div class="twelve columns offset-by-two medium-down--one-whole equal-columns--outside-trim"> 
+      <div class="section clearfix"> 
+        <h1 class="headline">{{section.settings.title}}</h1> 
+        <div class="article_content clearfix">
+              {{section.settings.text}}
+        </div> 
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+
+{
+  "name": "Blog post",
+  "class": "blog-post-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Text area can be used for details about blog authors or general information.</p>"
+    }
+  ]
+}
+
+{% endschema %}

@@ -31,7 +31,7 @@
   </div>
 
   {% comment %}Check to see if sidebar should be enabled{% endcomment %}
-  {% if section.blocks.size > 0 %}
+  {% if section.blocks.size > 0 and section.settings.feature_sidebar%}
     {% assign sidebar = true %}
   {% else %}
     {% assign sidebar = false %}
@@ -45,16 +45,14 @@
       <div class="sixteen columns product__container">
     {% endif %}
 
-    <div  class="product-{{ product.id }}"
-          data-free-text="{{ settings.free_price_text }}"
-          >
+    <div class="product-{{ product.id }}" data-free-text="{{ settings.free_price_text }}"  >
       <div class="section product_section clearfix js-product_section {% if section.settings.product_images_position == 'right' %}align_right--images{% endif %}" data-rv-handle="{{ product.handle }}">
 
-        <div class="nine columns medium-down--one-whole {% if section.settings.product_images_position == 'left' %}alpha{% else %}omega{% endif %}">
+        <div class="eight columns medium-down--one-whole {% if section.settings.product_images_position == 'left' %}alpha{% else %}omega{% endif %}">
           {% include 'product-images' %}
         </div>
 
-        <div class="seven columns medium-down--one-whole  {% if section.settings.product_images_position == 'left' %}omega{% else %}alpha{% endif %}">
+        <div class="eight columns medium-down--one-whole  product-info {% if section.settings.product_images_position == 'left' %}omega{% else %}alpha{% endif %}">
 
           {% assign collection_handles = product.collections | map: 'handle' %}
           {% assign variant = product.selected_or_first_available_variant %}
@@ -86,10 +84,7 @@
           {% if section.settings.enable_shopify_product_badges and settings.enable_shopify_review_comments %}
             <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
           {% endif %}
-          <div class="feature_divider"></div>
-
-
-
+      
           {% assign product_tags = product.tags | join: ' ' %}
           {% if product_tags contains 'meta-size-chart-' %}
             {% for tag in product.tags %}
@@ -153,11 +148,21 @@
           {% if section.settings.product_description_position == "bottom" %}
             {% if product.description != blank %}
               <div class="description bottom">
-                {{ product.description | split: '<!-- split -->' | first }}
+                <a class="prduct-desc-header">Description</a>
+                <div class="prduct-desc-content">
+                  {{ product.description | split: '<!-- split -->' | first }}
+                </div>
               </div>
             {% endif %}
-          {% endif %}
-
+          {% endif %} 
+          <div class="links">
+            <div class="eight columns">
+              <a href="#"> <img src="{{ 'ico-ico_ask.png' | asset_img_url: 'original'}}"> <div>Just add water</div></a>
+            </div>
+            <div class="eight columns">
+              <a href="#"> <img src="{{ 'ico-ico_wish.png' | asset_img_url: 'original'}}"> <div>Just add water</div></a>
+            </div>
+          </div>
           {% if section.settings.review_position == "next_to_gallery" %}
             <div class="shopify-reviews reviewsVisibility--{{settings.enable_shopify_review_comments}}">
               <div id="shopify-product-reviews" data-id="{{product.id}}">{{ product.metafields.spr.reviews }}</div>
@@ -228,28 +233,28 @@
 
     {% if sidebar %}
 
-            {% if section.settings.display_recently_viewed %}
-              {% include 'include-recently-viewed' %}
-            {% endif %}
-
-            <div data-product-recommendations-container></div>
-          </div>
-        </div>
-      </div>
-
-    {% else %}
-
-          </div>
-        </div>
-      </div>
-
       {% if section.settings.display_recently_viewed %}
         {% include 'include-recently-viewed' %}
       {% endif %}
+
       <div data-product-recommendations-container></div>
+    </div>
+  </div>
+</div>
 
-    {% endif %}
+    {% else %}
 
+    </div>
+  </div>
+</div>
+
+{% if section.settings.display_recently_viewed %}
+  {% include 'include-recently-viewed' %}
+{% endif %}
+  <div data-product-recommendations-container></div>
+{% endif %}
+{% include 'icon-bar' %}
+{% include 'product-ingredient' %}
 {% schema %}
 
 {
@@ -503,6 +508,12 @@
       "content": "Sidebar"
     },
     {
+      "type": "checkbox",
+      "id": "feature_sidebar",
+      "label": "Feature sidebar",
+      "default": false
+    },
+    {
       "type": "paragraph",
       "content": "Create a sidebar by adding content blocks."
     },
@@ -511,6 +522,35 @@
       "id": "toggle",
       "label": "Toggle sidebar content",
       "default": false
+    },
+    {
+      "type": "header",
+      "content": "Icon bar"
+    },
+    {
+      "type": "select",
+      "id": "bar_size",
+      "label": "Bar size",
+      "options": [
+        {
+          "value": "large",
+          "label": "Large"
+        },
+        {
+          "value": "small",
+          "label": "Small"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color"
     }
   ],
   "blocks": [
@@ -518,6 +558,29 @@
       "type": "filter_by_collection",
       "name": "Collection list",
       "limit": 1
+    },
+    {
+      "type": "collection",
+      "name": "Icon",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Icon"
+        },
+         {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Subscribe"
+        },
+        {
+          "type": "text",
+          "id": "url",
+          "label": "Url",
+          "default": "Subscribe"
+        }
+      ]
     },
     {
       "type": "menu",

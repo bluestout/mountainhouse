@@ -1,0 +1,157 @@
+<div id="page-blog-section">
+    {% if section.settings.feature_header_banner and section.settings.header_banner_image != blank %}
+       {% include 'blog-header' %}
+    {% endif %}
+
+    {% assign items_per_row = section.settings.items_per_row %}
+    {% assign page = 0 %}
+    <div class="container blog-content">  
+        <div class="sixteen columns" data-blog-size="" style="padding: 100px 0px;">
+            {% if section.blocks.size >0 %}
+                {% for block in section.blocks %}
+                    {% if page > section.settings.blog_posts_per_page %}
+                        <div class="blog-item blogBox moreBox {% if items_per_row == 2 %}eight columns{% elsif items_per_row == 3 %}one-third column{% else %}four columns{% endif %} article medium-down--one-whole" style="display: none;">
+                            {% if block.settings.item_image != blank %}
+                                <a href="{{ block.settings.item_url  }}">
+                                    {% include 'image-element', image: block.settings.item_image, back_to_image:true %}
+                                </a>
+                            {% endif %}
+                            <p class="sub_title" style="margin-top: 20px;">
+                            <a href="{{ block.settings.item_url }}">{{ block.settings.item_title }}</a>
+                            </p>
+                            <p class="blog_meta">
+                            <span>{{ block.settings.item_author }}</span>
+                            </p>
+                        </div>
+                    {% else %}
+                        <div class="blog-item blogBox moreBox {% if items_per_row == 2 %}eight columns{% elsif items_per_row == 3 %}one-third column{% else %}four columns{% endif %} article medium-down--one-whole" >
+                            {% if block.settings.item_image != blank %}
+                                <a href="{{ block.settings.item_url  }}">
+                                    {% include 'image-element', image: block.settings.item_image, back_to_image:true %}
+                                </a>
+                            {% endif %}
+                            <p class="sub_title" style="margin-top: 20px;">
+                            <a href="{{ block.settings.item_url }}">{{ block.settings.item_title }}</a>
+                            </p>
+                            <p class="blog_meta">
+                            <span>{{ block.settings.item_author }}</span>
+                            </p>
+                        </div>
+                    {% endif %}
+                    {% assign page =  page | plus: 1 %}
+                {% endfor %} 
+                <div id="loadMore">
+                    <a href="#">Load More</a>
+                </div> 
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+{% schema %}
+{
+    "name"  : "Content section",
+    "class" : "blog-section",
+    "max_blocks": 20,
+    "settings"  : [
+        {
+            "type": "header",
+            "content": "Header banner"
+        },
+        {
+            "type": "checkbox",
+            "id": "feature_header_banner",
+            "label": "Feauture heading banner",
+            "default": true
+        },
+        {
+            "type": "image_picker",
+            "id": "header_banner_image",
+            "label": "Header banner"
+        },
+        {
+            "type": "image_picker",
+            "id": "header_banner_icon",
+            "label": "Banner icon"
+        },
+        {
+            "type": "color",
+            "id": "bg_color",
+            "label": "Caption background color"
+        },
+        {
+            "type": "color",
+            "id": "title_color",
+            "label": "Caption title color"
+        },
+        {
+            "type": "text",
+            "id": "heading_title",
+            "label": "Heading title"
+        },
+        {
+            "type": "richtext",
+            "id": "text",
+            "label": "Heading description"
+        },
+        {
+            "type": "range",
+            "id": "item_per_row",
+            "label": "Items per row",
+            "min": 2,
+            "max": 7,
+            "step": 1,
+            "default": 4
+        },
+        {
+            "type": "range",
+            "id": "mobile_item_row",
+            "label": "Mobile items per row",
+            "min": 2,
+            "max": 4,
+            "step": 1,
+            "default": 2
+        },
+        {
+            "type": "range",
+            "id": "blog_posts_per_page",
+            "label": "Blog posts per page",
+            "min": 1,
+            "max": 50,
+            "step": 1,
+            "default": 12
+        }
+    ],
+    "blocks" : [
+        {
+        "type": "image",
+        "name": "Items",
+        "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "item_image",
+                    "label": "Image",
+                    "info": "1024 x 1024px recommended"
+                },
+                {
+                    "type": "text",
+                    "id": "item_title",
+                    "label": "Item title",
+                    "default": "heading title"
+                },
+                {
+                    "type": "text",
+                    "id": "item_author",
+                    "label": "Item author",
+                    "default": "author name"
+                },
+                {
+                    "type": "page",
+                    "id": "item_url",
+                    "label": "Item url"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

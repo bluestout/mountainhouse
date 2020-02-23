@@ -396,7 +396,7 @@ $(function() {
         line: cartItem.lineID
       },
       success: function (data) {
-
+        
         var cartItemsArray = data.items;
         var lineIDIndex = cartItem.lineID - 1;
         var totalCartItems = cartItem.parentCartForm.find('[data-variant-id]').length;
@@ -500,8 +500,10 @@ $(function() {
 
       var total_saving = 0; // adding counter variables for total cart savings
       var saving = 0;
+      cart_items_html += '<p class="title">your cart</p>';
 
       $.each(cart.items, function(index, item) {
+        console.log(item);
         var itemDiscounts = item.discounts;
         var discountMessage = "";
 
@@ -512,25 +514,24 @@ $(function() {
         }
         var line_id = index + 1;
 
-        cart_items_html += '<li class="mini-cart__item clearfix" data-cart-item data-line-id="' + line_id + '" data-variant-id="' + item.id + '">' +
-          '<a href="' + item.url +'">';
+        cart_items_html += '<li class="clearfix" data-cart-item data-line-id="' + line_id + '" data-variant-id="' + item.id + '">' +
+          '<a href="/cart/change?line=' + line_id + '&amp;quantity=0" class="js-cart-remove-btn cart__remove-btn" data-line-id="' + line_id + '" data-remove-item="mini-cart"><span class="remove-icon"></span></a>'+
+          '<div class="product-desc sixteen section"><a href="' + item.url +'">';
         if (item.image) {
           cart_items_html += '<div class="cart_image">' +
               '<img src="' + item.image.replace(/(\.[^.]*)$/, "_compact$1").replace('http:', '') + '" alt="' + htmlEncode(item.title) + '" />' +
             '</div></a>';
         }
+        cart_items_html += '<div class="mini-cart__item__title"><div class="item_title"><a href="' + item.url + '">' + item.title + '</a></div></div></div>';
 
-        cart_items_html += '<div class="mini-cart__item--content"><div class="mini-cart__item__title"><div class="item_title"><a href="' + item.url + '">' + item.title + '</a></div>';
+        cart_items_html += '<div class="mini-cart__item_content sixteen section"><div class="section">';
+        cart_items_html += '<div class="eleven columns">';
+        cart_items_html += '<div class="left product-quantity-box">';
+        cart_items_html += '<input type="number" min="0" class="quantity" name="updates[]" id="updates_' + item.id + '" value="' + item.quantity + '" data-cart-quantity-input="mini-cart" />';
+        cart_items_html += '<input type="button" class="action_button" data-cart-quantity-button="mini-cart" value="add bag">';
+        cart_items_html += '</div></div>';
 
-        if(item.properties) {
-          $.each(item.properties, function(title, value) {
-            if (value) {
-              cart_items_html += '<div class="line-item">' + title +': ' + value + ' </div>';
-            }
-          });
-        }
-
-        cart_items_html += '<strong class="right price">';
+        cart_items_html += '<div class="five columns">';
 
         $.ajax({
           dataType: "json",
@@ -567,7 +568,7 @@ $(function() {
         if(productHasSale == true) {
           //puts the slash through the old item price
           var itemPrice = Shopify.formatMoney(productFinalPrice, $('body').data('money-format')) + ' </span><span class="money was_price">' + Shopify.formatMoney(productCompareAtPrice, $('body').data('money-format')) + '</span>';
-          cart_items_html += '<span class="money sale">' + itemPrice + '</strong>';
+          cart_items_html += '<span class="money sale">' + itemPrice + '</div>';
 
           // Total savings
           saving = (productCompareAtPrice - productFinalPrice) * item.quantity;
@@ -576,10 +577,10 @@ $(function() {
           if (item.price > item.final_price) {
             //puts the slash through the old item price
             var itemPrice = Shopify.formatMoney(item.final_price, $('body').data('money-format')) + ' </span><span class="money was_price">' + Shopify.formatMoney(item.price, $('body').data('money-format')) + '</span>';
-            cart_items_html += '<span class="money sale">' + itemPrice + '</strong>';
+            cart_items_html += '<span class="money sale">' + itemPrice + '</div>';
           } else {
             var itemPrice = Shopify.formatMoney(item.price, $('body').data('money-format'));
-            cart_items_html += '<span class="money">' + itemPrice + '</span></strong>';
+            cart_items_html += '<p class="money">' + itemPrice + '</p></div>';
           }
         }
 
@@ -587,13 +588,15 @@ $(function() {
           cart_items_html += discountMessage;
         }
 
-        cart_items_html += '<div class="left product-quantity-box">';
-        cart_items_html += '<span class="ss-icon product-minus js-change-quantity" data-func="minus"><span class="icon-minus"></span></span>';
-        cart_items_html += '<input type="number" min="0" class="quantity" name="updates[]" id="updates_' + item.id + '" value="' + item.quantity + '" data-cart-quantity-input="mini-cart" />';
-        cart_items_html += '<span class="ss-icon product-plus js-change-quantity" data-func="plus"><span class="icon-plus"></span></span>';
-        cart_items_html += '</div></div></div>';
-        cart_items_html += '<a href="/cart/change?line=' + line_id + '&amp;quantity=0" class="js-cart-remove-btn cart__remove-btn" data-line-id="' + line_id + '" data-remove-item="mini-cart"><span class="remove-icon"></span></a>';
-
+        cart_items_html += '</div>';
+        cart_items_html += '</div>';
+        if(item.properties) {
+          $.each(item.properties, function(title, value) {
+            if (value) {
+              cart_items_html += '<div class="line-item">' + title +': ' + value + ' </div>';
+            }
+          });
+        }
       });
 
       var cartDiscounts = cart.cart_level_discount_applications;
@@ -1197,3 +1200,68 @@ $(document).ready(function(){
     });
   });
 });
+
+$(document).ready(function(){
+  $("#shopify-section-product-template .show_btn").click(function(){
+    $('#shopify-section-product-template .ingredient_caption .desc-content .ingredient_desc').slideToggle('slow');
+    $('#shopify-section-product-template .ingredient_caption .desc-content table tbody tr:not(.sub_head)').slideToggle('slow');
+  });
+})
+
+$( document ).ready(function () {
+  console.log()
+  
+  var i = 0;
+  var val = $(".blogBox").length - $(".blogBox:hidden").length;
+  $(".moreBox").slice(0, val-1).show();
+  if ($(".blogBox:hidden").length != 0) {
+    i = $(".blogBox:hidden").length;
+    $("#loadMore").show();
+  }else{
+    $("#loadMore").hide();
+  }		
+
+  var j = 1;
+  $("#loadMore").on('click', function (e) {
+    e.preventDefault();
+    j ++ ;
+    var num = j * val * 3;
+    $(".moreBox:hidden").slice(0, num).slideDown();
+    if ($(".moreBox:hidden").length == 0) {
+      $("#loadMore").fadeOut('slow');
+    }
+  });
+});
+
+$(document).ready(function(){
+  if($(".featured-collection-section").innerWidth() < 428){
+    $(".slider-gallery").attr('data-products-per-slide', 2);
+    $(".gallery-cell").removeClass('visible-3');
+    $(".gallery-cell").addClass('visible-2');
+    $(".featured-collection__products").addClass("even-num-slides")
+  }
+
+  $(".faq-select").change(function(){
+    var tab = $(this).val();
+    $(".tab-content .tab-pane").removeClass("active");
+    $(tab).addClass("active");
+  });
+  $(".account-options").change(function(){
+    var href = "/account/"+$(this).val()
+    location = href;
+  })
+
+  $(".prduct-desc-header").click(function(){
+    $(".prduct-desc-content").slideToggle("slow");
+    if($(this).hasClass("active")){
+      $(this).removeClass("active")
+    }else{
+      $(this).addClass("active");
+    }
+  });
+  $(".dropdown_link").click(function(){
+    var cls = "[data-dropdown='"+$(this).attr("data-dropdown-rel")+"']";
+    $(".mega-menu-container .mega-menu").removeClass("show");
+    $(cls).addClass("show")
+  });
+})

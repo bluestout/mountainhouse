@@ -1,0 +1,128 @@
+<div id="page-blog-section">
+    {% if section.settings.feature_header_banner and section.settings.header_banner_image != blank %}
+       {% include 'blog-header' %}
+    {% endif %}
+    {% if section.settings.feature_category_slide and section.blocks.size > 0 %}
+        {% include 'blog-category-slideshow' %}
+    {% endif %}
+
+    {% include 'blog-content' %}
+
+</div>
+{% schema %}
+{
+    "name"  : "Content section",
+    "class" : "blog-section",
+    "max_blocks": 20,
+    "settings"  : [
+        {
+            "type": "header",
+            "content": "Header banner"
+        },
+        {
+            "type": "checkbox",
+            "id": "feature_header_banner",
+            "label": "Feauture heading banner",
+            "default": true
+        },
+        {
+            "type": "image_picker",
+            "id": "header_banner_image",
+            "label": "Header banner"
+        },
+        {
+            "type": "color",
+            "id": "bg_color",
+            "label": "Caption background color"
+        },
+        {
+            "type": "color",
+            "id": "title_color",
+            "label": "Caption title color"
+        },
+        {
+            "type": "image_picker",
+            "id": "header_banner_icon",
+            "label": "Banner icon"
+        },
+        {
+            "type": "text",
+            "id": "heading_title",
+            "label": "Heading title"
+        },
+        {
+            "type": "header",
+            "content": "Blog Category"
+        },
+        {
+            "type": "checkbox",
+            "id": "feature_category_slide",
+            "label": "Feature blog category",
+            "default": true
+        },
+        {
+            "type": "range",
+            "id": "item_per",
+            "label": "category per row",
+            "min": 2,
+            "max": 7,
+            "step": 1,
+            "default": 3
+          },
+          {
+            "type": "range",
+            "id": "item_limit",
+            "label": "Limit category",
+            "min": 2,
+            "max": 50,
+            "step": 1,
+            "default": 9
+          },
+          {
+            "type": "range",
+            "id": "item_per_row",
+            "label": "Items per row",
+            "min": 2,
+            "max": 7,
+            "step": 1,
+            "default": 4
+          },
+          {
+            "type": "range",
+            "id": "mobile_item_row",
+            "label": "Mobile items per row",
+            "min": 2,
+            "max": 4,
+            "step": 1,
+            "default": 2
+          },
+          {
+            "type": "range",
+            "id": "blog_posts_per_page",
+            "label": "Blog posts per page",
+            "min": 1,
+            "max": 50,
+            "step": 1,
+            "default": 12
+          }
+    ],
+    "blocks" : [
+        {
+            "name": "Category slide image",
+            "type": "blog",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "slide_image",
+                    "label": "Category image"
+                },
+                {
+                    "type": "blog",
+                    "id": "blog_widget_select",
+                    "label": "Blog category"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}
