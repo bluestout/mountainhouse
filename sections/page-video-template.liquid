@@ -40,13 +40,14 @@
                                           <img src="{{ 'play_btn.png' | asset_url }}">
                                           <span>WATCH<br><strong>Intro Video</strong></span>
                                         </a>
+                                        {% include 'popup-video-slide' pop_video: block%}
                                     </div>
                                 </a>
                             {% endif %}
                         </div>
                     {% endif %}
                     {% assign page =  page | plus: 1 %}
-                    {% include 'popup-video' %}
+                    
                 {% endfor %} 
                 <div id="loadMore">
                     <a href="#">Load More</a>

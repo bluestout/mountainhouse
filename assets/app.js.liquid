@@ -1183,7 +1183,7 @@ $(document)
 $(document).ready(function(){
   $('.video_overlay .play').on('click', function(e){
     e.preventDefault();
-    $.fancybox.open($('.js-video-popup'), {
+    $.fancybox.open($(this).parent().find('.js-video-popup'), {
       baseClass: 'video__lightbox',
       hash: false,
       infobar : false,
@@ -1264,4 +1264,29 @@ $(document).ready(function(){
     $(".mega-menu-container .mega-menu").removeClass("show");
     $(cls).addClass("show")
   });
+})
+
+$(document).ready(function(){
+  $(".video__slideshow .flickity-page-dots li").each(function(){
+    var attr = $(this).attr("aria-label");
+    var data = attr.split(" ")
+    var cls = ".video__slideshow .slide-"+data[2]+" .caption .caption-content .h1";
+    var value = $(cls).html();
+    
+    $(this).html(value)
+  })
+  var height = $(".captionOverlay--true").height();
+  $(".page_banner").height(height+200)
+
+  $(".product-quantity-box .control-box .ss-icon").click(function(){
+    
+    if($(this).attr("data-func") == 'plus'){
+      var quantity = parseInt($(this).parent().parent().find(".quantity").val())+1;
+      console.log(quantity)
+      $(this).parent().parent().find(".quantity").val(quantity)
+    }else{
+      var quantity = parseInt($(this).parent().parent().find(".quantity").val())-1;
+      $(this).parent().parent().find(".quantity").val(quantity)
+    }
+  })
 })

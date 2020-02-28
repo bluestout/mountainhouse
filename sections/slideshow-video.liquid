@@ -62,6 +62,7 @@
                   <img src="{{ 'play_btn.png' | asset_url }}">
                   <span>WATCH<br><strong>Intro Video</strong></span>
                 </a>
+                {% include 'popup-video-slide' pop_video: block%}
               </div>
               {% endif %}
                 <div class="caption-content
@@ -96,6 +97,7 @@
                 </div>
               </div>
           {% endunless %}
+          
         </div>
     {% endfor %}
   </section>
@@ -105,7 +107,7 @@
   </div>
 </div>
 {% endif %}
-{% include 'popup-video' %}
+
 
 {% schema %}
 

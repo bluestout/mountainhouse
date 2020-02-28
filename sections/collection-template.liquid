@@ -85,12 +85,12 @@
           <h1>{{ collection.title }}</h1>
         </div>
       {% endif %}
-      <div class="columns section_select medium-down--one-whole">
+      <div class="columns section_select medium-down--one-whole" style="width: 100%;">
         {% if collection.handle != blank and collection.products_count > 0 %}
           {% if section.settings.collection_tags %}
             {% for tag in collection.all_tags %}
               {% if forloop.first %}
-                <select name="tag_filter" id="tag_filter" class="tag_filter" data-default-collection="{% if collection.handle == 'all' %}{{ routes.all_products_collection_url }}{% else %}{{ collection.url }}{% endif %}">
+                <select name="tag_filter" id="tag_filter" class="tag_filter" data-default-collection="{% if collection.handle == 'all' %}{{ routes.all_products_collection_url }}{% else %}{{ collection.url }}{% endif %}" style="float: left;">
                   <option {% unless current_tags %}selected="selected"{% endunless %} value="{% if collection.handle == "all" %}{{ routes.all_products_collection_url }}{% else %}{{ collection.url }}{% endif %}">{{ 'collections.general.all_collection_title' | t: title: collection.title }}</option>
               {% endif %}
 

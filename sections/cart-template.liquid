@@ -32,7 +32,7 @@
     <form action="{{ routes.cart_url }}" method="post" id="cart_form" data-cart-form="cart-template" data-total-discount="{{ cart.total_discount }}">
       <div class="section clearfix cart__wrapper">
         <div class="nine columns medium-down--one-whole">
-          <h5 class="uppercase">{{ 'cart.general.title' | t }}</h5>
+          <h5 class="uppercase">YOUR SHAPPING BAG</h5>
           <div class="feature_divider"></div>
           
           {% assign total_saving = 0 %}
@@ -53,7 +53,7 @@
                 <h3 class="cart__item--title">
                   <a href="{{ item.url }}">{{ item.product.title }}</a>
                 </h3>
-
+                <p class="meta">{{ item.sku }}</p>
                 {% unless item.product.has_only_default_variant or item.variant.title contains "Title" %}
                   <p class="meta">
                     {% for option in item.product.options %}

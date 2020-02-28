@@ -36,6 +36,7 @@ This file can be re-written at any time.
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.6/jquery.fancybox.css">
     <!-- Stylesheets for Turbo "5.0.3" -->
     {{ 'styles.scss.css' | asset_url | stylesheet_tag }}
+    {{ 'custom.scss.css' | asset_url | stylesheet_tag }}
 
     <script>
       window.lazySizesConfig = window.lazySizesConfig || {};
@@ -85,9 +86,9 @@ This file can be re-written at any time.
     {% include 'social-meta-info' %}
     {% if collection.previous_product %}<link rel="prev" href="{{ collection.previous_product }}">{% endif %}
     {% if collection.next_product %}<link rel="next" href="{{ collection.next_product }}">{% endif %}
-  
 
   {% include 'shogun-head' %}
+
 </head>
 
 
@@ -111,9 +112,23 @@ This file can be re-written at any time.
     {% assign feature_image = true %}
   {% elsif template contains "faq" %}
     {% assign feature_image = true %}
+  {% elsif template contains "question" %}
+    {% assign feature_image = true %}
+  {% elsif template contains "shipping" %}
+    {% assign feature_image = true %}
   {% elsif template contains "search" %}
     {% assign feature_image = true %}
   {% elsif template contains "cart" %}
+    {% assign feature_image = true %}
+  {% elsif template contains "page.video" %}
+    {% assign feature_image = true %}
+  {% elsif template contains "page.preview" %}
+    {% assign feature_image = true %}
+  {% elsif template contains "page.retailer" %}
+    {% assign feature_image = true %}
+  {% elsif template contains "page.join" %}
+    {% assign feature_image = true %}
+  {% elsif template contains "page.sponsorship" %}
     {% assign feature_image = true %}
   {% else %}
     {% assign feature_image = false %}
@@ -138,6 +153,8 @@ This file can be re-written at any time.
   </noscript>
 
   
+{% include 'globo.formbuilder.scripts' %}
+
 <body class="{% if template == '404' %}error-404{% else %}{{ template | replace: '.', '-' | handle }}{% endif %}"
     data-money-format="{{ shop.money_format }}" data-shop-url="{{ shop.url }}">
   

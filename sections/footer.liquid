@@ -5,7 +5,7 @@
 {% endcomment %}
 
 <footer class="footer">
-  <div class="container footer-menu-wrap">
+  <div class="container-fluid footer-menu-wrap">
       {% for block in section.blocks %}
         <div class="{% if forloop.length >= 5 %}one-fifth column{% elsif forloop.length == 4 %}one-fourth column{% elsif forloop.length == 3 %}one-third column{% elsif forloop.length == 2 %}one-half column{% endif %} medium-down--one-whole" {{ block.shopify_attributes }}>
           {% if block.type == 'logo' %}
@@ -139,6 +139,7 @@
           {% if block.settings.social_icons_footer %}
             {% assign social_icons = true %}
             <div class="footer-social-icons {% if block.type == 'logo' %}text-align--{{block.settings.text_align}}{% endif %}">
+              <p>FIND US ON</p>
               {% include 'social-icons' %}
             </div>
           {% endif %}
@@ -146,31 +147,37 @@
         </div>
         {% if forloop.last and social_icons %}
           <div class="footer-social-icons--mobile sixteen columns">
+            
             {% include 'social-icons' %}
           </div>
         {% endif %}
       {% endfor %}
-
-      <div class="sixteen columns row footer_credits">
-        <p class="credits">
-          &copy; {{ "now" | date: "%Y" }} {{ shop.name | link_to: '/' }}.
-          {{ section.settings.copyright_text }}
-          {% if section.settings.display_designed_by %}
-            {{ 'layout.general.designer_credits_html' | t }}
-          {% endif %}
-          {{ powered_by_link | split: '" ' | join: '&ref=out-of-the-sandbox" ' | split: '">' | join: '&ref=out-of-the-sandbox">' }}
-        </p>
-
-        {% if section.settings.display_payment_methods %}
-          <div class="payment_methods">
-            {% for type in shop.enabled_payment_types %}
-              {{ type | payment_type_svg_tag: class:'payment-icon' }}
-            {% endfor %}
-          </div>
-        {% endif %}
-      </div><!--end footer_credits-->
-    </div>
   </div>
+  <div class="sixteen columns row footer_credits">
+    <div class="three-fourths columns">
+      <p class="credits">
+        {% if section.settings.display_designed_by %}
+          {{ 'layout.general.designer_credits_html' | t }}
+        {% endif %}
+        <!-- {{ powered_by_link | split: '" ' | join: '&ref=out-of-the-sandbox" ' | split: '">' | join: '&ref=out-of-the-sandbox">' }} -->
+        <a>Privacy Policy</a>
+        <a>Terms & Conditions</a>
+      </p>
+    </div>
+    <div class="one-fourth columns">
+      <p class="credits">
+        {{ section.settings.copyright_text }}
+      </p>
+    </div>
+
+    {% if section.settings.display_payment_methods %}
+      <div class="payment_methods">
+        {% for type in shop.enabled_payment_types %}
+          {{ type | payment_type_svg_tag: class:'payment-icon' }}
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div><!--end footer_credits-->
 </footer>
 
 {% schema %}

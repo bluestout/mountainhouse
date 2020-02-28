@@ -1,3 +1,5 @@
+{% comment %}Copy following content and paste to sections/search-template.liquid file{% endcomment %}
+
 {% comment %}
 ** Search results - default view **
 - Template section
@@ -75,7 +77,7 @@
 
   {% comment %}Check to see if sidebar should be enabled{% endcomment %}
   {% if section.blocks.size > 0 %}
-    {% assign sidebar = false %}
+    {% assign sidebar = true %}
   {% else %}
     {% assign sidebar = false %}
   {% endif %}
@@ -107,7 +109,7 @@
 
     {% if settings.search_option == 'everything' or search.results.first.price == blank %}
 
-      <div id="gf-products" class="search-matrix">
+      <div class="search-matrix">
         {% for item in search.results %}
           <div class="product_row clearfix">
             {% assign featured_image = false %}

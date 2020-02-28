@@ -1,0 +1,92 @@
+{% assign id = video_data.id %}
+{% assign wide_display = video_data.settings.wide_display %}
+{% assign aspect_ratio = video_data.settings.aspect_ratio %}
+{% assign autoplay = video_data.settings.autoplay %}
+{% assign autoloop = video_data.settings.autoloop %}
+{% assign video_dark_overlay = video_data.settings.video_dark_overlay %}
+{% assign video = video_data.settings.video %}
+
+{% assign mp4 = video_data.settings.mp4 %}
+{% assign ogv = video_data.settings.ogv %}
+{% assign image = video_data.settings.image %}
+{% assign display_text_over_video = video_data.settings.display_text_over_video %}
+{% assign pretext = video_data.settings.pretext %}
+{% assign title = video_data.settings.title %}
+{% assign subtitle = video_data.settings.subtitle %}
+{% assign text_position = video_data.settings.text_position %}
+{% assign text_align = video_data.settings.text_align %}
+{% assign mobile_text_below_image = video_data.settings.mobile_text_below_image %}
+{% assign caption_background = video_data.settings.caption_background %}
+{% assign caption_background_transparency = video_data.settings.caption_background_transparency %}
+{% assign button1_label = video_data.settings.button1_label %}
+{% assign button1_link = video_data.settings.button1_link %}
+{% assign button1_highlight = video_data.settings.button1_highlight %}
+{% assign button2_label = video_data.settings.button2_label %}
+{% assign button2_link = video_data.settings.button2_link %}
+{% assign button2_highlight = video_data.settings.button2_highlight %}
+{% assign mobile_text_color = video_data.settings.mobile_text_color %}
+
+
+{% comment %}Is the color set to transparent?{% endcomment %}
+{% assign mobile_text_alpha = mobile_text_color | color_extract: 'alpha' %}
+
+{% comment %}Section specific CSS{% endcomment %}
+{% style %}
+  @media only screen and (max-width: 480px) {
+    #shopify-section-{{ id }} .pretext,
+    #shopify-section-{{ id }} .headline,
+    #shopify-section-{{ id }} .subtitle,
+    .block__{{ id }} .pretext,
+    .block__{{ id }} .headline,
+    .block__{{ id }} .subtitle {
+      color: {% if mobile_text_alpha != 0 %}{{ mobile_text_color}}{% endif %};
+    }
+  }
+{% endstyle %}
+
+{% comment %}Turn autoplay true/false into 1/0{% endcomment %}
+{% if autoplay == true %}
+  {% assign numberAutoplay = 1 %}
+  {% assign html5Autoplay = 'autoplay' %}
+{% else %}
+  {% assign numberAutoplay = 0 %}
+  {% assign html5Autoplay = '' %}
+{% endif %}
+
+{% comment %}Turn autoloop true/false into 1/0{% endcomment %}
+{% if autoloop == true %}
+  {% assign numberAutoloop = 1 %}
+  {% assign playlistLoop = video.id %}
+  {% assign html5Autoloop = 'loop="loop"' %}
+{% else %}
+  {% assign numberAutoloop = 0 %}
+  {% assign playlistLoop = '' %}
+  {% assign html5Autoloop = '' %}
+{% endif %}
+
+{% comment %}If a poster image is present and autoplay is false do not play video{% endcomment %}
+{% if image != blank and autoplay == false %}
+  {% assign showPosterImage = true  %}
+  {% assign autoplayVideo = true  %}
+{% else %}
+  {% assign showPosterImage = false  %}
+  {% assign autoplayVideo = false  %}
+{% endif %}
+
+{% comment %}Set appropriate embed URL{% endcomment %}
+{% if video contains 'youtube' %}
+  {% assign useLazyframe = true %}
+  {%- capture iframeURL -%}https://www.youtube.com/embed/{{video.id}}?&autoplay={{numberAutoplay}}&loop={{numberAutoloop}}&playlist={{playlistLoop}}{%- endcapture -%}
+{% elsif video contains 'vimeo' %}
+  {% assign useLazyframe = true %}
+  {%- capture iframeURL -%}https://player.vimeo.com/video/{{video.id}}?autoplay={{numberAutoplay}}&loop={{numberAutoloop}}{%- endcapture -%}
+{% else %}
+  {% assign useLazyframe = false %}
+{% endif %}
+
+
+<div class="js-video-section full-width--{{ wide_display }}">
+    <iframe width="900" height="500" src="{{iframeURL}}" style="border: none;">
+    </iframe>
+    
+</div>
