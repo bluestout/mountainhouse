@@ -143,7 +143,9 @@
     </style>
   </noscript>
 
-  <body class="{% if template == '404' %}error-404{% else %}{{ template | replace: '.', '-' | handle }}{% endif %}"
+  
+{% include 'globo.formbuilder.scripts' %}
+<body class="{% if template == '404' %}error-404{% else %}{{ template | replace: '.', '-' | handle }}{% endif %}"
     data-money-format="{{ shop.money_format }}" data-shop-url="{{ shop.url }}">
 
     {% section 'header' %}
