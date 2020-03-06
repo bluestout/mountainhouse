@@ -146,7 +146,7 @@
     </style>
   </noscript>
 
-  
+
 {% include 'globo.formbuilder.scripts' %}
 <body class="{% if template == '404' %}error-404{% else %}{{ template | replace: '.', '-' | handle }}{% endif %}"
     data-money-format="{{ shop.money_format }}" data-shop-url="{{ shop.url }}">
@@ -255,6 +255,17 @@
       {{ settings.custom_scripts }}
     </script>
   {% include 'globo.filter.action' %}
+
+  {% if template contains 'product' %}
+    <div itemscope itemtype="https://schema.org/Product">
+      {% comment %}
+       <!-- BV SEO Content -->
+      {% endcomment %}
+      {% if product %}
+      <meta itemprop="name" content="{{ product.title }}">
+      {% endif %}
+    </div>
+  {% endif %}
 	</body>
 </html>
 {% endcapture %}

@@ -80,11 +80,14 @@
               <span>{{ variant.sku }}</span>
             </p>
           {% endif %}
+          
+          {% include 'bv-summary' %}
+
           <h1 class="product_name">{{ product.title }}</h1>
           {% if section.settings.enable_shopify_product_badges and settings.enable_shopify_review_comments %}
             <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
           {% endif %}
-      
+
           {% assign product_tags = product.tags | join: ' ' %}
           {% if product_tags contains 'meta-size-chart-' %}
             {% for tag in product.tags %}
@@ -154,7 +157,7 @@
                 </div>
               </div>
             {% endif %}
-          {% endif %} 
+          {% endif %}
           <div class="links">
             <div class="eight columns">
               <a href="../pages/faq"> <img src="{{ 'ico-ico_ask.png' | asset_img_url: 'original'}}"> <div> Ask a question</div></a>
