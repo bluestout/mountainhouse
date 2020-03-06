@@ -157,11 +157,11 @@
           {% endif %} 
           <div class="links">
             <div class="eight columns">
-              <a href="#"> <img src="{{ 'ico-ico_ask.png' | asset_img_url: 'original'}}"> <div>Just add water</div></a>
+              <a href="../pages/faq"> <img src="{{ 'ico-ico_ask.png' | asset_img_url: 'original'}}"> <div> Ask a question</div></a>
             </div>
-            <div class="eight columns">
-              <a href="#"> <img src="{{ 'ico-ico_wish.png' | asset_img_url: 'original'}}"> <div>Just add water</div></a>
-            </div>
+            <!-- <div class="eight columns">
+              <a href="#"> <img src="{{ 'ico-ico_wish.png' | asset_img_url: 'original'}}"> <div> Add to wish list </div></a>
+            </div> -->
           </div>
           {% if section.settings.review_position == "next_to_gallery" %}
             <div class="shopify-reviews reviewsVisibility--{{settings.enable_shopify_review_comments}}">
@@ -255,6 +255,9 @@
 {% endif %}
 {% include 'icon-bar' %}
 {% include 'product-ingredient' %}
+{% include 'image-text-product', type : "product" %}
+{% include 'icon-bar' %}
+{% include 'bv-ratings-reviews' %}
 {% schema %}
 
 {
@@ -551,6 +554,50 @@
       "type": "color",
       "id": "bg_color",
       "label": "Background color"
+    },
+    {
+      "type": "header",
+      "content": "Image with text"
+    },
+    {
+      "type": "checkbox",
+      "id": "frontpage_grid_style",
+      "label": "Wide display"
+    },
+    {
+      "type": "select",
+      "id": "frontpage_text_align",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "frontpage_image_position",
+      "label": "First image position",
+      "info": "Subsequent images will appear staggered",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
     }
   ],
   "blocks": [
@@ -662,6 +709,91 @@
       "type": "filter_by_vendor",
       "name": "Vendor list",
       "limit": 1
+    },
+    {
+      "type": "image",
+      "name": "Image with text",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "1024 x 1024px recommended"
+        },
+        {
+          "type": "select",
+          "id": "image_crop",
+          "label": "Image cropping",
+          "default": "none",
+          "info": "Only applied when text area is taller than image.",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "none",
+              "label": "None"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Your headline"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Promotion description appears here.</p>"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "View all"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_donation_button",
+          "label": "Donation"
+        },
+        {
+          "type": "text",
+          "id": "donation_count",
+          "label": "Donation Count",
+          "default": "1234"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Colors"
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "label": "Background"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text"
+        }
+      ]
     }
   ],
   "default": {

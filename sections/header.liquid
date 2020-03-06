@@ -116,8 +116,16 @@
               <a r2 href="{{ routes.search_url }}" class="icon-search2 dropdown_link" title="{{ 'general.search.title' | t | escape }}" data-dropdown-rel="search">
             <img src="https://cdn.shopify.com/s/files/1/0085/1171/7440/t/3/assets/search.png?v=1580846172" />
             </a>
-          
-            </div>
+            <ul class="search_menu">
+              <li>
+                <form action="/search" method="get" role="search" class="search_bar" style="direction: ltr;">
+                  <div class="inner_div">
+                    <input type="search" name="q" id="Search-header" value="" placeholder="Search" class="lsx-search-field lsx-done tt-input" autocomplete="off" spellcheck="false" dir="auto">
+                  </div>
+               </form>
+            </li>
+          </ul>
+          </div>
           <a href="{{ routes.cart_url }}" class="{% if section.settings.cart_icon == "cart" %}icon-cart{% else %}{% endif %} mini_cart dropdown_link" data-no-instant>
             <img src="https://cdn.shopify.com/s/files/1/0085/1171/7440/t/3/assets/cart.png?v=1580846183" />
             <span class="cart_count">{{ cart.item_count }}</span>
@@ -229,7 +237,7 @@
                     <span class="right">
                       <span class="money">{{ cart.total_price | money }}</span>
                     </span>
-                    <span>{{ 'layout.general.subtotal' | t }}</span>
+                    <span>ORDER TOTAL</span>
                   </li>
                   {% if settings.display_savings and total_saving > 0 or settings.display_savings and cart.total_discount > 0 %}
                   <li class="cart_savings sale js-cart_savings">
@@ -317,9 +325,9 @@
             </ul>
           </div>
         {% endif %}
-
+<!-- 
         {% include 'sub-menu' with section.settings.main_linklist %}
-        {% include 'sub-menu' with section.settings.main_linklist2 %}
+        {% include 'sub-menu' with section.settings.main_linklist2 %} -->
       </div>
     </div>
   </div>

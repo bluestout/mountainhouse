@@ -8,70 +8,181 @@
     {% assign featured_image = product.featured_image.src %}
   {% endif %}
 
-            <div class="spf-col-xl-4 spf-col-lg-4 spf-col-md-6 spf-col-sm-6 spf-col-6">
-        <div class="spf-product-card spf-product-card__template-1{% unless product.available %} spf-soldout{% endunless %}">
-          <div class="spf-product-card__inner">
-            {% unless product.available %}
-                        <span class="spf-product__label spf-product__label-soldout">Sold out</span>
-                                    {% elsif product.compare_at_price > product.price %}
-            <span class="spf-product__label spf-product__label-sale">
-                            -{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}%                          </span>
-                        {% endunless %}
-                          <a title="Quick view" href="javascript:;" onclick="globofilter.quickView('{{product.url}}')" class="open-quick-view"><span>Quick view</span></a>
-                        {% assign images_count = product.images | size %}
-            <a class="spf-product-card__image-wrapper{% if images_count > 1 %} hover-effect{% endif %}" href="{{product.url}}" style="padding-top:100%; padding-top:100%;">
-              {% if images_count > 0 %}
-              {% for image in product.images %}
-              <img data-variants="{{image.variant_ids | join: ','}}" class="spf-product-card__image spf-product-card__image-{% if product.featured_image.id == image.id %}main{% elsif forloop.index == 2 %}secondary{% else %}hidden{% endif %}" src="{{image.src | img_url: '500x500' }}" alt="{{image.alt | escape}}">
-              {% endfor %}
-              {% else %}
-              <img data-variants="" class="spf-product-card__image spf-product-card__image-main" src="https://cdn.shopify.com/s/images/themes/product-1.png" alt="{{product.title}}">
-              {% endif %}
-            </a>
-            <form class="spf-product__form" action="/cart/add" method="post">
-              <select name="id" class="spf-product__variants">
-                {% for variant in product.variants %}
-                <option data-price="{{variant.price}}" data-compare_at_price="{{variant.compare_at_price}}" data-available="{{variant.available}}" data-image="{% if variant.image.src %}{{variant.image.src | img_url: '500x500' }}{% endif %}" {% if variant.id == product.first_available_variant.id %} selected="selected" {% endif %} value="{{ variant.id }}">{{ variant.title }}</option>
-                {% endfor %}
-              </select>
-                            <button {% unless product.available %}disabled{% endunless %} type="submit" class="spf-product__form-btn-addtocart" data-available="Add To Cart" data-soldout="Sold out" data-unavailable="Unavailable"><span>{% if product.available %}Add To Cart{% else %}Sold out{% endif %}</span></button>
-                          </form>
-          </div>
+  
+    {% assign collection_handles                = product.collections | map: 'handle' %}
+    {% assign shop_currency                     = '{% endraw %}{{shop.currency}}{% raw %}' %}
+    {% assign shop_name                         = '{% endraw %}{{shop.name}}{% raw %}' %}
 
-          <div class="spf-product__info">
-            <div class="h4 spf-product-card__title"><a href="{{product.url}}">{{product.title}}</a></div>
-                        {% if product.vendor %}<div class="spf-product-card__vendor"><a href="/collections/vendors?q={{product.vendor}}">{{product.vendor}}</a></div>{% endif %}
-                                                      <div class="product-rating"><span class="shopify-product-reviews-badge" data-id="{{product.id}}"></span></div>
-                                                              {% for option in product.options %}
-            {% assign option_index = 'option' | append: forloop.index %}
-            {% assign option_name  = option.name | downcase %}
-            {% if swatches[option_name] or swatch_options contains option_name %}
-            <div class="spf-product__swatchs round">
-              {% for value in option.values %}
-                {% assign option_value  = value | downcase %}
-                <span class="spf-product__swatch{% if product.first_available_variant[option_index] == value %} is-selected{% endif %}" title="{{value}}">
-                  <span class="spf-product__swatch-inner">
-                    {% if swatches[option_name] and swatches[option_name][option_value] %}
-                      {% if swatches[option_name][option_value].mode == 1 %}
-                        <span class="spf-product__swatch-color" style="background-color: {{ swatches[option_name][option_value].color_1 }}"></span>
-                      {% elsif swatches[option_name][option_value].mode == 2 %}
-                        <span class="spf-product__swatch-color" style="background-color: {{ swatches[option_name][option_value].color_1 }}"></span>
-                        <span class="spf-product__swatch-color" style="border-right-color: {{ swatches[option_name][option_value].color_2 }}"></span>
-                      {% elsif swatches[option_name][option_value].mode == 3 %}
-                        <span class="spf-product__swatch-image" style="background-image: url('{{ swatches[option_name][option_value].image }}')"></span>
+    {% assign collection_sidebar                = {% endraw %}{{settings.collection_sidebar}}{% raw %} %}
+    {% assign image_loading_style               = '{% endraw %}{{settings.image_loading_style}}{% raw %}' %}
+
+    {% assign collection_secondary_image        = {% endraw %}{{settings.collection_secondary_image}}{% raw %} %}
+    {% assign thumbnail_hover_enabled           = {% endraw %}{{settings.thumbnail_hover_enabled}}{% raw %} %}
+    {% assign quick_shop_enabled                = {% endraw %}{{settings.quick_shop_enabled}}{% raw %} %}
+    {% assign sale_banner_enabled               = {% endraw %}{{settings.sale_banner_enabled}}{% raw %} %}
+    {% assign enable_shopify_collection_badges  = {% endraw %}{{settings.enable_shopify_collection_badges}}{% raw %} %}
+    {% assign display_vendor_collection         = {% endraw %}{{settings.display_vendor_collection}}{% raw %} %}
+    {% assign description_words                 = {% endraw %}{{settings.description_words}}{% raw %} %}
+    {% assign free_price_text                   = '{% endraw %}{{settings.free_price_text}}{% raw %}' %}
+    {% assign product_form_style                = '{% endraw %}{{settings.product_form_style}}{% raw %}' %}
+    {% assign limit_quantity                    = {% endraw %}{{settings.limit_quantity}}{% raw %} %}
+    {% assign display_inventory_left            = {% endraw %}{{settings.display_inventory_left}}{% raw %} %}
+    {% assign cart_action                       = '{% endraw %}{{settings.cart_action}}{% raw %}' %}
+    {% assign inventory_threshold               = '{% endraw %}{{settings.inventory_threshold}}{% raw %}' %}
+    {% assign collection_swatches               = {% endraw %}{{settings.collection_swatches}}{% raw %} %}
+
+    {% assign sale                        = '{% endraw %}{{ 'collections.general.sale' | t }}{% raw %}' %}
+    {% assign sold_out                    = '{% endraw %}{{ 'products.product.sold_out' | t }}{% raw %}' %}
+    {% assign new                         = '{% endraw %}{{ 'collections.general.new' | t }}{% raw %}' %}
+    {% assign from                        = '{% endraw %}{{ 'products.general.from' | t }}{% raw %}' %}
+    {% assign coming_soon                 = '{% endraw %}{{ 'collections.general.coming_soon' | t }}{% raw %}' %}
+    {% assign pre_order                   = '{% endraw %}{{ 'collections.general.pre_order' | t }}{% raw %}' %}
+    {% assign quick_shop                  = '{% endraw %}{{ 'collections.general.quick_shop' | t }}{% raw %}' %}
+    {% assign view_product_details_html   = '{% endraw %}{{ 'collections.general.view_product_details_html' | t }}{% raw %}' %}
+
+    {% assign items_left_count_one        = '{% endraw %}{{ 'products.product.items_left_count.one' | t }}{% raw %}' %}
+    {% assign items_left_count_other      = '{% endraw %}{{ 'products.product.items_left_count.other' | t }}{% raw %}' %}
+    {% assign quantity                    = '{% endraw %}{{ 'products.product.quantity' | t }}{% raw %}' %}
+    {% assign add_to_cart                 = '{% endraw %}{{ 'products.product.add_to_cart' | t }}{% raw %}' %}
+
+
+
+    <div class="spf-col-xl-4 spf-col-lg-4 spf-col-md-6 spf-col-sm-6 spf-col-6 thumbnail" itemprop="itemListElement" itemscope itemtype="http://schema.org/Product">
+      <div class="product-wrap">
+        <div class="relative product_image swap-{{ collection_secondary_image }}">
+          <a href="{{ product.url }}" itemprop="url">
+            <div class="image__container">
+              <div class="image-element__wrap">
+                <img alt="{{ product.title | escape }}" src="{{ featured_image | img_url: '500x500' }}" class="lazyloaded transition--blur-up"/>
+              </div>
+            </div>
+            {% if collection_secondary_image %}
+             <div class="image__container">
+               <img src="{% if images_count > 1 %}{{ product.images[1].src | img_url: 'grande' }} ?>{% else %}{{ featured_image | img_url: 'grande' }}{% endif %}" class="secondary"/>
+             </div>
+           {% endif %}
+          </a>
+
+          <div class="thumbnail-desc">
+            <a href="{{ product.url }}" itemprop="url" class="hidden-product-link">{{ product.title }}</a>
+            <div class="info">
+              {% if thumbnail_hover_enabled %}
+                <div class="product-details">
+                  <span class="title" itemprop="name">{{ product.title }}</span>
+                  {% if enable_shopify_collection_badges %}<span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>{% endif %}
+                  {% if display_vendor_collection %}<span itemprop="brand" class="brand">{{ product.vendor }}</span>{% endif %}
+                  {% unless collection_handles contains 'coming-soon' %}
+                    <span class="price {% if product.compare_at_price > product.price %}sale{% endif %}" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                      <meta itemprop="price" content="{{ product.price | money_without_currency }}" />
+                      <meta itemprop="priceCurrency" content="{% endraw %}{{ shop_currency }}{% raw %}" />
+                      <meta itemprop="seller" content="{% endraw %}{{ shop_name | escape }}{% raw %}" />
+                      <meta itemprop="availability" content="{% if product.available %}in_stock{% else %}out_of_stock{% endif %}" />
+                      <meta itemprop="itemCondition" content="New" />
+                      {% if product.available %}
+                        {% if product.price_varies and product.price_min > 0 %}
+                          <small><em>{{ from }}</em></small>
+                        {% endif %}
+                        {% if product.price_min > 0 %}
+                          <span>{{ product.price_min | money }}</span>
+                        {% else %}
+                          {{ free_price_text }}                  {% endif %}
+                      {% else %}
+                        <span class="sold_out">{{ sold_out }}</span>
                       {% endif %}
-                    {% elsif option_name contains 'colo' %}
-                      <span class="spf-product__swatch-image" style="background-color: {{ option_value | replace:"'", "\'" | escape_once }}; background-image: url('{{ option_value | handle | append: '.png' | asset_img_url: '50x' | prepend: 'https:' | split: '?' | first }}')"></span>
-                    {% else %}
-                      <span class="spf-product__swatch-text">{{value}}</span>
-                    {% endif %}
-                  </span>
-                </span>
+                      {% if product.compare_at_price > product.price %}
+                        <span class="was_price">{{ product.compare_at_price | money }}</span>
+                      {% endif %}
+                    </span>
+                  {% endunless %}
+                </div>
+              {% endif %}
+              {% if quick_shop_enabled %}
+                {% capture image_paths_alts %}{% for image in product.images %}{{ image.src }}^{{ image.alt | escape }}^{{ image.id }}{% unless forloop.last %}~{% endunless %}{% endfor %}{% endcapture %}
+                {% unless collection_handles contains 'coming-soon' %}
+                  {% assign variant = product.first_available_variant %}
+                  <div class="product-control">
+                    <a href="{{ product.url }}" class="discover action_button">Discover</a>
+                    <form method="post" action="/cart/add" id="product_form_{{ product.id }}" accept-charset="UTF-8" class="shopify-product-form" enctype="multipart/form-data">
+                      <input type="hidden" name="form_type" value="product">
+                      <input type="hidden" name="utf8" value="✓">
+                      <input type="hidden" name="id" value="{{variant.id}}">
+                      <input type="hidden" name="id" value="{{ variant.id }}" />
+                      
+                      {% capture add_to_cart_label %}{% if collection_handles contains 'pre-order' %}{{ pre_order }}{% else %}QUICK ADD{% endif %}{% endcapture %}
+                      <button type="submit" name="add" class="action_button add_to_cart ajax-submit" data-label={{ add_to_cart_label | json }}>
+                        <span class="text">{{ add_to_cart_label }}</span>
+                        <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32" class="checkmark">
+                          <path fill="none" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
+                        </svg>
+                      </button>
+                    </form>
+                  </div>
+                {% endunless %}
+              {% endif %}
+            </div>
+          </div>
+          <div class="banner_holder">
+            {% if sale_banner_enabled and product.compare_at_price > product.price %}<div class="sale_banner thumbnail_banner">{{ sale }}</div>{% endif %}
+            {% if collection_handles contains 'new' %}<div class="new_banner thumbnail_banner">{{ new }}</div>{% endif %}
+            {% if collection_handles contains 'coming-soon' %}<div class="new_banner thumbnail_banner">{{ coming_soon }}</div>{% endif %}
+            {% if collection_handles contains 'pre-order' %}<div class="new_banner thumbnail_banner">{{ pre_order }}</div>{% endif %}
+          </div>
+        </div>
+        <a class="product-info__caption {% if thumbnail_hover_enabled %}hidden{% endif %}" href="{{ product.url }}" itemprop="url">
+          <div class="product-details">
+            <span class="title" itemprop="name">{{ product.title }}</span>
+            {% if enable_shopify_collection_badges %}<span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>{% endif %}
+            {% if display_vendor_collection %}<span itemprop="brand" class="brand">{{ product.vendor }}</span>{% endif %}
+            {% unless collection_handles contains 'coming-soon' %}
+              <span class="price {% if product.compare_at_price > product.price %}sale{% endif %}" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                <meta itemprop="price" content="{{ product.price | money_without_currency }}" />
+                <meta itemprop="priceCurrency" content="{% endraw %}{{ shop_currency }}{% raw %}" />
+                <meta itemprop="seller" content="{% endraw %}{{ shop_name | escape }}{% raw %}" />
+                <meta itemprop="availability" content="{% if product.available %}in_stock{% else %}out_of_stock{% endif %}" />
+                <meta itemprop="itemCondition" content="New" />
+                {% if product.available %}
+                  {% if product.price_varies and product.price_min > 0 %}
+                    <small><em>{{ from }}</em></small>
+                  {% endif %}
+                  {% if product.price_min > 0 %}
+                    <span>{{ product.price_min | money }}</span>
+                  {% else %}
+                    {{ free_price_text }}                  {% endif %}
+                {% else %}
+                  <span class="sold_out">{{ sold_out }}</span>
+                {% endif %}
+                {% if product.compare_at_price > product.price %}
+                  <span class="was_price">{{ product.compare_at_price | money }}</span>
+                {% endif %}
+                <em>IVA inc.</em>
+              </span>
+            {% endunless %}
+          </div>
+        </a>
+      </div>
+      {% if collection_swatches %}
+        {% assign file_extension = 'png' %}
+        {% for option in product.options %}
+          {% assign downcased_option = option.name | downcase %}
+          {% if downcased_option contains 'color' or downcased_option contains 'colour' %}
+            {% assign option_index = forloop.index0 %}
+            {% assign optionIndex = "option" | append: forloop.index %}
+            {% assign values = '' %}
+            <div class="collection_swatches">
+              {% for variant in product.variants %}
+                {% assign value = variant[optionIndex] %}
+                {% unless values contains value %}
+                  {% assign values = values | join: ',' %}
+                  {% assign values = values | append: ',' | append: value %}
+                  {% assign values = values | split: ',' %}
+                  <a href="{{ variant.url | within: collection }}" class="swatch" data-swatch-name="meta-{{ downcased_option }}_{{ value | replace: ' ', '_' | downcase }}">
+                    <span data-image="{% if variant.image.src %}{{ variant.image.src | img_url: '500x' }}{% else %}{{ featured_image | img_url: '500x' }}{% endif %}" style="background-image: url({{ value | handle | append: '.' | append: file_extension | asset_img_url: '50x' | prepend: 'https:' }}); background-color: {{ value | split: ' ' | last | handle }};"></span>
+                  </a>
+                {% endunless %}
               {% endfor %}
             </div>
-            {% endif %}
-            {% endfor %}
-                      </div>
-        </div>
-      </div>
-      {% endraw %}
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    </div>
+  {% endraw %}

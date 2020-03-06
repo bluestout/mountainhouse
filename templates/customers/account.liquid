@@ -3,7 +3,7 @@
 
   <header class="account-header clearfix">
     <div class="sixteen columns account-header-title">
-      <h1 class="text-align--center">{{ 'customer.account.details' | t }}</h1>
+      <h1 class="text-align--center">MY ACCOUNT</h1>
     </div>
     <!-- <div class="eight columns account-header-logout">
       <span><a href="{{ routes.account_logout_url }}" id="customer_logout_link">{{ 'layout.customer.log_out' | t }}</a></span>
@@ -19,11 +19,15 @@
       <a href="/account/order">Order History</a>
       <a href="/account/addresses">Account ditails</a>
     </aside>
-    <select class="account-options">
-      <option value="" selected>Dashboard</option>
-      <option value="order">Order History</option>
-      <option value="addresses">Account ditails</option>
-    </select>
+    <div class="account-options">
+      <select>
+        <option></option>
+        <option value="" selected>Dashboard</option>
+        <option value="order">Order History</option>
+        <option value="addresses">Account ditails</option>
+      </select>
+    </div>
+    
     <main class="eleven columns account-main">
       <div id="customer_orders">
         <b>Order History</b>

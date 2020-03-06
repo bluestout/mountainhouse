@@ -4,6 +4,12 @@
 - Uses blocks
 {% endcomment %}
 
+{% style %}
+  .add_to_cart{
+    background-color:{{ section.settings.bg_color }};
+    border-color:{{ section.settings.bg_color }};
+  }
+{% endstyle %}
 {% if section.settings.featured_collection_image %}
   {% include 'collection-header-brand' %}
 {% endif %}
@@ -19,7 +25,7 @@
   <img class="bg-center" src="{{ 'collection-bg-2.png' | asset_url }}">
   <img class="bg-right" src="{{ 'collection-bg-3.png' | asset_url }}">
   <div class="container bg-grey">
-    <h1 class="text-align--center title">{{collection.title}}</h1>
+    <h1 class="text-align--center title">{{section.settings.title}}</h1>
     {% paginate collection.products by section.settings.pagination_limit %}
     {% if section.settings.collection_breadcrumb %}
       <div class="clearfix breadcrumb-collection">
@@ -94,7 +100,7 @@
       <div class="section clearfix">
         {% if section.settings.display_collection_title and section.settings.featured_collection_image == false %}
           <div class="eight columns">
-            <h1>{{ collection.title }}</h1>
+            <h1>{{ section.settings.title }}</h1>
           </div>
         {% endif %}
         <div class="columns section_select medium-down--one-whole">
@@ -229,6 +235,11 @@
       "label": "Show collection title"
     },
     {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
       "type": "select",
       "id": "collection_title_position",
       "label": "Collection title position",
@@ -246,11 +257,6 @@
           "label": "Right"
         }
       ]
-    },
-    {
-      "type": "image_picker",
-      "id": "title_icon",
-      "label": "Title Icon"
     },
     {
       "type": "color",

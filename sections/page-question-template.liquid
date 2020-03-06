@@ -91,9 +91,9 @@
       </h1>
       <div class="feature_divider"></div>
     {% endunless %}
-    <div>
+    <!-- <div>
       {% include 'page-multi-column', content: page.content %}
-    </div>
+    </div> -->
   </div>
   <div class="sixteen columns main-content">
     {% if section.blocks.size > 0 %}
@@ -541,18 +541,6 @@
               "label": "None"
             }
           ]
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Heading",
-          "default": "Your headline"
-        },
-        {
-          "type": "richtext",
-          "id": "text",
-          "label": "Text",
-          "default": "<p>Promotion description appears here.</p>"
         },
         {
           "type": "text",

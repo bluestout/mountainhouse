@@ -30,17 +30,17 @@
             </div>
             <div class="featured-link--half block--{{ block.id }}">
               
-              <div class="info text-align--left">
+              <div class="info text-align--left" style="margin-top: 50px;">
                 {% if type == 'product' %}
                   <div class="title-icon">
                     <img class="left" src="{{ 'Group.png' | asset_img_url: 'original' }}" style="width: 35px;">
                   </div>
                 {% endif %}
                 <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="collection_title">
-                  {{ block.settings.title }}
+                  {{ page.title }}
                 </a>
-                {% if block.settings.text != blank %}
-                  <div class="description">{{ block.settings.text }}</div>
+                {% if page.content != blank %}
+                  <div class="description">{{ page.content }}</div>
                 {% endif %}
                 {% if block.settings.button_label != blank %}
                   <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="button {% if block.settings.is_donation_button %}donation_button_red{% endif %}">

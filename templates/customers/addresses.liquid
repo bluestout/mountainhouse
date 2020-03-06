@@ -16,11 +16,14 @@
     <a href="/account/order">Order History</a>
     <a href="/account/addresses" class="active">Account ditails</a>
   </aside>
-  <select class="account-options">
-    <option value="">Dashboard</option>
-    <option value="order">Order History</option>
-    <option value="addresses" selected>Account ditails</option>
-  </select>
+  <div class="account-options">
+    <select>
+      <option></option>
+      <option value="">Dashboard</option>
+      <option value="order">Order History</option>
+      <option value="addresses" selected>Account ditails</option>
+    </select>
+  </div>
   <main class="eleven columns account-main">
     <div id="add_address" class="customer_address edit_address" style="display:none;">
       {% form 'customer_address', customer.new_address %}

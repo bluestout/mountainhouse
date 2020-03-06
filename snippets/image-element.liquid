@@ -79,7 +79,7 @@ max_height: <number>
   </div>
 {% else%}
   {% if back_to_basics %}
-    <div class="image-element__wrap" style="{{ background_color }}{{ crop_to_aspect_ratio }};">
+    <div class="image-element__wrap" style="{{ background_color }}{{ crop_to_aspect_ratio }};" mobile_img_data="{{ mobile_img | img_url: 'original'}}">
         <img  alt="{{ alt | escape }}" src="{{ image | img_url: '2000x' }}"
               {% if inline_style %}
                 style="{{ inline_style }}"
@@ -91,7 +91,7 @@ max_height: <number>
     </div>
   {% else %}
     {% comment %}Build image element{% endcomment %}
-    <div class="image-element__wrap" style="{{ background_color }}{{ crop_to_aspect_ratio }} {% unless stretch_width == true or object_fit %}max-width: {{ image.width }}px;{% endunless %}">
+    <div class="image-element__wrap" mobile_img_data="{{ mobile_img | img_url: 'original'}} style="{{ background_color }}{{ crop_to_aspect_ratio }} {% unless stretch_width == true or object_fit %}max-width: {{ image.width }}px;{% endunless %}">
     <img  alt="{{ alt | escape }}"
           {% if low_quality_image %}
             src="{{ low_quality_image }}"

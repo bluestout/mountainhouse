@@ -7,7 +7,7 @@
         {% include "product-info" %}
       {% endif %}
       {% if settings.quick_shop_enabled and settings.quick_shop_style == 'popup' %}
-        {% include 'quick-shop-cart-button' %}
+        {% include 'product-control-button' , discover_title : 'LEARN MORE'%}
       {% endif %}
     </div>
   </div>

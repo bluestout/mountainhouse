@@ -23,8 +23,8 @@
     {% if section.settings.red_caption %}
       <div class="right-caption"></div>
     {% endif %}
-    {% if section.settings.title_icon != blank %}
-      <img src="{{ section.settings.title_icon | img_url: 'original' }}" class="img position--{{section.settings.collection_title_position}}">
+    {% if collection.metafields["global"]["collection-icon"] != blank %}
+      <img src="{{ collection.metafields["global"]["collection-icon"] }}" class="img position--{{section.settings.collection_title_position}}">
     {% endif%}
       <h2 class="headline text-align--{{section.settings.collection_title_position}}" style="color: {{section.settings.cap_title_color}};">{{ collection.title }}</h2>
       <p class="text-align--{{section.settings.collection_title_position}}">{{ collection.description }}</p>

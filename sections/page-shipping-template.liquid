@@ -45,7 +45,7 @@
           </a>
         {% endif %}
       {% endunless %}
-      {% unless section.settings.pretext == blank and section.settings.title == blank and section.settings.subtitle == blank and section.settings.button1 == blank and section.settings.button2 == blank %}
+      {% unless section.settings.pretext == blank and page.title == blank and page.content == blank and section.settings.button1 == blank and section.settings.button2 == blank %}
         <div class="position-{{ section.settings.text_position }} caption js-caption">
           <div class="caption-content caption-background-{{ section.settings.caption_background }} caption-transparency-{{ section.settings.caption_background_transparency }} align-{{ section.settings.text_align }}">
             {% if section.settings.pretext != blank %}
@@ -53,14 +53,14 @@
                 {{ section.settings.pretext }}
               </div>
             {% endif %}
-            {% if section.settings.title != blank %}
+            {% if page.title != blank %}
               <h1 class="headline">
-                {{ section.settings.title }}
+                {{ page.title }}
               </h1>
             {% endif %}
-            {% if section.settings.subtitle != blank %}
+            {% if page.content != blank %}
               <div class="subtitle">
-                {{ section.settings.subtitle }}
+                {{page.content }}
               </div>
             {% endif %}
             {% if section.settings.button1 != blank %}
@@ -83,17 +83,6 @@
   <a name="pagecontent" id="pagecontent"></a>
   
   <div class="container main content">
-    <div class="sixteen columns page clearfix">
-      {% unless section.settings.show_banner %}
-        <h1>
-          {{ page.title }}
-        </h1>
-        <div class="feature_divider"></div>
-      {% endunless %}
-      <div>
-        {% include 'page-multi-column', content: page.content %}
-      </div>
-    </div>
     <div class="sixteen columns main-content">
       {% if section.blocks.size > 0 %}
         {% if section.settings.feature_tab == true%}
@@ -263,16 +252,6 @@
         "label": "Preheading"
       },
       {
-        "type": "text",
-        "id": "title",
-        "label": "Heading"
-      },
-      {
-        "type": "richtext",
-        "id": "subtitle",
-        "label": "Subheading"
-      },
-      {
         "type": "checkbox",
         "id": "caption_background",
         "label": "Display solid text background",
@@ -424,8 +403,6 @@
     ],
     "default": {
       "settings": {
-        "title": "Page FAQ Template",
-        "subtitle": "<p>Create an amazing FAQ page with a full-width banner</p>",
         "text_position": "center",
         "text_align": "center"
       },

@@ -3,7 +3,7 @@
 - Draggable section
 - Uses blocks
 {% endcomment %}
-{% include 'image-text' %}
+{% include 'image-text', title:page.title %}
 {{ page.content }}
 <p class="bottom-link">Or, are you a marketer? <a href="#">Request a proposal</a></p>
 {% schema %}
@@ -234,22 +234,6 @@
         }
       ]
     }
-  ],
-  "presets": [{
-    "name": "Image with text",
-    "category": "Image",
-    "settings": {
-      "featured_links_per_row": "1",
-      "frontpage_text_align": "left"
-    },
-    "blocks": [
-      {
-        "type": "image"
-      },
-      {
-        "type": "image"
-      }
-    ]
-  }]
+  ]
 }
 {% endschema %}

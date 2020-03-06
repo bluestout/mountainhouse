@@ -19,9 +19,9 @@
               </a>
             {% endif %}
           </h2>
-          {% if block.settings.instagram_title != blank %}
+          <!-- {% if block.settings.instagram_title != blank %}
             <div class="feature_divider"></div>
-          {% endif %}
+          {% endif %} -->
 
           {% if block.settings.instagram_client_id != blank %}
             <div id="instafeed" class="js-instafeed" data-client-id="{{ block.settings.instagram_client_id | strip }}" data-count="{{ block.settings.instagram_count }}" data-column="{% if blockLength > 1 %}eight{% else %}four{% endif %}"></div>

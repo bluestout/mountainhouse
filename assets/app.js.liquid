@@ -631,7 +631,22 @@ $(function() {
     }
   }
 
-  $('body').on('change', '[data-cart-quantity-input]', function() {
+  $('body').on('click', '[data-cart-quantity-button]', function() {
+    var cartItem = {
+      lineID: $(this).parents('[data-cart-item]').data('line-id'),
+      variantID: $(this).parents('[data-cart-item]').data('variant-id'),
+      quantity: $(this).parent().find(".quantity").val(),
+      parentCartForm: $(this).parents('[data-cart-form]'),
+      totalDiscount: $(this).parents('[data-cart-form]').data('total-discount'),
+      $element : $(this).parents('[data-cart-item]')
+    }
+    console.log(cartItem)
+    // Disable button after click to prevent multiple clicks
+    $(this).parents('.product-quantity-box').find('.js-change-quantity').addClass('is-disabled');
+    updateCartItemQuantity(cartItem);
+  });
+
+  $('body').on('change', '#shopify-section-cart-template [data-cart-quantity-input]', function() {
     var cartItem = {
       lineID: $(this).parents('[data-cart-item]').data('line-id'),
       variantID: $(this).parents('[data-cart-item]').data('variant-id'),
@@ -640,11 +655,12 @@ $(function() {
       totalDiscount: $(this).parents('[data-cart-form]').data('total-discount'),
       $element : $(this).parents('[data-cart-item]')
     }
+    console.log(cartItem)
     // Disable button after click to prevent multiple clicks
     $(this).parents('.product-quantity-box').find('.js-change-quantity').addClass('is-disabled');
     updateCartItemQuantity(cartItem);
   });
-
+  
   $('body').on('click', '[data-remove-item]', function(e) {
     e.preventDefault();
     var cartItem = {
@@ -1202,6 +1218,7 @@ $(document).ready(function(){
 });
 
 $(document).ready(function(){
+  
   $("#shopify-section-product-template .show_btn").click(function(){
     $('#shopify-section-product-template .ingredient_caption .desc-content .ingredient_desc').slideToggle('slow');
     $('#shopify-section-product-template .ingredient_caption .desc-content table tbody tr:not(.sub_head)').slideToggle('slow');
@@ -1259,11 +1276,21 @@ $(document).ready(function(){
       $(this).addClass("active");
     }
   });
-  $(".dropdown_link").click(function(){
+  $(".index-sections").click(function(){
+    if($(".mega-menu").hasClass("show")){
+      $(".mega-menu").removeClass("show")
+    }
+  })
+  $(".dropdown_link").click(function(e){
+    e.preventDefault()
     var cls = "[data-dropdown='"+$(this).attr("data-dropdown-rel")+"']";
-    $(".mega-menu-container .mega-menu").removeClass("show");
+    $(".mega-menu").removeClass("show");
     $(cls).addClass("show")
   });
+  $(".remove_btn").click(function(){
+    $(this).parent().parent().removeClass("show")
+  })
+  
 })
 
 $(document).ready(function(){
@@ -1277,16 +1304,125 @@ $(document).ready(function(){
   })
   var height = $(".captionOverlay--true").height();
   $(".page_banner").height(height+200)
-
-  $(".product-quantity-box .control-box .ss-icon").click(function(){
-    
-    if($(this).attr("data-func") == 'plus'){
-      var quantity = parseInt($(this).parent().parent().find(".quantity").val())+1;
-      console.log(quantity)
-      $(this).parent().parent().find(".quantity").val(quantity)
-    }else{
-      var quantity = parseInt($(this).parent().parent().find(".quantity").val())-1;
-      $(this).parent().parent().find(".quantity").val(quantity)
+  $('.shopify-section collection-template-section .caption.captionOverlay--true').each(function(){
+    if($(this).outerWidth() < 480){
+      var txt = $(this).find("p").text();
+      if(txt.length > 100){
+        var str = txt.split(".");
+        if(str[1] != ""){
+          var button = '<a class="read_more">Read more</a>'
+          $(this).find("p").text(str[0]);
+          $(this).append(button);
+        }
+        
+      }
+      console.log(txt)
     }
+    $(".read_more").click(function(){
+      $('.caption.captionOverlay--true').find("p").hide();
+      $('.caption.captionOverlay--true').find("p").text(txt);
+      $('.caption.captionOverlay--true').find("p").fadeIn();
+      $(this).fadeOut()
+    })
+    
+  });
+  if(window.innerWidth < 480){
+    $("#shopify-section-product-template .show_btn").trigger("click");
+  }
+  setTimeout(function(){ 
+    
+    if($('a[href="display_content"]').outerWidth() < 480) {
+      $('a[href="display_content"]').addClass("plus")
+    }else{
+      $('a[href="display_content"]').addClass("minus")
+    }
+
+    
+    $('a[href="display_content"]').click(function(e){
+      e.preventDefault();
+      $(".globo-formbuilder .content").slideToggle();
+      
+      if($(this).hasClass("minus")){
+        $(this).addClass("plus");
+        $(this).removeClass('minus');
+      }else{
+        $(this).addClass("minus");
+        $(this).removeClass('plus');
+      }
+    })
+  }, 10000);
+
+  $(".mini_cart").click(function(e){
+    window.location = $(this).attr("href");
+  })
+  $(".ui-menu.ui-widget-content.ui-autocomplete").mouseenter(function(){
+    $(".search_link .search_menu").addClass("show");
   })
 })
+
+$(document).ready(function(){
+  var x, i, j, selElmnt, a, b, c;
+  /*look for any elements with the class "custom-select":*/
+  x = document.getElementsByClassName("account-options");
+  for (i = 0; i < x.length; i++) {
+    selElmnt = x[i].getElementsByTagName("select")[0];
+    /*for each element, create a new DIV that will act as the selected item:*/
+    a = document.createElement("DIV");
+    a.setAttribute("class", "select-selected");
+    a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+    x[i].appendChild(a);
+    /*for each element, create a new DIV that will contain the option list:*/
+    b = document.createElement("DIV");
+    b.setAttribute("class", "select-items select-hide");
+    for (j = 1; j < selElmnt.length; j++) {
+      /*for each option in the original select element,
+      create a new DIV that will act as an option item:*/
+      if(selElmnt.options[j].innerHTML == selElmnt.options[selElmnt.selectedIndex].innerHTML){
+        c = document.createElement("DIV");
+        c.setAttribute("class", "same-as-selected");
+        c.innerHTML = selElmnt.options[j].innerHTML;
+        c.setAttribute("page-val", selElmnt.options[j].getAttribute("value"));
+      }else{
+        c = document.createElement("DIV");
+        c.innerHTML = selElmnt.options[j].innerHTML;
+        c.setAttribute("page-val", selElmnt.options[j].getAttribute("value"));
+      }
+
+      c.addEventListener("click", function(e) {
+          window.location = "/account/"+this.getAttribute("page-val");
+      });
+      b.appendChild(c);
+    }
+    x[i].appendChild(b);
+    a.addEventListener("click", function(e) {
+        /*when the select box is clicked, close any other select boxes,
+        and open/close the current select box:*/
+        e.stopPropagation();
+        closeAllSelect(this);
+        this.nextSibling.classList.toggle("select-hide");
+        this.classList.toggle("select-arrow-active");
+      });
+  }
+  function closeAllSelect(elmnt) {
+    /*a function that will close all select boxes in the document,
+    except the current select box:*/
+    var x, y, i, arrNo = [];
+    x = document.getElementsByClassName("select-items");
+    y = document.getElementsByClassName("select-selected");
+    for (i = 0; i < y.length; i++) {
+      if (elmnt == y[i]) {
+        arrNo.push(i)
+      } else {
+        y[i].classList.remove("select-arrow-active");
+      }
+    }
+    for (i = 0; i < x.length; i++) {
+      if (arrNo.indexOf(i)) {
+        x[i].classList.add("select-hide");
+      }
+    }
+  }
+  /*if the user clicks anywhere outside the select box,
+  then close all select boxes:*/
+  document.addEventListener("click", closeAllSelect);
+});

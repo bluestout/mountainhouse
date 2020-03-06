@@ -57,7 +57,7 @@
 
               <div class="product-wrap">
                 {% if collection_image != nil %}
-                  <div class="image__container">
+                  <div class="image__container zoom">
                     {% include 'image-element', image: collection_image.src, alt: collection_image_alt, object_fit: section.settings.align_height, max_height: section.settings.collection_height %}
                   </div>
                 {% else %}

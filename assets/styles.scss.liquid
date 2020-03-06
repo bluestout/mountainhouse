@@ -2368,7 +2368,7 @@ select.currencies {
 .menu a.top_link:hover,
 .menu a.dropdown_link:hover,
 .menu a.active_link {
-  border-bottom: solid 1px {{ settings.nav_color_hover }};
+  // border-bottom: solid 1px {{ settings.nav_color_hover }};
 }
 
 .feature_image a.top_link:hover {
@@ -4342,11 +4342,12 @@ $accordionBg: {{ settings.shop_bg_color }};
       min-height: auto;
       height: auto;
       font-family: 'CocogooseNarrow';
-      font-size: 15px;
-      letter-spacing: 1.06px;
+      font-size: 14px;
+      letter-spacing: 1px;
       line-height: 25px;
       box-shadow: none;
       border-radius: 0px;
+      white-space: inherit;
 			&:hover,&:focus{
 				background: darken($accordionBg, 3%);
         border: none;
@@ -5266,13 +5267,13 @@ input[type="button"].get-rates.action_button {
 }
 
 .section_form {
-  padding: 80px 20px;
+  padding: 80px 0px;
 
   input[type="email"], input[type="text"] {
     border: 0;
   }
   @include respond-to('small-down') {
-    padding: 0;
+    padding-top: 30px;
   }
   .newsletter-text + .newsletter, h5 + .newsletter  {
     margin-top: 15px;
@@ -5287,6 +5288,8 @@ input[type="button"].get-rates.action_button {
 
 .newsletter_section .newsletter-text p {
   margin-bottom: 0;
+  font-size: 20px;
+  letter-spacing: 1px;
 }
 
 .newsletter_section .newsletter,
@@ -8918,6 +8921,7 @@ h3.quick-shop__title a {
 
       @include respond-to('medium-down') {
         font-size: 3vw;
+        padding: 0px 10px 20px!important;
       }
     }
     img {
@@ -9532,6 +9536,7 @@ html.remodal-is-locked {
     font-size: 1.1em;
     line-height: 1.2;
     position: relative;
+    margin: 0 auto 0px!important;
   }
 }
 /* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
@@ -9575,7 +9580,7 @@ html.remodal-is-locked {
   display: inline-block;
   text-decoration: inherit;
   width: 1em;
-  margin-right: .2em;
+  margin-right: .3em;
   text-align: center;
   font-variant: normal;
   text-transform: none;
@@ -9597,26 +9602,37 @@ html.remodal-is-locked {
 .icon-minus:before { content: "\e90e"; }
 .icon-menu:before { content: "\e90d"; }
 .icon-email:before { content: "\e906"; }
-.icon-pinterest:before { content: "\e907"; }
+.icon-pinterest:before { content: "\e907"; 
+  color: white;
+  background: black;
+  padding: 6px 3px 0px;
+  border-radius: 50%;
+  font-size: 23px; 
+}
 .icon-rss:before { content: "\e909"; }
 .icon-houzz:before { content: "\e90a"; }
 .icon-snapchat:before { content: "\e90c"; }
 .icon-phone:before { content: "\e90f"; }
-.icon-instagram:before { content: "\e910"; }
+.icon-instagram:before { content: "\e910"; font-size: 31px;}
 .icon-vimeo:before { content: "\e913"; }
 .icon-search:before { content: "\e914"; }
 .icon-zoom:before { content: "\e900"; }
-.icon-youtube:before { content: "\e915"; }
+.icon-youtube:before { content: "\e915"; font-size: 28px;}
 .icon-lock:before { content: "\e916";  color: {{ settings.btn_text_color }}; }
 .icon-user:before { content: "\e918"; }
-.icon-facebook:before { content: "\ea90"; }
-.icon-twitter:before { content: "\ea96"; }
+.icon-facebook:before { content: "\ea90";
+  color: white;
+  background: black;
+  padding-top: 5px;
+  padding-left: 5px;
+}
+.icon-twitter:before { content: "\ea96"; font-size: 29px;}
 .icon-tumblr:before { content: "\eab9"; }
 .icon-linkedin:before { content: "\eaca"; }
 
 .icon-twitter-share:before { content: "\ea96"; }
 .icon-facebook-share:before { content: "\ea90"; }
-.icon-pinterest-share:before { content: "\e907"; }
+.icon-pinterest-share:before { content: "\e907";}
 .icon-mail-share:before { content: "\e906"; }
 
 span.icon-down-arrow {
@@ -9878,6 +9894,9 @@ footer .social_icons a, footer .social_icons a:visited {
 footer .social_icons a:active, footer .social_icons a:hover {
   color: {{ settings.sub_footer_link_color_hover }};
   font-size: 22px;
+  &:before{
+    opacity: 0.3;
+  }
 }
 
 /*!
@@ -10425,15 +10444,15 @@ footer .social_icons a:active, footer .social_icons a:hover {
 
 .full-width--true .caption {
   @include respond-to('small-down') {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
   @include respond-to('large-up') {
     max-width: 960px;
     padding: 0;
   }
   @include respond-to('widescreen-up') {
-    max-width: 1200px;
+    max-width: 90%;
     padding: 0;
   }
 }
@@ -10856,7 +10875,6 @@ input[type="button"].highlight-false--dark {
   }
   .account-main {
     box-sizing: border-box;
-    border-left: 1px solid {{ settings.headline_border_color }};
     padding-left: 20px;
     @include respond-to('medium-down'){
       border: 0;
@@ -11167,7 +11185,7 @@ input[type="button"].highlight-false--dark {
   }
   .info {
     display: inline-block;
-    width: 80%;
+    max-width: 549px;
     margin: 0 auto;
     padding: 20px;
     &.text-align--right {
@@ -11765,9 +11783,9 @@ $delay: 0;
   margin: 0 auto;
   position: absolute;
   {% if settings.header_background %}
-    top: 30%;
+    top: 150px;
   {% else %}
-    top: 55%;
+    top: 150px;
   {% endif %}
   -ms-transform: translate(0, -50%);
   transform: none;
@@ -11820,13 +11838,15 @@ li.search_container {
 }
 .mini_cart, .nav a.mini_cart{background:transparent !important;}
 .nav a.mini_cart img {
-    width: 32px;
-    /* height: 32px; */
+  width: 45px;
+  height: 100px;
+  padding: 33px 0px 33px 10px;
 }
 .cart_container.clearfix {
   display: flex;
   align-items: center;
   padding:8px 0px 0px 0px;
+  height: 55px;
 }
 a.icon-user2 {
     padding: 0;
@@ -11835,8 +11855,9 @@ a.icon-user2 img {
     width: 30px;
 }
 a.icon-search2.dropdown_link {
-        padding: 0 20px;
-height:auto !important;
+    padding: 0 20px;
+    padding-right:0px;
+    height:auto !important;
 }
 a.icon-search2.dropdown_link img {
     width: 35px;
@@ -11848,7 +11869,7 @@ a.mini_cart.dropdown_link {
 span.cart_count {
     padding: 0px !important;
     left: -3px;
-    top: 4px;
+    top: 27px;
 }
 .custom_search {
     position: absolute;
@@ -11860,4 +11881,12 @@ span.cart_count {
 }
 li.search_container {
     position: static;
+}
+
+input.quantity::-webkit-outer-spin-button, input.quantity::-webkit-inner-spin-button {
+  -webkit-appearance: textfield;
+}
+
+#shopify-section-cart-template input.quantity::-webkit-outer-spin-button,#shopify-section-cart-template input.quantity::-webkit-inner-spin-button {
+  -webkit-appearance: none;
 }

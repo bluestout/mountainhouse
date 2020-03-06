@@ -39,7 +39,7 @@
       <div class="gallery-cell slide-{{ forloop.index }}" {{ block.shopify_attributes }} data-block-id="{{block.id}}">
 
         {% if block.settings.image != nil %}
-          {% include 'image-element', image: block.settings.image, alt: block.settings.image.alt, stretch_width: true, additional_classes: mobile_crop %}
+          {% include 'image-element', image: block.settings.image, mobile_img: block.settings.mobile_image alt: block.settings.image.alt, stretch_width: true, additional_classes: mobile_crop %}
         {% else %}
           {% capture i %}{% cycle "1", "2" %}{% endcapture %}
           {{ 'lifestyle-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--slideshow' }}
@@ -200,6 +200,12 @@
           "type": "image_picker",
           "id": "image",
           "label": "Image",
+          "info": "1600 x 1000px recommended"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile image",
           "info": "1600 x 1000px recommended"
         },
         {

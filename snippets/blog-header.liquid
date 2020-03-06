@@ -22,6 +22,6 @@
     {% if section.settings.header_banner_icon != blank %}
       <img src="{{ section.settings.header_banner_icon | img_url: 'original' }}" class="img position--center">
     {% endif%}
-      <h2 class="headline text-align--center">{{ section.settings.heading_title }}</h2>
-      <p>{{ section.settings.text }}</p>
+      <h2 class="headline text-align--center">{{ title }}</h2>
+      <p>{{ content }}</p>
   </div>
