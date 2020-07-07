@@ -1,12 +1,21 @@
+{% assign sold_out_tag = false %}
+
+{% for tag in product.tags %}
+  {% if tag == "is_out_stock" or tag == "is_low_stock" %}
+    {% assign sold_out_tag = true %}
+  {% endif %}
+{% endfor %}
+
 <div class="product-control">
   <a href="{{ product.url }}" class="discover action_button">{{discover_title}}</a>
+  {% if product.available and sold_out_tag == false %}
   <form method="post" action="/cart/add" id="product_form_{{ product.id }}" accept-charset="UTF-8" class="shopify-product-form" enctype="multipart/form-data">
     <input type="hidden" name="form_type" value="product">
     <input type="hidden" name="utf8" value="✓">
     <input type="hidden" name="id" value="{{variant.id}}">
     <input type="hidden" name="id" value="{{ variant.id }}" />
     
-    {% capture add_to_cart_label %}{% if collection_handles contains 'pre-order' %}{{ pre_order }}{% else %}QUICK ADD{% endif %}{% endcapture %}
+    {% capture add_to_cart_label %}{% if collection_handles contains 'pre-order' %}{{ 'collections.general.pre_order' | t }}{% else %}{{ 'products.product.add_to_cart' | t }}{% endif %}{% endcapture %}
     <button type="submit" name="add" class="action_button add_to_cart ajax-submit" data-label={{ add_to_cart_label | json }}>
       <span class="text">{{ add_to_cart_label }}</span>
       <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32" class="checkmark">
@@ -14,4 +23,7 @@
       </svg>
     </button>
   </form>
+  {% else %}
+  <a  class="sold_out_btn action_button">SOLD OUT</a>
+  {% endif %}
 </div>

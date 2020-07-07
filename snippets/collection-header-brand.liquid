@@ -1,32 +1,105 @@
-  {% if section.settings.image %}
-    {% assign image = section.settings.image %}
-  {%- elsif collection.image -%}
+  {%- if collection.image -%}
     {% assign image = collection.image %}
+  {% elsif section.settings.image %}
+    {% assign image = section.settings.image %}
   {%- else %}
     {% assign image = collection.products.first.featured_image %}
   {% endif %}
-
+  
+  {%if collection.image != blank %}
+    {% assign mobile_image = collection.image %}
+  {% else %}
+    {% assign mobile_image = section.settings.mobile_image %}
+  {% endif %}
   {% style %}
-    .page_banner{
-      background: url({{ image | img_url: '2000x' }}) no-repeat 50% 50% / cover;
-    }
   {% endstyle %}
 
-  <header class="banner center page_banner dark-overlay-{{ section.settings.image_darken }}">
-      {% comment %} {% include 'image-element', image: image, alt: collection.title, stretch_width: true, progressive: true %} {% endcomment %}
-      
-  </header>
-
-  {% if section.settings.display_collection_title %}
-
-    <div class="caption captionOverlay--true position--{{section.settings.collection_title_position}}" style="background-color: {{section.settings.cap_bg_color}};">
-    {% if section.settings.red_caption %}
-      <div class="right-caption"></div>
-    {% endif %}
-    {% if collection.metafields["global"]["collection-icon"] != blank %}
-      <img src="{{ collection.metafields["global"]["collection-icon"] }}" class="img position--{{section.settings.collection_title_position}}">
-    {% endif%}
-      <h2 class="headline text-align--{{section.settings.collection_title_position}}" style="color: {{section.settings.cap_title_color}};">{{ collection.title }}</h2>
-      <p class="text-align--{{section.settings.collection_title_position}}">{{ collection.description }}</p>
-    </div>
+  {% if collection.metafields["global"]["header-banner-video-url"] != blank %}
+      {% style %}
+        header.banner{
+          height: auto!important;
+        }
+      {% endstyle %}
   {% endif %}
+  
+  {% if collection.metafields["global"]["header-banner-video-url"] != blank %}
+    {% assign cls = 'video-banner' %}
+  {% endif %}
+  
+  {% if collection.description != blank %}
+    {% assign text = collection.description %}
+  {% else %}
+    {% assign text = section.settings.default_text %}
+  {% endif %}
+
+  {% if collection.title != blank %}
+    {% assign title = collection.title %}
+  {% else %}
+    {% assign title = section.settings.default_title %}
+  {% endif %}
+
+<div class="collection-header">
+  <header class="banner center page_banner {{ cls }} dark-overlay-{{ section.settings.image_darken }}">
+      {% comment %} {% include 'image-element', image: image, alt: collection.title, stretch_width: true, progressive: true %} {% endcomment %}
+      {% if collection.metafields["global"]["header-banner-video-url"] != blank %}
+        {% assign numberAutoplay = 0 %}
+        {% assign html5Autoplay = '' %}
+        {% assign numberAutoloop = 1 %}
+        {% assign playlistLoop = video.id %}
+        {% assign html5Autoloop = 'loop="loop"' %}
+        {% assign showPosterImage = false  %}
+        {% assign autoplayVideo = false  %}
+        {% assign variable = collection.metafields["global"]["header-banner-video-url"] | split: '/' | reverse  %}
+        <script> console.log({{ variable | json }}) </script>
+        {% assign video = collection.metafields["global"]["header-banner-video-url"] %}
+        {% if video contains 'youtu' %}
+          {% assign useLazyframe = true %} 
+          {%- capture iframeURL -%}https://www.youtube.com/embed/{{variable[0]}}?&autoplay={{numberAutoplay}}&loop={{numberAutoloop}}&playlist={{playlistLoop}}{%- endcapture -%}
+        {% elsif video contains 'vimeo' %}
+          {% assign useLazyframe = true %}
+          {%- capture iframeURL -%}https://player.vimeo.com/video/{{variable[0]}}?autoplay={{numberAutoplay}}&loop={{numberAutoloop}}{%- endcapture -%}
+        {% else %}
+          {% assign useLazyframe = false %}
+        {% endif %}
+        <div class="video-responsive">
+          <iframe src="{{ iframeURL }}"></iframe>
+        </div>
+      {% endif %}
+
+      {% include 'image-element' with 
+        image: image,
+        stretch_width: true,
+        max_width: 2048,
+        max_height: 500,
+        additional_classes: "medium-down--hide"
+      %}
+      {% if collection.metafields["global"]["mobile-banner-image"] != blank %}
+        <img src="{{ collection.metafields["global"]["mobile-banner-image"] }}" class="hide medium-down--show">
+      {% else %}
+        {% include 'image-element' with 
+          image: mobile_image,
+          stretch_width: true,
+          max_width: 2048,
+          max_height: 500,
+          additional_classes: "hide medium-down--show"
+        %}
+      {% endif %}
+      {% if section.settings.display_collection_title and collection.metafields["global"]["header-banner-video-url"] == blank %}
+        <div class="caption captionOverlay--true position--{{section.settings.collection_title_position}} caption-transparency-{{ section.settings.caption_background_transparency }}
+        " style="background-color: {{section.settings.cap_bg_color}};">
+          {% if section.settings.red_caption %}
+            <div class="right-caption"></div>
+          {% endif %}
+          {% if collection.metafields["global"]["collection-icon"] != blank %}
+            <img src="{{ collection.metafields["global"]["collection-icon"] }}" class="img brand--logo position--{{section.settings.text_align}}">
+          {% endif%}
+          {% if section.settings.title_status %}
+            <h2 class="headline text-align--{{section.settings.text_align}}" style="color: {{section.settings.cap_title_color}};">{{ title }}</h2>
+          {% endif %}
+          {% if section.settings.content_status %}
+            <div class="text-align--{{section.settings.text_align}} desc"><p>{{ text | strip_html }}</p></div>
+          {% endif %}
+        </div>
+      {% endif %}
+  </header>
+</div>

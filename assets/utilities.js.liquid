@@ -1062,7 +1062,7 @@ var quickShop = {
         collection_handles: $(this).data('collection-handles').trim(',').split(','),
         money_format: $('body').data('money-format')
       }
-
+      console.log(productData);
       //Find current product and notify forms
       const $notifyForm = $(this).next('.js-quickshop-forms__container').find('.notify_form');
       const $productForm = $(this).next('.js-quickshop-forms__container').find('.product_form');
@@ -1335,19 +1335,19 @@ var quickShop = {
           $('.js-current-price').removeClass('sale');
         }
 
-        //Availability
-        if (product.available == false){
-          if (product.price == Shopify.translation.coming_soon_text) {
-            $('.js-sold-out').html(Shopify.translation.coming_soon_text)
-          } else {
-            $('.js-sold-out').html(Shopify.theme_settings.sold_out_text);
-          }
-        } else {
-          $('.js-sold-out').html('');
-        }
+        // //Availability
+        // if (product.available == false){
+        //   if (product.price == Shopify.translation.coming_soon_text) {
+        //     $('.js-sold-out').html(Shopify.translation.coming_soon_text)
+        //   } else {
+        //     $('.js-sold-out').html(Shopify.theme_settings.sold_out_text);
+        //   }
+        // } else {
+        //   $('.js-sold-out').html('');
+        // }
 
         //Price
-        if (product.available == true || product.available == false && Shopify.theme_settings.display_sold_out_price) {
+
           if (product.compare_at_price > product.price) {
             $('.js-was-price').html('<span class="money">' + Shopify.formatMoney(product.variants[0].compare_at_price, product.money_format)  + '</span>');
             $('.js-savings').html(Shopify.translation.savings_text + ' ' + parseInt(((product.variants[0].compare_at_price - product.variants[0].price) * 100) / product.variants[0].compare_at_price) + '% (' + '<span class="money">' + Shopify.formatMoney(product.variants[0].compare_at_price - product.variants[0].price, product.money_format) + '</span>)');
@@ -1360,7 +1360,6 @@ var quickShop = {
           } else {
             $('.js-current-price').html(Shopify.theme_settings.free_text);
           }
-        }
 
         //Notify Form
         if (product.available == true) {
@@ -1389,18 +1388,18 @@ var quickShop = {
               $('.js-current-price').removeClass('sale');
             }
 
-            //Availability
-            if (product.variants[i].available == false){
-              if (product.price == Shopify.translation.coming_soon_text) {
-                $('.js-sold-out').html(Shopify.translation.coming_soon_text)
-              } else if ($('.js-current-price').parents('.modal_price').hasClass('variant-unavailable')){
-                $('.js-sold-out').html(Shopify.translation.unavailable_text);
-              } else {
-                $('.js-sold-out').html(Shopify.theme_settings.sold_out_text);
-              }
-            } else {
-              $('.js-sold-out').html('');
-            }
+            // //Availability
+            // if (product.variants[i].available == false){
+            //   if (product.price == Shopify.translation.coming_soon_text) {
+            //     $('.js-sold-out').html(Shopify.translation.coming_soon_text)
+            //   } else if ($('.js-current-price').parents('.modal_price').hasClass('variant-unavailable')){
+            //     $('.js-sold-out').html(Shopify.translation.unavailable_text);
+            //   } else {
+            //     $('.js-sold-out').html(Shopify.theme_settings.sold_out_text);
+            //   }
+            // } else {
+            //   $('.js-sold-out').html('');
+            // }
 
             //Extra check to ensure the product is not unavailable
             if ($('.js-current-price').parents('.modal_price').hasClass('variant-unavailable')){
@@ -1415,7 +1414,7 @@ var quickShop = {
             }
 
             //Price
-            if (product.variants[i].available == true || product.variants[i].available == false && Shopify.theme_settings.display_sold_out_price){
+            // if (product.variants[i].available == true || product.variants[i].available == false && Shopify.theme_settings.display_sold_out_price){
 
               if (product.variants[i].compare_at_price > product.variants[i].price) {
                 $('.js-was-price').html('<span class="money">' + Shopify.formatMoney(product.variants[i].compare_at_price, product.money_format) + '</span>');
@@ -1429,7 +1428,7 @@ var quickShop = {
               } else {
                 $('.js-current-price').html(Shopify.theme_settings.free_text);
               }
-            }
+            // }
           }
         }
       }

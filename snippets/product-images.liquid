@@ -1,7 +1,7 @@
 {% assign featured_image = product.selected_or_first_available_variant.featured_image | default: product.featured_image %}
 {% capture list %}
   {% for image in product.images %}
-    
+
     {% if image.alt != 'variant' %}
     {% comment %}Loop through images only once{% endcomment %}
       {{ image.id }}`~`{{ image.alt }}`~`{{ image | img_url: '100x' }}`~`{{ image | img_url: '200x' }}`~`{{ image | img_url: '400x' }}`~`{{ image | img_url: '600x' }}`~`{{ image | img_url: '800x' }}`~`{{ image | img_url: '1200x' }}`~`{{ image | img_url: '2000x' }}`~`{{-image.width-}}px`~`{{-image.height-}}px{{ image | product_img_url: '5000x' }}{% if forloop.last == false %}^{% endif %}
@@ -12,15 +12,18 @@
 {% assign image_list = list | split: "^" %}
 
 <section  id="homepage_slider-{{section.id}}"
-        class="banner homepage-slideshow js-homepage-slideshow js-product-page-gallery slideshow_animation--{{ section.settings.slideshow_animation }} {% if section.settings.slideshow_text_animation != '' %}text-animation--true{% else %}text-animation--false{% endif %} transparentBackground--{{settings.slideshow_button_style}}
-        full-width--{{ section.settings.wide_display }} 
-        gallery-arrows--{{section.settings.gallery_arrows}}
-        {% if section.settings.product_thumbs %} {{ section.settings.thumbnail_position }} {% endif %}"
-        data-slider-id="homepage_slider-{{section.id}}"
-        data-slideshow-speed="{{section.settings.slideshow_speed}}"
-        data-slideshow-text-animation="{{section.settings.slideshow_text_animation}}"
-        data-adaptive-height="{{section.settings.activate_adaptiveHeight}}"
-        >
+  class="banner homepage-slideshow js-homepage-slideshow js-product-page-gallery slideshow_animation--{{ section.settings.slideshow_animation }} {% if section.settings.slideshow_text_animation != '' %}text-animation--true{% else %}text-animation--false{% endif %} transparentBackground--{{settings.slideshow_button_style}}
+  full-width--{{ section.settings.wide_display }}
+  gallery-arrows--{{section.settings.gallery_arrows}}
+  {% if section.settings.product_thumbs %} {{ section.settings.thumbnail_position }} {% endif %}"
+  data-slider-id="homepage_slider-{{section.id}}"
+  data-slideshow-speed="{{section.settings.slideshow_speed}}"
+  data-slideshow-text-animation="{{section.settings.slideshow_text_animation}}"
+  data-adaptive-height="{{section.settings.activate_adaptiveHeight}}"
+  >
+  {% if product.images.size == 0 %}
+  <img src="https://cdn.shopify.com/s/images/themes/product-1.png">
+  {% else %}
   {% for image_item in image_list %}
     {% if image_item != blank %}
       {% assign image = image_item | split: "`~`" %}
@@ -130,6 +133,7 @@
       </div>
     {% endif %}
   {% endfor %}
+  {% endif %}
 </section>
 
 {% if section.settings.product_thumbs %}

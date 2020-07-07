@@ -13,7 +13,10 @@
     #shopify-section-{{ section.id }} .pretext,
     #shopify-section-{{ section.id }} .headline,
     #shopify-section-{{ section.id }} .subtitle {
-      color: {% if mobile_text_alpha != 0 %}{{ section.settings.mobile_text_color}}{% endif %};
+      color: {% if mobile_text_alpha != 0 %}{{ section.settings.mobile_text_color}}!important{% endif %};
+    }
+    #shopify-section-{{ section.id }} .headline:after{
+      border-color: {% if mobile_text_alpha != 0 %}{{ section.settings.mobile_text_color}}!important{% endif %};
     }
   }
 {% endstyle %}
@@ -30,71 +33,109 @@
         data-slider-id="homepage_slider-{{section.id}}"
         data-slideshow-speed="{{section.settings.slideshow_speed}}"
         data-slideshow-text-animation="{{section.settings.slideshow_text_animation}}"
-        data-adaptive-height="{{section.settings.activate_adaptiveHeight}}"
+        data-adaptive-height="{{section.settings.activate_adaptiveHeight}}"  style="background-color: {{ section.settings.slide_bg_color }};"
         >
     {% for block in section.blocks %}
-
+      
       {% assign mobile_crop = 'mobile-banner--crop-' | append: block.settings.mobile_image_crop %}
 
-      <div class="gallery-cell slide-{{ forloop.index }}" {{ block.shopify_attributes }} data-block-id="{{block.id}}">
-
-        {% if block.settings.image != nil %}
-          {% include 'image-element', image: block.settings.image, mobile_img: block.settings.mobile_image alt: block.settings.image.alt, stretch_width: true, additional_classes: mobile_crop %}
-        {% else %}
-          {% capture i %}{% cycle "1", "2" %}{% endcapture %}
-          {{ 'lifestyle-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--slideshow' }}
-        {% endif %}
-
-        {% unless block.settings.button1_link != blank and block.settings.button2_link != blank %}
-          {% if block.settings.button1_link != blank and block.settings.button1 == blank %}
-            <a href="{{ block.settings.button1_link }}" class="banner-full-link">
-              {{ block.settings.title }}
-            </a>
-          {% elsif block.settings.button2_link != blank and block.settings.button2 == blank %}
-            <a href="{{ block.settings.button2_link }}" class="banner-full-link">
-              {{ block.settings.title }}
-            </a>
+      <div class="gallery-cell slide-{{ forloop.index }} {{ block.type }}" {{ block.shopify_attributes }} data-block-id="{{block.id}}" style="background-color: {{ section.settings.slide_bg_color }};">
+        {% if block.type == 'image' %}
+          {% if block.settings.image != nil %}
+            {% include 'image-element', image: block.settings.image, mobile_img: block.settings.mobile_image alt: block.settings.image.alt, stretch_width: true, additional_classes: mobile_crop %}
+          {% else %}
+            {% capture i %}{% cycle "1", "2" %}{% endcapture %}
+            {{ 'lifestyle-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--slideshow' }}
           {% endif %}
-        {% endunless %}
 
-        {% unless block.settings.pretext == blank and block.settings.title == blank and block.settings.subtitle == blank and block.settings.button1 == blank and block.settings.button2 == blank %}
-          <div class="caption position-{{block.settings.text_position}} js-caption mobile-text-below--{{ section.settings.mobile_text_below_image }}">
+          {% unless block.settings.button1_link != blank and block.settings.button2_link != blank %}
+            {% if block.settings.button1_link != blank and block.settings.button1 == blank %}
+              <a href="{{ block.settings.button1_link }}" class="banner-full-link">
+                {{ block.settings.title }}
+              </a>
+            {% elsif block.settings.button2_link != blank and block.settings.button2 == blank %}
+              <a href="{{ block.settings.button2_link }}" class="banner-full-link">
+                {{ block.settings.title }}
+              </a>
+            {% endif %}
+          {% endunless %}
+
+          {% unless block.settings.pretext == blank and block.settings.title == blank and block.settings.subtitle == blank and block.settings.button1 == blank and block.settings.button2 == blank %}
+            <div class="caption position-{{block.settings.text_position}} js-caption mobile-text-below--{{ section.settings.mobile_text_below_image }}"> 
               <div class="caption-content
-                          caption-background-{{block.settings.caption_background}}
-                          caption-transparency-{{ block.settings.caption_background_transparency }}
-                          align-{{block.settings.text_align}}">
-                {% if block.settings.pretext != blank %}
-                  <div class="pretext">
-                    {{ block.settings.pretext }}
-                  </div>
-                {% endif %}
-                {% if forloop.first == true and block.settings.title != blank %}
-                  <h1 class="headline">
-                    {{ block.settings.title }}
-                  </h1>
-                {% elsif block.settings.title != blank %}
-                  <p class="headline">
-                    {{ block.settings.title }}
-                  </p>
-                {% endif %}
-                {% if block.settings.subtitle != blank %}
-                  <div class="subtitle">
-                    {{ block.settings.subtitle }}
-                  </div>
-                {% endif %}
-                {% if block.settings.button1 != blank %}
-                  <a {% if block.settings.button1_link != blank %}href="{{ block.settings.button1_link }}"{% endif %} class="action_button first_button highlight-{{block.settings.button1_highlight}}">
-                    {{ block.settings.button1 }}
-                  </a>
-                {% endif %}
-                {% if block.settings.button2 != blank %}
-                  <a {% if block.settings.button2_link != blank %}href="{{ block.settings.button2_link }}"{% endif %} class="action_button second_button highlight-{{block.settings.button2_highlight}}">
-                    {{ block.settings.button2 }}
-                  </a>
-                {% endif %}
+                            caption-background-{{block.settings.caption_background}}
+                            caption-transparency-{{ block.settings.caption_background_transparency }}
+                            align-{{block.settings.text_align}}" style="background-color: {{ block.settings.caption_bg_color }};">
+                  {% if block.settings.pretext != blank %}
+                    <div class="pretext">
+                      {{ block.settings.pretext }}
+                    </div>
+                  {% endif %}
+                  {% if forloop.first == true and block.settings.title != blank %}
+                    <h1 class="headline" style="color: {{block.settings.title_color}};">
+                      {{ block.settings.title }}
+                    </h1>
+                  {% elsif block.settings.title != blank %}
+                  <p class="headline" style="color: {{block.settings.title_color}};">
+                      {{ block.settings.title }}
+                    </p>
+                  {% endif %}
+                  {% if block.settings.subtitle != blank %}
+                    <div class="subtitle" style="color: {{block.settings.subtitle_color}};">
+                      {{ block.settings.subtitle }}
+                    </div>
+                  {% endif %}
+                  {% if block.settings.button1 != blank %}
+                    <a {% if block.settings.button1_link != blank %}href="{{ block.settings.button1_link }}"{% endif %} class="action_button first_button" style="color: {{block.settings.button1_label_color}}!important; background-color: {{block.settings.button1_color}}; border-color:  {{block.settings.button1_color}}">
+                      {{ block.settings.button1 }}
+                    </a> 
+                  {% endif %}
+                  {% if block.settings.button2 != blank %}
+                    <a {% if block.settings.button2_link != blank %}href="{{ block.settings.button2_link }}"{% endif %} class="action_button second_button" style="color: {{block.settings.button2_label_color}}!important; background-color: {{block.settings.button2_color}}; border-color:  {{block.settings.button2_color}}">
+                      {{ block.settings.button2 }}
+                    </a>
+                  {% endif %}
+                </div>
               </div>
-            </div>
-        {% endunless %}
+          {% endunless %}
+        {% else %}
+
+          {% assign video = block.settings.video %}    
+          {% assign autoplay = block.settings.autoplay %}
+          {% assign autoloop = block.settings.autoloop %}
+
+          {% comment %}Turn autoplay true/false into 1/0{% endcomment %}
+          {% if autoplay == true %}
+          {% assign numberAutoplay = 1 %}
+          {% assign html5Autoplay = 'autoplay' %}
+          {% else %}
+          {% assign numberAutoplay = 0 %}
+          {% assign html5Autoplay = '' %}
+          {% endif %}
+
+          {% comment %}Turn autoloop true/false into 1/0{% endcomment %}
+          {% if autoloop == true %}
+          {% assign numberAutoloop = 1 %}
+          {% assign playlistLoop = video.id %}
+          {% assign html5Autoloop = 'loop="loop"' %}
+          {% else %}
+          {% assign numberAutoloop = 0 %}
+          {% assign playlistLoop = '' %}
+          {% assign html5Autoloop = '' %}
+          {% endif %}
+
+          {% if video contains 'youtube' %}
+            {% assign useLazyframe = true %}
+            {%- capture iframeURL -%}https://www.youtube.com/embed/{{video.id}}?&autoplay={{numberAutoplay}}&loop={{numberAutoloop}}&playlist={{playlistLoop}}{%- endcapture -%}
+          {% elsif video contains 'vimeo' %}
+            {% assign useLazyframe = true %}
+            {%- capture iframeURL -%}https://player.vimeo.com/video/{{video.id}}?autoplay={{numberAutoplay}}&loop={{numberAutoloop}}{%- endcapture -%}
+          {% else %}
+            {% assign useLazyframe = false %}
+          {% endif %}
+
+          <iframe class="slideshow__video--content" src="{{ iframeURL }}" frameborder="0" style="background-color: black;"></iframe>
+        {% endif %}
 
       </div>
       
@@ -189,24 +230,46 @@
       "type": "color",
       "id": "mobile_text_color",
       "label": "Text"
+    },
+    {
+      "type": "color",
+      "id": "slide_bg_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
     }
   ],
   "blocks": [
     {
       "type": "image",
-      "name": "Slide",
+      "name": "Image",
       "settings": [
+
         {
           "type": "image_picker",
           "id": "image",
           "label": "Image",
-          "info": "1600 x 1000px recommended"
+          "info": "2048 x 893px recommended"
         },
         {
           "type": "image_picker",
           "id": "mobile_image",
           "label": "Mobile image",
-          "info": "1600 x 1000px recommended"
+          "info": "1024 x 683px recommended"
+        },
+        {
+          "type": "checkbox",
+          "id": "caption_background",
+          "label": "Display text background"
+        },
+        {
+          "type": "checkbox",
+          "id": "caption_background_transparency",
+          "label": "Enable text background transparency"
+        },
+        {
+          "type": "color",
+          "id": "caption_bg_color",
+          "label": "Caption background color"
         },
         {
           "type": "richtext",
@@ -220,19 +283,21 @@
           "default": "Your headline"
         },
         {
+          "type": "color",
+          "id": "title_color",
+          "label": "Heading color",
+          "default": "#FFFFFF"
+        },
+        {
           "type": "richtext",
           "id": "subtitle",
           "label": "Subheading"
         },
         {
-          "type": "checkbox",
-          "id": "caption_background",
-          "label": "Display text background"
-        },
-        {
-          "type": "checkbox",
-          "id": "caption_background_transparency",
-          "label": "Enable text background transparency"
+          "type": "color",
+          "id": "subtitle_color",
+          "label": "Subheading color",
+          "default": "#FFFFFF"
         },
         {
           "type": "text",
@@ -240,14 +305,19 @@
           "label": "First button label"
         },
         {
+          "type": "color",
+          "id": "button1_color",
+          "label": "First button color"
+        },
+        {
+          "type": "color",
+          "id": "button1_label_color",
+          "label": "First button label color"
+        },
+        {
           "type": "url",
           "id": "button1_link",
           "label": "First slide link"
-        },
-        {
-          "type": "checkbox",
-          "id": "button1_highlight",
-          "label": "Highlight first button"
         },
         {
           "type": "text",
@@ -255,14 +325,19 @@
           "label": "Second button label"
         },
         {
+          "type": "color",
+          "id": "button2_color",
+          "label": "Second button color"
+        },
+        {
+          "type": "color",
+          "id": "button2_label_color",
+          "label": "Second label color"
+        },
+        {
           "type": "url",
           "id": "button2_link",
           "label": "Second slide link"
-        },
-        {
-          "type": "checkbox",
-          "id": "button2_highlight",
-          "label": "Highlight second button"
         },
         {
           "type": "select",
@@ -330,6 +405,32 @@
               "label": "Right"
             }
           ]
+        }
+      ]
+    },
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        {
+          "type": "video_url",
+          "id": "video",
+          "label": "Video link",
+          "accept": ["youtube", "vimeo"],
+          "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+        },
+        {
+          "type": "checkbox",
+          "id": "autoplay",
+          "label": "Autoplay video",
+          "default": false,
+          "info": "Limited browser support for autoplaying video. [Learn more](https:\/\/help.outofthesandbox.com\/hc\/en-us\/articles\/360000661568-Why-won-t-my-video-autoplay-)"
+        },
+        {
+          "type": "checkbox",
+          "id": "autoloop",
+          "label": "Autoloop video",
+          "default": true
         }
       ]
     }

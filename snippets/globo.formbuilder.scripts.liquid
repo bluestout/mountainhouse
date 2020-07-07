@@ -8,6 +8,12 @@
             reCaptcha : {
                 siteKey : ''
             }
+        },
+        pricing:{
+            features:{
+                fileUpload : 2,
+                removeCopyright : false
+            }
         }
     }
     Globo.FormBuilder.forms = []
@@ -28,9 +34,45 @@
 	.globo-form-app{
     max-width: {{configs.appearance.width}}px;
     width: -webkit-fill-available;
+    background-color:#FFF;
+    {% if configs.appearance.background == 'color' %}
+    background-color: {{configs.appearance.backgroundColor}};
+    {% endif %}
+    {% if configs.appearance.background == 'image' %}
+    background-image : url('{{configs.appearance.backgroundImage}}');
+    background-position: center {{configs.appearance.backgroundImageAlignment}};;
+    background-repeat:no-repeat;
+    background-size: cover;
+    {% endif %}
+}
+
+.globo-form-app .globo-heading{
+    color: {{configs.appearance.headingColor}}
+}
+.globo-form-app .globo-description,
+.globo-form-app .header .globo-description{
+    color: {{configs.appearance.descriptionColor}}
+}
+.globo-form-app .globo-label,
+.globo-form-app .globo-form-control label.globo-label{
+    color: {{configs.appearance.labelColor}}
+}
+.globo-form-app .globo-form-control .help-text.globo-description{
+    color: {{configs.appearance.descriptionColor}}
+}
+.globo-form-app .globo-form-control .checkbox-wrapper .globo-option,
+.globo-form-app .globo-form-control .radio-wrapper .globo-option
+{
+    color: {{configs.appearance.optionColor}}
+}
+.globo-form-app .footer{
+    text-align:{{configs.footer.submitAlignment}};
 }
 .globo-form-app .footer button{
     border:1px solid {{configs.appearance.mainColor}};
+    {% if configs.footer.submitFullWidth %}
+        width:100%;
+    {% endif %}
 }
 .globo-form-app .footer button.submit,
 .globo-form-app .footer button.action.loading .spinner{
@@ -85,9 +127,9 @@
     <form class="g-container" novalidate action="{{Globo.FormBuilder.url}}/api/front/form/{{formId}}/send" method="POST" enctype="multipart/form-data" data-id={{formId}}>
         {% if configs.header.active %}
         <div class="header">
-            <h3 class="title">{{configs.header.title}}</h3>
+            <h3 class="title globo-heading">{{configs.header.title}}</h3>
             {% if configs.header.description != '' and configs.header.description != '<p><br></p>' %}
-            <div class="description">{{configs.header.description}}</div>
+            <div class="description globo-description">{{configs.header.description}}</div>
             {% endif %}
         </div>
         {% endif %}
@@ -142,7 +184,15 @@
                         </div>
                         {% endfor %}
                     </div>
+                    {% if Globo.FormBuilder.shop.pricing.features.removeCopyright == false %}
                     <p style="text-align: right;font-size:small;">Made by <a target="_blank" rel="nofollow" href="https://apps.shopify.com/powerful-form-builder">Powerful Contact Form Builder</a> </p>
+                    {% endif %}
+                    <div class="message error">
+                        <div class="content">Failed ddd</div>
+                        <div class="dismiss" onclick="Globo.dismiss(this)">
+                            <svg viewBox="0 0 20 20" class="" focusable="false" aria-hidden="true"><path d="M11.414 10l4.293-4.293a.999.999 0 1 0-1.414-1.414L10 8.586 5.707 4.293a.999.999 0 1 0-1.414 1.414L8.586 10l-4.293 4.293a.999.999 0 1 0 1.414 1.414L10 11.414l4.293 4.293a.997.997 0 0 0 1.414 0 .999.999 0 0 0 0-1.414L11.414 10z" fill-rule="evenodd"></path></svg>
+                        </div>
+                    </div>
                     {% unless configs.afterSubmit.message == "" %}
                     <div class="message success">
                         <div class="content">{{configs.afterSubmit.message}}</div>
@@ -152,7 +202,9 @@
                     </div>
                     {% endunless %}
                     <div class="footer wizard__footer">
-                        <div class="description">{{configs.footer.text}}</div>
+                        {% if configs.footer.description != '' and configs.footer.description != '<p><br></p>' %}
+                        <div class="description globo-description">{{configs.footer.description}}</div>
+                        {% endif %}
                         <button type="button" class="action previous  {{configs.appearance.style}}-button">{{configs.footer.previousText}}</button>
                         <button type="button" class="action next submit {{configs.appearance.style}}-button" data-submitting-text="{{configs.footer.submittingText}}" data-submit-text='<span class="spinner"></span>{{configs.footer.submitText}}' data-next-text={{configs.footer.nextText}} ><span class="spinner"></span>{{configs.footer.nextText}}</button>
                         <h1 class="wizard__congrats-message"></h1>
@@ -178,7 +230,9 @@
                     </div>
                 {% endif %}
             </div>
+            {% if Globo.FormBuilder.shop.pricing.features.removeCopyright == false %}
             <p style="text-align: right;font-size:small;">Made by <a target="_blank" rel="nofollow" href="https://apps.shopify.com/powerful-form-builder">Powerful Contact Form Builder</a> </p>
+            {% endif %}
             <div class="message error">
                 <div class="content">Failed ddd</div>
                 <div class="dismiss" onclick="Globo.dismiss(this)">
@@ -195,7 +249,7 @@
             {% endunless %}
             <div class="footer">
                 {% if configs.footer.description != '' and configs.footer.description != '<p><br></p>' %}
-                <div class="description">{{configs.footer.description}}</div>
+                <div class="description globo-description">{{configs.footer.description}}</div>
                 {% endif %}
                 <button class="action submit {{configs.appearance.style}}-button"><span class="spinner"></span>{{configs.footer.submitText}}</button>
             </div>
@@ -226,7 +280,7 @@
 {% else %}
 {% assign circle = 'circle' %}
 {% endif %}
-<div class="floating-button {{circle}}" onclick="Globo.FormBuilder.showFloatingForm(this)">
+<div class="floating-button {{circle}} {{configs.appearance.position}}" onclick="Globo.FormBuilder.showFloatingForm(this)">
     <div class="fabLabel">
         {{configs.appearance.floatingIcon}}
         {{configs.appearance.floatingText}}
@@ -255,128 +309,174 @@
 {% case element.type %}
 {% when "text" %}
 <div class="globo-form-control {{columnWidthClass}}" {{dataAttr}}>
-    <label for="{{element.id}}" class="{{configs.appearance.style}}-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</label>
+    <label for="{{element.id}}" class="{{configs.appearance.style}}-label globo-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</label>
     <input type="text" {{attrInput}} data-type="{{element.type}}" class="{{configs.appearance.style}}-input" id="{{element.id}}" name="{{element.id}}" placeholder="{{element.placeholder}}" {% if element.required %}presence{% endif %} >
     {% if element.description != '' %}
-        <small class="help-text">{{element.description}}</small>
+        <small class="help-text globo-description">{{element.description}}</small>
     {% endif %}
     <small class="messages"></small>
 </div>
 {% when "name" %}
 <div class="globo-form-control {{columnWidthClass}}" {{dataAttr}}>
-    <label for="{{element.id}}" class="{{configs.appearance.style}}-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</label>
+    <label for="{{element.id}}" class="{{configs.appearance.style}}-label globo-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</label>
     <input type="text" {{attrInput}} data-type="{{element.type}}" class="{{configs.appearance.style}}-input" id="{{element.id}}" name="{{element.id}}" placeholder="{{element.placeholder}}" {% if element.required %}presence{% endif %} >
     {% if element.description != '' %}
-        <small class="help-text">{{element.description}}</small>
+        <small class="help-text globo-description">{{element.description}}</small>
     {% endif %}
     <small class="messages"></small>
 </div>
 {% when "email" %}
 <div class="globo-form-control {{columnWidthClass}}" {{dataAttr}}>
-    <label for="{{element.id}}" class="{{configs.appearance.style}}-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</label>
+    <label for="{{element.id}}" class="{{configs.appearance.style}}-label globo-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</label>
     <input type="text" {{attrInput}} data-type="{{element.type}}" class="{{configs.appearance.style}}-input" id="{{element.id}}" name="{{element.id}}" placeholder="{{element.placeholder}}" {% if element.required %}presence{% endif %} >
     {% if element.description != '' %}
-        <small class="help-text">{{element.description}}</small>
+        <small class="help-text globo-description">{{element.description}}</small>
     {% endif %}
     <small class="messages"></small>
 </div>
 {% when "textarea" %}
 <div class="globo-form-control {{columnWidthClass}}" {{dataAttr}}>
-    <label for="{{element.id}}" class="{{configs.appearance.style}}-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</label>
+    <label for="{{element.id}}" class="{{configs.appearance.style}}-label globo-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</label>
     <textarea id="{{element.id}}" {{attrInput}} data-type="{{element.type}}" class="{{configs.appearance.style}}-input" rows="3" name="{{element.id}}" placeholder="{{element.placeholder}}" {% if element.required %}presence{% endif %} ></textarea>
     {% if element.description != '' %}
-        <small class="help-text">{{element.description}}</small>
+        <small class="help-text globo-description">{{element.description}}</small>
     {% endif %}
     <small class="messages"></small>
 </div>
 {% when "url" %}
 <div class="globo-form-control {{columnWidthClass}}" {{dataAttr}}>
-    <label for="{{element.id}}" class="{{configs.appearance.style}}-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</label>
+    <label for="{{element.id}}" class="{{configs.appearance.style}}-label globo-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</label>
     <input type="text" {{attrInput}} data-type="{{element.type}}" class="{{configs.appearance.style}}-input" id="{{element.id}}" name="{{element.id}}" placeholder="{{element.placeholder}}" {% if element.required %}presence{% endif %} >
     {% if element.description != '' %}
-        <small class="help-text">{{element.description}}</small>
+        <small class="help-text globo-description">{{element.description}}</small>
     {% endif %}
     <small class="messages"></small>
 </div>
 {% when "phone" %}
 <div class="globo-form-control {{columnWidthClass}}" {{dataAttr}}>
-    <label for="{{element.id}}" class="{{configs.appearance.style}}-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</label>
+    <label for="{{element.id}}" class="{{configs.appearance.style}}-label globo-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</label>
     <input type="text" {{attrInput}} data-type="{{element.type}}" class="{{configs.appearance.style}}-input" id="{{element.id}}" name="{{element.id}}" placeholder="{{element.placeholder}}" {% if element.required %}presence{% endif %} >
     {% if element.description != '' %}
-        <small class="help-text">{{element.description}}</small>
+        <small class="help-text globo-description">{{element.description}}</small>
     {% endif %}
     <small class="messages"></small>
 </div>
 {% when "number" %}
 <div class="globo-form-control {{columnWidthClass}}" {{dataAttr}}>
-    <label for="{{element.id}}" class="{{configs.appearance.style}}-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</label>
+    <label for="{{element.id}}" class="{{configs.appearance.style}}-label globo-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</label>
     <input type="number" {{attrInput}} class="{{configs.appearance.style}}-input" id="{{element.id}}" name="{{element.id}}" placeholder="{{element.placeholder}}" {% if element.required %}presence{% endif %} >
     {% if element.description != '' %}
-        <small class="help-text">{{element.description}}</small>
+        <small class="help-text globo-description">{{element.description}}</small>
     {% endif %}
     <small class="messages"></small>
 </div>
+{% when "password" %}
+<div class="globo-form-control {{columnWidthClass}}" {{dataAttr}}>
+    <label for="{{element.id}}" class="{{configs.appearance.style}}-label globo-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</label>
+    <input type="password" data-type="{{element.type}}" {{attrInput}} class="{{configs.appearance.style}}-input" id="{{element.id}}" name="{{element.id}}" {% if element.validationRule %} data-validate-rule="{{element.validationRule}}" {% endif %} {% if element.validationRule == 'advancedValidateRule' %} data-advanced-validate-rule="{{element.advancedValidateRule}}" {% endif %} placeholder="{{element.placeholder}}" {% if element.required %}presence{% endif %} >
+    {% if element.description != '' %}
+        <small class="help-text globo-description">{{element.description}}</small>
+    {% endif %}
+    <small class="messages"></small>
+</div>
+{% if element.hasConfirm %}
+    <div class="globo-form-control {{columnWidthClass}}" {{dataAttr}}>
+        <label for="{{element.id}}Confirm" class="{{configs.appearance.style}}-label globo-label"><span class="label-content">{{element.labelConfirm}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</label>
+        <input type="password" data-type="{{element.type}}" data-additional-type="confirm-{{element.type}}" data-connected-element="{{element.id}}" {% if element.validationRule %} data-validate-rule="{{element.validationRule}}" {% endif %} {% if element.validationRule == 'advancedValidateRule' %} data-advanced-validate-rule="{{element.advancedValidateRule}}" {% endif %}  {{attrInput}} class="{{configs.appearance.style}}-input" id="{{element.id}}Confirm" name="{{element.id}}Confirm" placeholder="{{element.placeholderConfirm}}" {% if element.required %}presence{% endif %} >
+        {% if element.descriptionConfirm != '' %}
+            <small class="help-text globo-description">{{element.descriptionConfirm}}</small>
+        {% endif %}
+        <small class="messages"></small>
+    </div>
+{% endif %}
 {% when "datetime" %}
 <div class="globo-form-control {{columnWidthClass}}" {{dataAttr}}>
-    <label for="{{element.id}}" class="{{configs.appearance.style}}-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</label>
-    <input type="text" {{attrInput}} data-type="{{element.type}}" class="{{configs.appearance.style}}-input" id="{{element.id}}" name="{{element.id}}" placeholder="{{element.placeholder}}" {% if element.required %}presence{% endif %} data-format="{{element.format}}" dataDateFormat="{{element.date-format}}" dataTimeFormat="{{element.time-format}}" >
+    <label for="{{element.id}}" class="{{configs.appearance.style}}-label globo-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</label>
+    <input 
+        type="text" 
+        {{attrInput}} 
+        data-type="{{element.type}}" 
+        class="{{configs.appearance.style}}-input" 
+        id="{{element.id}}" 
+        name="{{element.id}}" 
+        placeholder="{{element.placeholder}}" 
+        {% if element.required %}presence{% endif %} 
+        data-format="{{element.format}}" 
+        {% if element.otherLang %}
+        data-locale="{{element.localization}}" 
+        {% endif %} 
+        dataDateFormat="{{element.date-format}}" 
+        dataTimeFormat="{{element.time-format}}" 
+        {% if element.format == 'date' and element.isLimitDate %}
+            limitDateType="{{element.limitDateType}}"
+            {% if element.limitDateSpecificEnabled %}
+                limitDateSpecificDates="{{element.limitDateSpecificDates}}"
+            {% endif %}
+            {% if element.limitDateRangeEnabled %}
+                limitDateRangeDates="{{element.limitDateRangeDates}}"
+            {% endif %}
+            {% if element.limitDateDOWEnabled %}
+                limitDateDOWDates="{{element.limitDateDOWDates}}"
+            {% endif %}
+        {% endif %}
+    >
     {% if element.description != '' %}
-        <small class="help-text">{{element.description}}</small>
+        <small class="help-text globo-description">{{element.description}}</small>
     {% endif %}
     <small class="messages"></small>
 </div>
 {% when "file" %}
 <div class="globo-form-control {{columnWidthClass}}" {{dataAttr}}>
-    <label for="{{element.id}}" class="{{configs.appearance.style}}-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</label>
+    <label for="{{element.id}}" class="{{configs.appearance.style}}-label globo-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</label>
     <input type="file" {{attrInput}} data-type="{{element.type}}" class="{{configs.appearance.style}}-input" id="{{element.id}}" {% if element.allowed-multiple %} multiple name="{{element.id}}[]" {% else %} name="{{element.id}}" {% endif %}
         placeholder="{{element.placeholder}}" {% if element.required %}presence{% endif %} data-allowed-extensions="{{element.allowed-extensions | join : ',' }}">
     {% if element.description != '' %}
-        <small class="help-text">{{element.description}}</small>
+        <small class="help-text globo-description">{{element.description}}</small>
     {% endif %}
     <small class="messages"></small>
 </div>
 {% when "checkbox" %}
 <div class="globo-form-control {{columnWidthClass}}" {{dataAttr}}>
-    <legend class="{{configs.appearance.style}}-label "><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</legend>
+    <legend class="{{configs.appearance.style}}-label globo-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</legend>
     {% assign options = element.options | optionsToArray %}
     <ul>
         {% for option in options %}
             <li>
                 <div class="checkbox-wrapper">
                     <input class="checkbox-input" {{attrInput}} id="{{element.id}}-{{option}}-{{uniqueId}}" type="checkbox" data-type="{{element.type}}" name="{{element.id}}[]" {% if element.required %}presence{% endif %} value="{{option}}">
-                    <label class="checkbox-label" for="{{element.id}}-{{option}}-{{uniqueId}}">{{option}}</label>
+                    <label class="checkbox-label globo-option" for="{{element.id}}-{{option}}-{{uniqueId}}">{{option}}</label>
                 </div>
             </li>
             
         {% endfor %}
     </ul>
     {% if element.description != '' %}
-        <small class="help-text">{{element.description}}</small>
+        <small class="help-text globo-description">{{element.description}}</small>
     {% endif %}
     <small class="messages"></small>
 </div>
 {% when "radio" %}
 <div class="globo-form-control {{columnWidthClass}}" {{dataAttr}}>
-    <legend class="{{configs.appearance.style}}-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</legend>
+    <legend class="{{configs.appearance.style}}-label globo-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</legend>
     {% assign options = element.options | optionsToArray %}
     <ul>
         {% for option in options %}
         <li>
             <div class="radio-wrapper">
                 <input class="radio-input" {{attrInput}} id="{{element.id}}-{{option}}-{{uniqueId}}" type="radio" data-type="{{element.type}}" name="{{element.id}}" {% if element.required %}presence{% endif %} value="{{option}}">
-                <label class="radio-label" for="{{element.id}}-{{option}}-{{uniqueId}}">{{option}}</label>
+                <label class="radio-label globo-option" for="{{element.id}}-{{option}}-{{uniqueId}}">{{option}}</label>
             </div>
         </li>
         {% endfor %}
     </ul>
     {% if element.description != '' %}
-        <small class="help-text">{{element.description}}</small>
+        <small class="help-text globo-description">{{element.description}}</small>
     {% endif %}
     <small class="messages"></small>
 </div>
 {% when "select" %}
 <div class="globo-form-control {{columnWidthClass}}" {{dataAttr}}>
-    <label for="{{element.id}}" class="{{configs.appearance.style}}-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</label>
+    <label for="{{element.id}}" class="{{configs.appearance.style}}-label globo-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</label>
     {% assign options = element.options | optionsToArray %}
     <select name="{{element.id}}" {{attrInput}} id="{{element.id}}" class="{{configs.appearance.style}}-input" {% if element.required %}presence{% endif %}>
         <option selected="selected" value="" disabled="disabled">{{element.placeholder}}</option>
@@ -385,13 +485,13 @@
         {% endfor %}
     </select>
     {% if element.description != '' %}
-        <small class="help-text">{{element.description}}</small>
+        <small class="help-text globo-description">{{element.description}}</small>
     {% endif %}
     <small class="messages"></small>
 </div>
 {% when "country" %}
 <div class="globo-form-control {{columnWidthClass}}" {{dataAttr}}>
-    <label for="{{element.id}}" class="{{configs.appearance.style}}-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</label>
+    <label for="{{element.id}}" class="{{configs.appearance.style}}-label globo-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</label>
     {% assign options = element.options | optionsToArray %}
     <select name="{{element.id}}" {{attrInput}} id="{{element.id}}" class="{{configs.appearance.style}}-input" {% if element.required %}presence{% endif %}>
         <option selected="selected" value="" disabled="disabled">{{element.placeholder}}</option>
@@ -400,23 +500,23 @@
         {% endfor %}
     </select>
     {% if element.description != '' %}
-        <small class="help-text">{{element.description}}</small>
+        <small class="help-text globo-description">{{element.description}}</small>
     {% endif %}
     <small class="messages"></small>
 </div>
 {% when "heading" %}
 <div class="globo-form-control {{columnWidthClass}}" {{dataAttr}}>
-    <h3 class="heading-title">{{element.heading}}</h3>
+    <h3 class="heading-title globo-heading">{{element.heading}}</h3>
     <p class="heading-caption">{{element.caption}}</p>
 </div>
 {% when "paragraph" %}
 <div class="globo-form-control {{columnWidthClass}}" {{dataAttr}}>
     <label for="{{element.id}}" class="{{configs.appearance.style}}-label"><span class="label-content">{{element.label}}</span></label>
-    <div>{{element.text}}</div>
+    <div class="globo-paragraph">{{element.text}}</div>
 </div>
 {% when "rating-star" %}
 <div class="globo-form-control {{columnWidthClass}}" {{dataAttr}}>
-    <label for="{{element.id}}" class="{{configs.appearance.style}}-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</label>
+    <label for="{{element.id}}" class="{{configs.appearance.style}}-label globo-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</label>
     <div class="star-rating">
         <fieldset>
             <input type="radio" {{attrInput}} data-type="{{element.type}}" {% if element.required %}presence{% endif %} id="{{element.id}}-5-stars" name="{{element.id}}" value="5" /><label for="{{element.id}}-5-stars" title="5 Stars">5 stars</label>
@@ -427,24 +527,22 @@
         </fieldset>
     </div>
     {% if element.description != '' %}
-        <small class="help-text">{{element.description}}</small>
+        <small class="help-text globo-description">{{element.description}}</small>
     {% endif %}
     <small class="messages"></small>
 </div>
 {% when "devider" %}
-<div class="globo-form-control">
+<div class="globo-form-control {{columnWidthClass}}" {{dataAttr}} >
     <hr>
 </div>
 {% when "hidden" %}
-    {% if customer && element.dynamic-content == 'customer' %}
-        {%- assign value = "<a href='/admin/customers/{{customer.id}}'>{{customer.name}}</a>" -%}
-    {% endif %}
-    {% if product && element.dynamic-content == 'product' %}
-        {%- assign value = "<a href='/admin/products/{{product.id}}'>{{product.title}}</a>" -%}
-    {% endif %}
 <div class="globo-form-control {{columnWidthClass}}" {{dataAttr}} style="display: none;visibility: hidden;">
     <label for="{{element.id}}" class="{{configs.appearance.style}}-label"><span class="label-content">{{element.label}}</span>{% if element.required %}<span class="text-danger text-smaller"> *</span>{% endif %}</label>
-    <textarea id="{{element.id}}" name="{{element.id}}">{{value}}</textarea>
+    {% if element.dataType == 'fixed' %}
+        <input type="hidden" data-type="{{element.dataType}}" id="{{element.id}}" name="{{element.id}}" value="{{element.fixedValue}}">
+    {% else %}
+        <input type="hidden" data-type="{{element.dataType}}" id="{{element.id}}" name="{{element.id}}" value="" >
+    {% endif %}
 </div>
 {% else %}
 

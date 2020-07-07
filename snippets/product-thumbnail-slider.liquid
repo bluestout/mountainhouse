@@ -75,7 +75,6 @@
         {% if settings.quick_shop_style == 'popup' and settings.quick_shop_enabled %}
           {% include 'collection-swatch' %}
         {% endif %}
-
         {% if settings.quick_shop_style == 'inline' and settings.quick_shop_enabled %}
           {% unless collection_handles contains 'coming-soon' %}
             <div class="inline-quickshop js-product_section product-{{ product.id }}">

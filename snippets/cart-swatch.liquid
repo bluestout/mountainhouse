@@ -10,7 +10,7 @@
 {% assign is_type = false %}
 {% assign option_index = 0 %}
 
-{% for option in item.product.options %}
+{% for option in item.options %}
   {% if option == swatch %}
     {% assign found_option = true %}
     {% assign option_index = forloop.index0 %}
@@ -24,25 +24,14 @@
 <div class="swatch clearfix" data-option-index="{{ option_index }}">
   <!-- <div class="option_title">{{ swatch }}</div> -->
   {% assign values = '' %}
-  {% for variant in item.product.variants %}
+  {% for variant in item.variants %}
     {% assign value = variant.options[option_index] %}
     {% unless values contains value %}
       {% assign values = values | join: ',' %}
       {% assign values = values | append: ',' | append: value %}
       {% assign values = values | split: ',' %}
       {% assign variant_active = variant.featured_image | replace: '.png', '_active.png'%}
-      {% style %}
-        .swatch input:checked+.swatch-element .type{
-          
-          border-color:red!important;
-        }
-        .swatch input:checked+.swatch-element .type label{
-          background-color:red!important;
-        }
-        .swatch input:checked+.swatch-element .type label img{
-          filter: brightness(1.5);
-        }
-      {% endstyle %}
+
       {% assign title = item.variant.title | split: ' / ' %}
 
       <input id="swatch-{{ option_index }}-{{ value | handle }}-{{ product.id }}{% if section.id %}-{{ section.id }}{% endif %}" type="radio" name="option-{{ option_index }}" aria-label="{{ value | escape }}" tabindex="0" value="{{ value | escape }}"{% if title[0] == value %} checked{% endif %} />

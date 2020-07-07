@@ -1,0 +1,87 @@
+{% style %}
+    .icon-bar{
+        background: {{section.settings.bg_color}};
+    }
+
+    .icon-bar .columns div div{
+        margin-top : 4px;
+        color: {{section.settings.title_color}};	
+    }
+    .icon-bar .columns div img{
+        max-width  : 30px;
+        max-height : 33px;
+    }
+    .icon-bar .columns div svg{
+      max-width  : 30px;
+      max-height : 33px;
+      filter: brightness(100);
+      float: left;
+    }
+    .bar-large .columns{
+        margin: 50px 0px;
+    }
+    .bar-small .columns{
+        margin: 15px 0px;
+    } 
+{% endstyle %}
+{% assign size_val = 0 %}
+{% assign i = 1 %}
+{% for i in (1..4) %}
+    {% assign id = i | prepend: "second-bar-item-text-" %}
+  {% if product.metafields["global"][id] != blank %}
+    {% assign size_val =  size_val | plus: 1 %}
+  {% endif %}
+{% endfor %}
+
+
+{%if size_val == 2%}
+    {% assign class_name = 'one-two' %}
+{% elsif size_val == 3 %}
+  {% assign class_name = 'one-third' %}
+{% else %}
+  {% assign class_name = 'one-fourth' %}
+{% endif %}
+
+
+{% if size_val > 0 %}
+  <div class="icons icon-bar bar-{{section.settings.bar_size}}">
+    <div class="sixteen">
+      <div class="section list-collection-wrapper">
+        <div class="list-collections clearfix equal-columns--outside-trim equal-columns--clear">
+          {% if product.metafields["global"]["second-bar-item-text-1"] != blank%}
+            <div class="{{ class_name }} columns small-down--one-whole">
+              <div >
+                {{ product.metafields["global"]["second-bar-item-svg-1"] }}
+                <div>{{ product.metafields["global"]["second-bar-item-text-1"] }}</div>
+              </div>
+            </div> 
+          {% endif %}
+          {% if product.metafields["global"]["second-bar-item-text-2"] != blank%}
+            <div class="{{ class_name }} columns small-down--one-whole">
+              <div >
+                {{ product.metafields["global"]["second-bar-item-svg-2"] }}
+                <div>{{ product.metafields["global"]["second-bar-item-text-2"] }}</div>
+              </div>
+            </div> 
+          {% endif %}
+          {% if product.metafields["global"]["second-bar-item-text-3"] != blank%}
+            <div class="{{ class_name }} columns small-down--one-whole">
+              <div >
+                {{ product.metafields["global"]["second-bar-item-svg-3"] }}
+                <div>{{ product.metafields["global"]["second-bar-item-text-3"] }}</div>
+              </div>
+            </div> 
+          {% endif %}
+          {% if product.metafields["global"]["second-bar-item-text-4"] != blank%}
+            <div class="{{ class_name }} columns small-down--one-whole">
+              <div >
+                {{ product.metafields["global"]["second-bar-item-svg-4"] }}
+                <div>{{ product.metafields["global"]["second-bar-item-text-4"] }}</div>
+              </div>
+            </div> 
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}

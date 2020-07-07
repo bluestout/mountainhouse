@@ -7,7 +7,7 @@
 <footer class="footer">
   <div class="container-fluid footer-menu-wrap">
       {% for block in section.blocks %}
-        <div class="{% if forloop.length >= 5 %}one-fifth column{% elsif forloop.length == 4 %}one-fourth column{% elsif forloop.length == 3 %}one-third column{% elsif forloop.length == 2 %}one-half column{% endif %} medium-down--one-whole" {{ block.shopify_attributes }}>
+        <div class="{% if forloop.length >= 5 %}one-fourth column{% elsif forloop.length == 4 %}one-fourth column{% elsif forloop.length == 3 %}one-third column{% elsif forloop.length == 2 %}one-half column{% endif %} medium-down--one-whole" {{ block.shopify_attributes }}>
           {% if block.type == 'logo' %}
             <div class="text-align--{{block.settings.text_align}}">
               {% if block.settings.image %}
@@ -53,6 +53,7 @@
                   <input type="submit" value="{{ 'general.newsletter_form.submit' | t }}" class="action_button sign_up" name="subscribe" />
                 </form>
               {% else %}
+              <div class="klaviyo-form-Kpx8NY"></div>
                 {% form 'customer' %}
                   {% if form.posted_successfully? %}
                     <p><em>{{ 'general.newsletter_form.success_text' | t }}</em></p>
@@ -147,7 +148,7 @@
         </div>
         {% if forloop.last and social_icons %}
           <div class="footer-social-icons--mobile sixteen columns">
-            
+
             {% include 'social-icons' %}
           </div>
         {% endif %}
@@ -160,8 +161,11 @@
           {{ 'layout.general.designer_credits_html' | t }}
         {% endif %}
         <!-- {{ powered_by_link | split: '" ' | join: '&ref=out-of-the-sandbox" ' | split: '">' | join: '&ref=out-of-the-sandbox">' }} -->
-        <a>Privacy Policy</a>
-        <a>Terms & Conditions</a>
+        {% for block in section.blocks %}
+          {% if block.type == 'link' %}
+            <a href="/pages/{{ block.settings.link_url }}">{{ block.settings.footer_title }}</a>
+          {% endif %}
+        {% endfor %}
       </p>
     </div>
     <div class="one-fourth columns">
@@ -185,7 +189,7 @@
 {
   "name": "Footer",
   "class": "footer-section",
-  "max_blocks": 5,
+  "max_blocks": 10,
   "settings": [
     {
      "type": "header",
@@ -312,6 +316,24 @@
           "id": "social_icons_footer",
           "label": "Show social media footer icons",
           "default": false
+        }
+      ]
+    },
+    {
+      "type": "link",
+      "name": "Footer link",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "footer_title",
+          "label": "Heading title",
+          "default": "Title"
+        },
+        {
+          "type": "page",
+          "id": "link_url",
+          "label": "Link page"
         }
       ]
     },

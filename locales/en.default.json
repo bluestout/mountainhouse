@@ -296,7 +296,7 @@
       "quantity": "Quantity",
       "total": "Total",
       "fulfilled_at": "Fulfilled {{ date }}",
-      "subtotal": "Subtotal"
+      "subtotal": "Sub total"
     },
     "register": {
       "title": "Create Account",
@@ -364,7 +364,7 @@
       "view_terms": "[View Terms]",
       "agree_to_terms_warning": "You must agree with the terms and conditions to checkout.",
       "or": "or",
-      "subtotal": "Subtotal",
+      "subtotal": "Sub total",
       "discount": "Discount",
       "update": "Update Subtotal",
       "checkout": "Checkout"

@@ -5,7 +5,7 @@
 
 {% if section.settings.show_banner %}
 
-  <section id="banner-{{section.id}}" class="banner page_banner">
+  <section id="banner-{{section.id}} dark-overlay-{{ section.settings.image_darken }}" class="banner page_banner">
     {% if section.settings.image != nil %}
       {% include 'image-element', image: section.settings.image, alt: section.settings.image.alt, stretch_width: true %}
     {% else %}
@@ -23,37 +23,37 @@
         </a>
       {% endif %}
     {% endunless %}
-    {% unless section.settings.pretext == blank and section.settings.title == blank and section.settings.subtitle == blank and section.settings.button1 == blank and section.settings.button2 == blank %}
-      <div class="position-{{ section.settings.text_position }} caption js-caption">
-        <div class="caption-content caption-background-{{ section.settings.caption_background }} caption-transparency-{{ section.settings.caption_background_transparency }} align-{{ section.settings.text_align }}">
-          {% if section.settings.pretext != blank %}
-            <div class="pretext">
-              {{ section.settings.pretext }}
-            </div>
-          {% endif %}
-          {% if section.settings.title != blank %}
-            <h1 class="headline">
+    <div class="position--{{section.settings.collection_title_position}} caption js-caption">
+      <div class="caption-content caption-background-{{ section.settings.caption_background }} caption-transparency-{{ section.settings.caption_background_transparency }} align-{{ section.settings.text_align }}">
+        {% if section.settings.pretext != blank %}
+          <div class="pretext">
+            {{ section.settings.pretext }}
+          </div>
+        {% endif %}
+          <h1 class="headline">
+            {% if section.settings.title != blank %}
               {{ section.settings.title }}
-            </h1>
-          {% endif %}
-          {% if section.settings.subtitle != blank %}
-            <div class="subtitle">
-              {{ section.settings.subtitle }}
-            </div>
-          {% endif %}
-          {% if section.settings.button1 != blank %}
-            <a {% if section.settings.button1_link != blank %}href="{{ section.settings.button1_link }}"{% endif %} class="action_button first_button highlight-{{ section.settings.button1_highlight }}">
-              {{ section.settings.button1 }}
-            </a>
-          {% endif %}
-          {% if section.settings.button2 != blank %}
-            <a {% if section.settings.button2_link != blank %}href="{{ section.settings.button2_link }}"{% endif %} class="action_button second_button highlight-{{ section.settings.button2_highlight }}">
-              {{ section.settings.button2 }}
-            </a>
-          {% endif %}
-        </div>
+            {% else %}
+              {{ page.title }}
+            {% endif %}
+          </h1>
+        {% if section.settings.subtitle != blank %}
+          <div class="subtitle">
+            {{ section.settings.subtitle }}
+          </div>
+        {% endif %}
+        {% if section.settings.button1 != blank %}
+          <a {% if section.settings.button1_link != blank %}href="{{ section.settings.button1_link }}"{% endif %} class="action_button first_button highlight-{{ section.settings.button1_highlight }}">
+            {{ section.settings.button1 }}
+          </a>
+        {% endif %}
+        {% if section.settings.button2 != blank %}
+          <a {% if section.settings.button2_link != blank %}href="{{ section.settings.button2_link }}"{% endif %} class="action_button second_button highlight-{{ section.settings.button2_highlight }}">
+            {{ section.settings.button2 }}
+          </a>
+        {% endif %}
       </div>
-    {% endunless %}
+    </div>
   </section>
 
 {% endif %}
@@ -119,6 +119,31 @@
       "type": "richtext",
       "id": "subtitle",
       "label": "Subheading"
+    },
+    {
+      "type": "checkbox",
+      "id": "image_darken",
+      "label": "Darken image",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "collection_title_position",
+      "label": "Collection title position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
     },
     {
       "type": "checkbox",

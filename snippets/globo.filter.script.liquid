@@ -15,9 +15,11 @@
       name: "{{ shop.name | escape }}",
       url: "{{ shop.url }}",
       domain: "{{ shop.permanent_domain }}",
+      product_image: {width: 500, height: 500},
       no_image_url: "https://cdn.shopify.com/s/images/themes/product-1.png",
       themeStoreId: 0,
-      swatches: {{ shop.metafields.globo.swatches | json }}    },
+      swatches: {{ shop.metafields.globo.swatches | json }},
+      images: ["10-cans.png","404_img.png","beefd.png","bg.jpg","bg.png","bg_title_black.png","bg_title_blue.png","bg_title_red.png","blog_logo.png","bowl1_c04a7b4d-4288-4a7d-a360-fa7ec32cd5a6_400x.png","bowl2_400x.png","bucket-hover.png","buckets-amp-kits.png","calories_ico.png","cart.png","chevron-left.png","collection-bg-1.png","collection-bg-2.png","collection-bg-3.png","entrees.png","favicon.png","Group-6.png","Group-7.png","Group.png","ico-ico_ask.png","ico-ico_delivery_black.png","ico-ico_gluten_free.png","ico-ico_natural.png","ico-ico_no_artificial_colors.png","ico-ico_no_artificial_flavors_black.png","ico-ico_wish.png","ico-ico_without_cooking.png","icons.png","ico_bucket.png","kit-hover.png","mashroom_1.png","mountains.png","notfound.jpg","password-page-background.jpg","play_btn.png","pork.png","pouch-hover.png","pouch.png","pouches.png","pro-pak-hover.png","pro-pak.png","prod_icon1.png","prod_icon2.png","prod_icon4.png","prod_icon5.png","protein_ico.png","rice.png","search.png","select-chevron.png","select.png","select_light.png","simple-sensations.png","soldout.png","spicy_2nd_800x.png","tomato_PNG12518.png","toppng.com-sliced-brown-mushroom-png-clip-art-image-champignon-mushroom-593x293.png","user.png"]    },
     filter: {
       id: {{ shop.metafields.globo.filters | json }}[page_id] || {{ shop.metafields.globo.filters | json }}['default'] || 0,
       layout: 3,
@@ -33,6 +35,7 @@
       term: "{{ search.terms | escape }}",
       limit: 6
     },
+    customer: {% if customer %}{id: {{customer.id}}, tags: {{customer.tags | json}}}{% else %}false{% endif %},
     selector: {
       sortBy: '.collection-sorting',
       pagination: '.pagination:first, .paginate:first, .pagination-custom:first, #pagination:first',
@@ -40,8 +43,8 @@
     }
   };
 </script>
-<script id="gspfSearchResult" type="template/html">{% include 'globo.filter.search' %}</script><script id="gspfFilterTree"   type="template/html">{% include 'globo.filter.tree' %}</script>
+<script id="gspfFilterTree"   type="template/html">{% include 'globo.filter.tree' %}</script>
 <script id="gspfFilterSort"   type="template/html">{% include 'globo.filter.sort' %}</script>
 <script id="gspfProduct"      type="template/html">{% include 'globo.filter.product' %}</script>
 <script id="gspfPagination"   type="template/html">{% include 'globo.filter.pagination' %}</script>
-{{ 'v5.globo.filter.lib.js' | asset_url | script_tag }}<script type="text/javascript">var globofilter = new GloboFilter(GloboFilterConfig);</script>
+{{ 'v5.globo.filter.lib.js' | asset_url | script_tag }}{% if template contains 'collection' %}<script type="text/javascript">var globofilter = new GloboFilter(GloboFilterConfig);</script>{% endif %}

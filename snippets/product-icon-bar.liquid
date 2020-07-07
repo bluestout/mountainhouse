@@ -1,0 +1,88 @@
+{% if product.metafields["global"]["icon-bar-color"] != blank %}
+  {% assign color = product.metafields["global"]["icon-bar-color"] %}
+{% elsif section.settings.bg_color != blank %}
+  {% assign color = section.settings.bg_color %}
+{% else %}
+{% assign color = '#000' %}
+{% endif %}
+
+{% style %}
+    .icon-bar{
+        background: {{ color }};
+    }
+
+    .icon-bar .columns div div{
+        margin-top : 4px;
+        color: {{section.settings.title_color}};	
+    }
+    .icon-bar .columns div img{
+        max-width  : 30px;
+        max-height : 33px;
+    }
+    .icon-bar .columns div svg{
+      max-width  : 30px;
+      max-height : 33px;
+      filter: brightness(100);
+      float: left;
+    }
+    .bar-large .columns{
+        margin: 50px 0px;
+    }
+    .bar-small .columns{
+        margin: 15px 0px;
+    } 
+{% endstyle %}
+{% assign size_val = 0 %}
+{% assign i = 1 %}
+
+{% for block in section.blocks %}
+  {% if block.type == 'icon' and block.settings.product == product.handle%}
+    {% for item in  (1..4) %}
+      {% assign icon_handle = type | append: '_icon_title_' | append: item %}
+        {% if block.settings[icon_handle] != blank %}
+          {% assign size_val =  size_val | plus: 1 %}
+        {% endif %}
+    {% endfor %}
+    
+  {% endif %}
+{% endfor %}
+{%if size_val == 2%}
+    {% assign class_name = 'one-two' %}
+{% elsif size_val == 3 %}
+  {% assign class_name = 'one-third' %}
+{% else %}
+  {% assign class_name = 'one-fourth' %}
+{% endif %}
+
+{% if size_val > 0 %}
+  <div class="icons icon-bar bar-{{section.settings.bar_size}}">
+    <div class="sixteen">
+      <div class="section list-collection-wrapper">
+        <div class="list-collections clearfix equal-columns--outside-trim equal-columns--clear">
+          {% for icon_block in section.blocks %}
+            {% if icon_block.type == 'icon' and icon_block.settings.product == product.handle%}
+            {% for i in  (1..4) %}
+
+              {% assign icon_handle = type | append: '_icon_title_' | append: i %}
+              {% assign image_handle = type | append: '_icon_image_' | append: i %}
+              {% assign svg_handle = type | append: '_icon_svg_' | append: i %}
+                {% if icon_block.settings[icon_handle] != blank %}
+                  <div class="{{ class_name }} columns small-down--one-whole">
+                    <div >
+                      {% if icon_block.settings[svg_handle] != blank %}
+                        {{ icon_block.settings[svg_handle] }}
+                      {% else %}
+                        <img src="{{ icon_block.settings[image_handle] | img_url: 'original' }}">
+                      {% endif %}
+                      <div>{{ icon_block.settings[icon_handle] }}</div>
+                    </div>
+                  </div> 
+                {% endif %}
+            {% endfor %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}

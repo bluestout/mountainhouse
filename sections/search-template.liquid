@@ -109,6 +109,14 @@
 
       <div id="gf-products" class="search-matrix">
         {% for item in search.results %}
+
+          {% assign sold_out = false %}
+
+          {% for tag in item.tags %}
+            {% if tag == "is_out_stock" or tag == "is_low_stock" %}
+              {% assign sold_out = true %}
+            {% endif %}
+          {% endfor %}
           <div class="product_row clearfix">
             {% assign featured_image = false %}
 
@@ -140,21 +148,23 @@
 
               {% if item.price %}
                 <div class="info">
-                  {% unless settings.display_price == false and item.available == false %}
-                    <span class="price">
-                      {% if item.compare_at_price_max > item.price %}
-                        <span class="was_price">{{ item.compare_at_price_max | money }}</span>
-                      {% endif %}
-                        {% if item.price_varies %}
-                          {% if item.compare_at_price_max > item.price %}
-                            <br />
-                          {% endif %}
-                          <small><em>{{ 'products.general.from' | t }}</em></small>
+                  {% if sold_out == false %}
+                    {% unless settings.display_price == false and item.available == false %}
+                      <span class="price">
+                        {% if item.compare_at_price_max > item.price %}
+                          <span class="was_price">{{ item.compare_at_price_max | money }}</span>
                         {% endif %}
-                        {{ item.price_min | money }}
-                    </span>
-                  {% endunless %}
-                  {% if item.available == false %}
+                          {% if item.price_varies %}
+                            {% if item.compare_at_price_max > item.price %}
+                              <br />
+                            {% endif %}
+                            <small><em>{{ 'products.general.from' | t }}</em></small>
+                          {% endif %}
+                          {{ item.price_min | money }}
+                      </span>
+                    {% endunless %}
+                  {% endif %}
+                  {% if item.available == false or sold_out == true %}
                     <span class="sold-out-text">{{ settings.sold_out_text }}</span>
                   {% endif %}
                 </div>

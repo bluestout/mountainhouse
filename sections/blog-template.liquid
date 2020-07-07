@@ -4,8 +4,8 @@
 - Uses blocks
 {% endcomment %}
 
-{% if section.settings.feature_header_banner and section.settings.header_banner_image != blank %}
-    {% include 'blog-header' %}
+{% if section.settings.show_banner and section.settings.header_banner_image != blank %}
+  {% include 'page-brand'%} 
 {% endif %}
 <a name="pagecontent" id="pagecontent"></a>
 
@@ -41,11 +41,15 @@
     {% for article in blog.articles %}
       <div class="blog-item {% if home_page_articles == 2 %}eight columns{% elsif home_page_articles == 3 %}one-third column{% else %}four columns{% endif %} article medium-down--one-whole">
         {% if article.image %}
-          <a href="{{ article.url }}">
+          <a href="{{ article.url }}" class="zoom">
             {% include 'image-element', image: article.image, alt: article.image.alt, back_to_image:true %}
           </a>
         {% endif %}
-        <span class="category">{{blog.title}}</span>
+        
+        {% if article.metafields["global"]["segment"] != blank %}
+          <span class="category">{{ article.metafields["global"]["segment"] }}</span>
+        {% endif %}
+        
         <p class="sub_title">
           <a href="{{ article.url }}">{{ article.title }}</a>
         </p>
@@ -54,6 +58,8 @@
         </p>
       </div>
     {% endfor %}
+
+    
   </div>
 
   {% include "blog-sidebar", blog_handle: blog.handle %}
@@ -63,7 +69,11 @@
     {% include 'pagination' %}
   </div>
 {% endpaginate %}
-
+{% for item in blogs %}
+  {% for article in item.articles %}
+    {{ article.tags | json }}
+  {% endfor %}
+{% endfor %}
   </div>
 
 {% schema %}
@@ -78,14 +88,40 @@
       },
       {
           "type": "checkbox",
-          "id": "feature_header_banner",
+          "id": "show_banner",
           "label": "Feauture heading banner",
           "default": true
       },
       {
           "type": "image_picker",
           "id": "header_banner_image",
-          "label": "Header banner"
+          "label": "Header banner",
+          "info": "2048 x 1583px recommended"
+      },
+      {
+        "type": "checkbox",
+        "id": "image_darken",
+        "label": "Darken image",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "collection_title_position",
+        "label": "Collection title position",
+        "options": [
+            {
+            "value": "left",
+            "label": "Left"
+            },
+            {
+            "value": "center",
+            "label": "Center"
+            },
+            {
+            "value": "right",
+            "label": "Right"
+            }
+        ]
       },
       {
           "type": "image_picker",
@@ -93,9 +129,54 @@
           "label": "Banner icon"
       },
       {
-          "type": "text",
-          "id": "heading_title",
-          "label": "Heading title"
+          "type": "checkbox",
+          "id": "display_collection_title",
+          "label": "Display caption title"
+      },
+      {
+          "type": "checkbox",
+          "id": "display_collection_content",
+          "label": "Display caption content"
+      },
+      {
+          "type": "select",
+          "id": "text_align",
+          "label": "Text alignment",
+          "options": [
+              {
+              "value": "left",
+              "label": "Left"
+              },
+              {
+              "value": "center",
+              "label": "Center"
+              },
+              {
+              "value": "right",
+              "label": "Right"
+              }
+          ],
+          "default": "center"
+      },
+      {
+          "type": "checkbox",
+          "id": "caption_background_transparency",
+          "label": "Enable text background transparency"
+      },
+      {
+          "type": "color",
+          "id": "cap_bg_color",
+          "label": "Caption background color"
+      },
+      {
+          "type": "color",
+          "id": "cap_title_color",
+          "label": "Caption title color"
+      },
+      {
+          "type": "checkbox",
+          "id": "red_caption",
+          "label": "Show red caption"
       },
       {
         "type": "header",

@@ -36,12 +36,13 @@
   {% if product.id == skip_product.id  %}
     {% assign forLimit = limit | plus: 1 %}
   {% endif %}
+
 {% endfor %}
 
 <div id="gf-products" itemtype="http://schema.org/ItemList" class="product-list {{ matrixType }} clearfix equal-columns--clear equal-columns--outside-trim">
   {% for product in products limit: limit %}
     {% if product.id != skip_product.id %}
-      {% include 'product-thumbnail-overlay', sidebar: sidebar %}
+      {% include 'product-thumbnail' %}
     {% endif %}
   {% endfor %}
   {% if template contains 'collection' %}

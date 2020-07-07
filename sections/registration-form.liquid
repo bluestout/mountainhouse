@@ -13,8 +13,11 @@
 
           {% form 'create_customer' %}
             {{ form.errors | default_errors }}
-
             <div id="first_name" class="clearfix large_form">
+              <label for="first_name" class="login">Full Name</label>
+              <input type="text" value="" name="customer[full_name]" id="first_name" class="large" size="30" />
+            </div>
+            {% comment %} <div id="first_name" class="clearfix large_form">
               <label for="first_name" class="login">{{ 'customer.register.first_name' | t }}</label>
               <input type="text" value="" name="customer[first_name]" id="first_name" class="large" size="30" />
             </div>
@@ -22,7 +25,7 @@
             <div id="last_name" class="clearfix large_form">
               <label for="last_name" class="login">{{ 'customer.register.last_name' | t }}</label>
               <input type="text" value="" name="customer[last_name]" id="last_name" class="large" size="30" />
-            </div>
+            </div> {% endcomment %}
 
             <div id="email" class="clearfix large_form">
               <label for="email" class="login">{{ 'customer.register.email' | t }}</label>
@@ -46,7 +49,7 @@
             <div class="action_bottom">
               <input class="btn action_button" type="submit" value="{{ 'customer.register.sign_up' | t }}" style="margin-bottom: 30px;"/>
               <p class="left" style="padding-top: 8px;">
-                {{ 'customer.register.returning_customer_label' | t }} <a href="{{ routes.account_login_url }}" id="customer_login_link">{{ 'customer.register.sign_in_html' | t }}</a>
+                {{ 'customer.register.returning_customer_label' | t }} <a href="{{ routes.account_login_url }}" id="customer_login_link">Sign In</a>
               </p>
             </div>
 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="68px" height="68px" viewBox="0 0 68 68" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>27BC5C15-1B30-4516-86A6-17C2247A958D</title>
+    <desc>Created with sketchtool.</desc>
+    <defs></defs>
+    <g id="style-guide" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icons" transform="translate(-832.000000, -12.000000)" fill="#FFFFFF">
+            <g id="play_btn" transform="translate(833.000000, 13.000000)">
+                <path d="M33,67 C14.2223185,67 -1,51.7776815 -1,33 C-1,14.2223185 14.2223185,-1 33,-1 C51.7776815,-1 67,14.2223185 67,33 C67,51.7776815 51.7776815,67 33,67 Z M33,65 C50.673112,65 65,50.673112 65,33 C65,15.326888 50.673112,1 33,1 C15.326888,1 1,15.326888 1,33 C1,50.673112 15.326888,65 33,65 Z" id="Oval" fill-rule="nonzero"></path>
+                <polygon id="Triangle" points="41 32.5 25 41 25 24"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

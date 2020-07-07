@@ -1,57 +1,101 @@
-{% if type == 'block' %}  
+{% if type == 'block' %}
   {% assign title = block.settings.title %}
   {% assign settingCollection = block.settings.collection %}
-  
+
   {% assign products_per = block.settings.products_per %}
   {% assign products_limit = block.settings.products_limit %}
 {% else %}
   {% assign image = section.settings.image %}
   {% assign title = section.settings.title %}
   {% assign description = section.settings.description %}
-  {% assign settingCollection = section.settings.collection %}
-  {% assign collection_style = section.settings.collection_style %}
   {% assign collection_description = section.settings.collection_description %}
   {% assign products_per = section.settings.products_per %}
   {% assign products_limit = section.settings.products_limit %}
 {% endif %}
 
-{% if settingCollection == blank %}
-  {%- assign section_onboarding = true -%}
-  {% comment %}assign product length to be selected limit for onboarding{% endcomment %}
-  {% assign products_length = products_limit | plus: 0 %}
-{% else %}
-  {%- assign section_onboarding = false -%}
-{% endif %}
+{% assign products_length = products_limit | plus: 0 %}
+{%- assign section_onboarding = false -%}
 {% assign limit = products_limit %}
 
-{% assign col = settingCollection | handleize %}
-{% assign products = collections[col].products %}
-{% assign product_count = collections[col].all_products_count %}
+{% assign product_count = section.blocks.size %}
 {% assign per_slide = products_per %}
 <div class="products-slide">
   <div class="container full-width--true">
-    <div class="one-fourth columns info text-align--left">
-    {% if image != blank %}
-      <img src="{{ image |  img_url: "original"  }}">
-    {% endif %}
-    {% if title != blank %}
-      <a href="{{ collections[settingCollection].url }}"><h1 class="title">{{ title }}</h1></a>
-    {% endif %}
-    {% if description != blank %}
-      <div class="description">
-        {{ description }}
+    <div class="one-fourth large-down--one-whole columns info text-align--left">
+      <div class="content">
+        {% if image != blank %}
+        <img src="{{ image |  img_url: "original"  }}">
+        {% endif %}
+        {% if title != blank %}
+          <a href="{{ collections[settingCollection].url }}"><h1 class="title">{{ title }}</h1></a>
+        {% endif %}
+        {% if description != blank %}
+          <div class="description">
+            {{ description }}
+          </div>
+        {% endif %}
       </div>
-    {% endif %}
     </div>
-    <div class="three-fourths columns">
+    <div class="three-fourths large-down--one-whole columns">
       <div class="container js-product-slider homepage-product-slider full-width--true {% if per_slide == 2 or per_slide == 4 or per_slide == 6 %}even-num-slides{% endif %} featured-collection__products">
         {% if section_onboarding == false %}
           {% if product_count > 0 %}
-            {% include 'product-thumbnail-slider', per_slide: products_per, featured_collection: col  %}
+            {% assign limit = limit | plus: 0 %}
+            {% assign loop_limit = limit | plus: 0 %}
+            {% assign visible_products = per_slide %}
+            {% assign products_length = section.blocks.size %}
+            <div class="slider-gallery products-slider products-length-{{ products_length }} transparentBackground--{{settings.slideshow_button_style}}"
+                  data-products-per-slide="{{ visible_products }}"
+                  data-products-limit="{{ limit }}"
+                  data-products-available="{{ products_length }}">
+              {% for block in section.blocks limit: loop_limit %}
+                {% assign product = all_products[block.settings.product] %}
+
+                {% assign feature_image = product.featured_image %}
+                {% if block.settings.image %}
+                  {% assign feature_image = block.settings.image %}
+                {% endif %}
+                <div class="gallery-cell
+                            thumbnail
+                            visible-{{ visible_products }}
+                            quick-shop-style--{{ settings.quick_shop_style }}
+                            product-{{ product.id }}">
+                  <div class="product-wrap">
+                    <div class="relative product_image swap-{{ settings.collection_secondary_image }}">
+                      <a href="{{ product.url | within: collection }}">
+                        <div class="image__container">
+                          {% include 'image-element', image: feature_image, alt: product.title, object_fit: settings.align_height, max_height: settings.collection_height %}
+                        </div>
+                          {% if settings.collection_secondary_image != blank %}
+                            {% if product.images[1] != blank %}
+                              {% assign secondary_image = product.images[1] %}
+                            {% else %}
+                              {% assign secondary_image = product.featured_image %}
+                            {% endif %}
+                            <img  src="{{ secondary_image | img_url: '800x' }}"
+                                  class="secondary lazyload"
+                                  alt="{{ product.title | escape }}"
+                                  />
+                          {% endif %}
+                        </a>
+                      {% assign product_title = product.title %}
+                      {% if block.settings.title != blank %}
+                        {% assign product_title = block.settings.title %}
+                      {% endif %}
+                      {% assign product_content = "" %}
+                      {% if block.settings.content != blank %}
+                        {% assign product_content = block.settings.content %}
+                      {% endif %}
+                      {% include "product-detail-column" %}
+                    </div>
+                  </div>
+                  
+                </div>
+              {% endfor %}
+            </div>
           {% endif %}
         {% endif %}
       </div>
     </div>
   </div>
 </div>
-

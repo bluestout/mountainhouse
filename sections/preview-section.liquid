@@ -4,36 +4,35 @@
 - Uses blocks
 {% endcomment %}
 
-{%include 'header-brand' %}
-{% if section.settings.frontpage_grid_style == false %}
-  <div class="container">
-    <div class="sixteen columns">
+{% if section.settings.show_banner and section.settings.header_banner_image != blank %}
+    {% include 'page-brand'%} 
 {% endif %}
+
+
+
 
     <div class="image-with-text
                 featured_collections
-                clearfix across-{{section.settings.featured_links_per_row}} image-align--{{ section.settings.frontpage_image_position }}
-                full-width--{{ section.settings.frontpage_grid_style }}
+                clearfix across-1 image-align--{{ section.settings.frontpage_image_position }}
+                full-width--true
                 ">
       {% if section.blocks.size > 0 %}
         {% for block in section.blocks %}
           <section class="featured-link--section featured-link--image section-{{ forloop.index }}" {{ block.shopify_attributes }}>
             <div class="featured-link--half featured-link--image featured-link--margin image-crop--{{ block.settings.image_crop }}">
               <div class="featured-link--wrap">
-                <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} title="{{ block.settings.title }}">
                   {% if block.settings.image %}
                     {% include 'image-element', image: block.settings.image, alt: block.settings.image.alt, stretch_width: true %}
                   {% else %}
                     {% capture i %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
                     {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--promotions' }}
                   {% endif %}
-                </a>
               </div>
             </div>
-            <div class="featured-link--half block--{{ block.id }}">
+            <div class="featured-link--half feature-text block--{{ block.id }}">
               <div class="info text-align--{{section.settings.frontpage_text_align}}">
                 {% if block.settings.button_label != blank %}
-                  <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="button 
+                  <h1 class="brand 
                     {% if block.settings.is_donation_button_red %}donation_button_red{% endif %}
                     {% if block.settings.is_donation_button_blue %}donation_button_blue{% endif %}
                     {% if block.settings.is_donation_button_black %}donation_button_black{% endif %}
@@ -42,7 +41,7 @@
                       <span class="count">{{ block.settings.donation_count }}</span>
                     {% endif %}
                       {{ block.settings.button_label }}
-                  </a>
+                  </h1> 
                 {% endif %}
                 <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="collection_title">
                   {{ block.settings.title }}
@@ -57,11 +56,6 @@
         {% endfor %}
       {% endif %}
     </div>
-
-{% if section.settings.frontpage_grid_style == false %}
-    </div>
-  </div>
-{% endif %}
 
 <style>
 
@@ -81,56 +75,6 @@
     }
   {% endfor %}
 
-  {% if section.settings.frontpage_grid_style == false and section.settings.featured_links_per_row == '1' %}
-      #shopify-section-{{ section.id }} .featured-link--section {
-        margin-bottom: 3%;
-      }
-      @media only screen and (max-width: 480px) {
-        #shopify-section-{{ section.id }} .featured-link--section {
-          margin-bottom: 10%;
-        }
-      }
-
-      #shopify-section-{{ section.id }} .featured-link--half {
-        width: 45%;
-      }
-      #shopify-section-{{ section.id }} .featured-link--margin {
-        {% if section.settings.frontpage_image_position == 'right' %}
-          margin-left: 3%;
-        {% else %}
-          margin-left: 0;
-          margin-right: 3%;
-        {% endif %}
-      }
-      #shopify-section-{{ section.id }} .featured-link--section:nth-child(even) .featured-link--margin {
-        {% if section.settings.frontpage_image_position == 'right' %}
-          margin-left: 0;
-          margin-right: 3%;
-        {% else %}
-          margin-left: 3%;
-          margin-right: 0;
-        {% endif %}
-      }
-
-    {% elsif section.settings.frontpage_grid_style == false and section.settings.featured_links_per_row == '2' %}
-
-        @media only screen and (max-width: 480px) {
-          #shopify-section-{{ section.id }} .featured-link--section {
-            margin-bottom: 10%;
-          }
-        }
-
-        #shopify-section-{{ section.id }} .featured-link--margin {
-          margin-right: 0;
-          margin-left: 0;
-        }
-
-        #shopify-section-{{ section.id }} .featured-link--section:nth-child(even) .featured-link--margin {
-          margin-left: 0;
-          margin-right: 0;
-        }
-
-      {% endif %}
 </style>
 
 {% schema %}
@@ -140,75 +84,100 @@
   "max_blocks": 16,
   "settings": [
     {
+      "type": "header",
+      "content": "Header banner"
+    },
+    {
+        "type": "checkbox",
+        "id": "show_banner",
+        "label": "Feauture heading banner",
+        "default": true
+    },
+    {
+        "type": "image_picker",
+        "id": "header_banner_image",
+        "label": "Header banner",
+        "info": "2048 x 1583px recommended"
+    },
+    {
       "type": "checkbox",
-      "id": "frontpage_grid_style",
-      "label": "Wide display"
+      "id": "image_darken",
+      "label": "Darken image",
+      "default": false
     },
     {
       "type": "select",
-      "id": "featured_links_per_row",
-      "label": "Images per row",
+      "id": "collection_title_position",
+      "label": "Collection title position",
       "options": [
-        {
-          "value": "1",
-          "label": "1"
-        },
-        {
-          "value": "2",
-          "label": "2"
-        }
-      ]
-    },
-    {
-      "type": "select",
-      "id": "frontpage_text_align",
-      "label": "Text alignment",
-      "options": [
-        {
+          {
           "value": "left",
           "label": "Left"
-        },
-        {
+          },
+          {
           "value": "center",
           "label": "Center"
-        },
-        {
+          },
+          {
           "value": "right",
           "label": "Right"
-        }
+          }
       ]
     },
     {
-      "type": "select",
-      "id": "frontpage_image_position",
-      "label": "First image position",
-      "info": "Subsequent images will appear staggered",
-      "options": [
-        {
-          "value": "left",
-          "label": "Left"
-        },
-        {
-          "value": "right",
-          "label": "Right"
-        }
-      ]
+        "type": "image_picker",
+        "id": "header_banner_icon",
+        "label": "Banner icon"
     },
     {
-      "type": "image_picker",
-      "id": "image",
-      "label": "Image",
-      "info": "1024 x 1024px recommended"
+        "type": "checkbox",
+        "id": "display_collection_title",
+        "label": "Display caption title"
     },
     {
-      "type": "color",
-      "id": "bg_color",
-      "label": "Caption background color"
+        "type": "checkbox",
+        "id": "display_collection_content",
+        "label": "Display caption content"
+    },
+    {
+        "type": "select",
+        "id": "text_align",
+        "label": "Text alignment",
+        "options": [
+            {
+            "value": "left",
+            "label": "Left"
+            },
+            {
+            "value": "center",
+            "label": "Center"
+            },
+            {
+            "value": "right",
+            "label": "Right"
+            }
+        ],
+        "default": "center"
+    },
+    {
+        "type": "checkbox",
+        "id": "caption_background_transparency",
+        "label": "Enable text background transparency"
     },
     {
         "type": "color",
-        "id": "title_color",
+        "id": "cap_bg_color",
+        "label": "Caption background color"
+    },
+    {
+        "type": "color",
+        "id": "cap_title_color",
         "label": "Caption title color"
+    },
+    {
+        "type": "checkbox",
+        "id": "red_caption",
+        "label": "Show red caption"
     }
   ],
   "blocks": [
@@ -220,7 +189,7 @@
           "type": "image_picker",
           "id": "image",
           "label": "Image",
-          "info": "1024 x 1024px recommended"
+          "info": "1024 x 682px recommended"
         },
         {
           "type": "select",
@@ -312,8 +281,6 @@
     "name": "Preview section",
     "category": "Layout",
     "settings": {
-      "featured_links_per_row": "1",
-      "frontpage_text_align": "left"
     },
     "blocks": [
       {

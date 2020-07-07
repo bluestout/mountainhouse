@@ -1,52 +1,78 @@
 <div id="page-blog-section">
-    {% if section.settings.feature_header_banner and section.settings.header_banner_image != blank %}
-       {% include 'blog-header', title:page.title, content:page.content %}
-    {% endif %}
+  {% if section.settings.show_banner and section.settings.header_banner_image != blank %}
+     {% include 'page-brand'%}
+  {% endif %}
 
-    {% assign items_per_row = section.settings.items_per_row %}
-    {% assign page = 0 %}
-    <div class="container blog-content">  
-        <div class="sixteen columns" data-blog-size="" style="padding: 100px 0px;">
-            {% if section.blocks.size >0 %}
-                {% for block in section.blocks %}
-                    {% if page > section.settings.blog_posts_per_page %}
-                        <div class="blog-item blogBox moreBox {% if items_per_row == 2 %}eight columns{% elsif items_per_row == 3 %}one-third column{% else %}four columns{% endif %} article medium-down--one-whole" style="display: none;">
-                            {% if block.settings.item_image != blank %}
-                                <a href="{{ block.settings.item_url  }}">
-                                    {% include 'image-element', image: block.settings.item_image, back_to_image:true %}
-                                </a>
-                            {% endif %}
-                            <p class="sub_title" style="margin-top: 20px;">
-                            <a href="{{ block.settings.item_url }}">{{ block.settings.item_title }}</a>
-                            </p>
-                            <p class="blog_meta">
-                            <span>{{ block.settings.item_author }}</span>
-                            </p>
-                        </div>
-                    {% else %}
-                        <div class="blog-item blogBox moreBox {% if items_per_row == 2 %}eight columns{% elsif items_per_row == 3 %}one-third column{% else %}four columns{% endif %} article medium-down--one-whole" >
-                            {% if block.settings.item_image != blank %}
-                                <a href="{{ block.settings.item_url  }}">
-                                    {% include 'image-element', image: block.settings.item_image, back_to_image:true %}
-                                </a>
-                            {% endif %}
-                            <p class="sub_title" style="margin-top: 20px;">
-                            <a href="{{ block.settings.item_url }}">{{ block.settings.item_title }}</a>
-                            </p>
-                            <p class="blog_meta">
-                            <span>{{ block.settings.item_author }}</span>
-                            </p>
-                        </div>
-                    {% endif %}
-                    {% assign page =  page | plus: 1 %}
-                {% endfor %} 
-                <div id="loadMore">
-                    <a href="#">Load More</a>
-                </div> 
-            {% endif %}
-        </div>
+  {% assign items_per_row = section.settings.items_per_row %}
+  {% assign page = 0 %}
+  <div class="container blog-content">
+
+    <div class="filter">
+      <label>Filter By </label>
+      <select>
+        <option value="all" selected>All Adventures</option>
+        {% assign blocks_str = '' %}
+        {% for block in section.blocks %}
+            {% assign blocks_str = blocks_str | append : pages[block.settings.item_url].metafields["global"]["Ambassador-filters"] | append: ',' %}
+        {% endfor %}
+        {% assign blocks = blocks_str | split: ',' | uniq %}
+        {% for block in blocks %}
+          {% assign val = block | replace: ' ', '_' %}
+          <option value="{{val}}">{{block}}</option>
+        {% endfor %}
+      </select>
     </div>
+    <div class="sixteen columns" data-blog-size="" style="padding: 50px 0px;">
+      {% if section.blocks.size >0 %}
+        {% for block in section.blocks %}
+          {%- assign class = pages[block.settings.item_url].metafields["global"]["Ambassador-filters"] | replace: ' ', '_' -%}
+          {%- assign category = pages[block.settings.item_url].metafields["global"]["Ambassador-filters"] -%}
 
+          {% assign size = category | size %}
+          {% if page > section.settings.blog_posts_per_page %}
+            <div class="{{ class }} blog-item blogBox moreBox {% if items_per_row == 2 %}eight columns{% elsif items_per_row == 3 %}one-third column{% else %}four columns{% endif %} article medium-down--one-whole" style="display: none;">
+              {% if pages[block.settings.item_url].metafields["global"]["Featured-image"] != blank %}
+                <a href="{{ block.settings.item_url  }}" class="zoom">
+                    <div class="image-element__wrap" style='background: url({{ pages[block.settings.item_url].metafields["global"]["Featured-image"] | image_url: "original" }}) no-repeat 50% 50% / cover; height: 320px;'>
+                    </div>
+                </a>
+              {% endif %}
+              <span class="category">{{ category | slice: 0, size }}</span>
+              <p class="sub_title">
+              <a href="{{ block.settings.item_url }}">{{ pages[block.settings.item_url].title }}</a>
+              </p>
+              <p class="blog_meta">
+                <span>{{ pages[block.settings.item_url].metafields["global"]["Address"] | upcase }}</span>
+              </p>
+              <p class="blog_meta">
+                <span>{{ pages[block.settings.item_url].metafields["global"]["city-and-state"] }}</span>
+              </p>
+            </div>
+          {% else %}
+            <div class="{{ class }} blog-item blogBox moreBox {% if items_per_row == 2 %}eight columns{% elsif items_per_row == 3 %}one-third column{% else %}four columns{% endif %} article medium-down--one-whole" >
+              {% if pages[block.settings.item_url].metafields["global"]["Featured-image"] != blank %}
+                <a href="{{ block.settings.item_url  }}" class="zoom">
+                    <div class="image-element__wrap" style='background: url({{ pages[block.settings.item_url].metafields["global"]["Featured-image"] | image_url: "original" }}) no-repeat 50% 50% / cover; height: 320px;'>
+                    </div>
+                </a>
+              {% endif %}
+              <span class="category">{{ category | slice: 0, size }}</span>
+              <p class="sub_title">
+              <a href="{{ block.settings.item_url }}">{{ pages[block.settings.item_url].title }}</a>
+              </p>
+              <p class="blog_meta">
+                <span>{{ pages[block.settings.item_url].metafields["global"]["Address"] | upcase }}</span>
+              </p>
+            </div>
+          {% endif %}
+          {% assign page =  page | plus: 1 %}
+        {% endfor %}
+        <div id="loadMore">
+          <a href="#">Load More</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
 </div>
 {% schema %}
 {
@@ -60,14 +86,40 @@
         },
         {
             "type": "checkbox",
-            "id": "feature_header_banner",
+            "id": "show_banner",
             "label": "Feauture heading banner",
             "default": true
         },
         {
             "type": "image_picker",
             "id": "header_banner_image",
-            "label": "Header banner"
+            "label": "Header banner",
+            "info": "2048 x 600px recommended"
+        },
+        {
+          "type": "checkbox",
+          "id": "image_darken",
+          "label": "Darken image",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "collection_title_position",
+          "label": "Collection title position",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
         },
         {
             "type": "image_picker",
@@ -75,14 +127,58 @@
             "label": "Banner icon"
         },
         {
-            "type": "color",
-            "id": "bg_color",
-            "label": "Caption background color"
+          "type": "checkbox",
+          "id": "display_collection_title",
+          "label": "Display caption title"
         },
         {
-            "type": "color",
-            "id": "title_color",
-            "label": "Caption title color"
+          "type": "checkbox",
+          "id": "display_collection_content",
+          "label": "Display caption content"
+        },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Text alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "checkbox",
+          "id": "caption_background_transparency",
+          "label": "Enable text background transparency"
+        },
+        {
+          "type": "color",
+          "id": "cap_bg_color",
+          "label": "Caption background color"
+        },
+        {
+          "type": "color",
+          "id": "cap_title_color",
+          "label": "Caption title color"
+        },
+        {
+          "type": "checkbox",
+          "id": "red_caption",
+          "label": "Show red caption"
+        },
+        {
+          "type": "header",
+          "content": "Page content"
         },
         {
             "type": "range",
@@ -117,24 +213,6 @@
         "type": "image",
         "name": "Items",
         "settings": [
-                {
-                    "type": "image_picker",
-                    "id": "item_image",
-                    "label": "Image",
-                    "info": "1024 x 1024px recommended"
-                },
-                {
-                    "type": "text",
-                    "id": "item_title",
-                    "label": "Item title",
-                    "default": "heading title"
-                },
-                {
-                    "type": "text",
-                    "id": "item_author",
-                    "label": "Item author",
-                    "default": "author name"
-                },
                 {
                     "type": "page",
                     "id": "item_url",

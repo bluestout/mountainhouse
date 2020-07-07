@@ -50,6 +50,7 @@
                       {{ block.settings.button_label }}
                   </a>
                 {% endif %}
+                {% if block.settings.feature_icon %}
                 <div class="icons">
                   {% if block.settings.icon_image_1 != blank %}
                     <div class="one-half columns small-down--one-whole">
@@ -84,6 +85,7 @@
                     </div>
                   {% endif %}
                 </div>
+                {% endif %}
               </div>
             </div>
             
@@ -108,6 +110,7 @@
     .block--{{ block.id }} .collection_title,
     .block--{{ block.id }} p {
       color: {{ block.settings.text_color }};
+      text-align : {{ section.settings.text_align }}!important
     }
 
     .block--{{ block.id }} a.button {

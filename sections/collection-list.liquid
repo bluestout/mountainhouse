@@ -18,7 +18,8 @@
     {% endif %}
     <div class="sixteen columns">
       <div class="section list-collection-wrapper">
-        <div class="list-collections clearfix equal-columns--outside-trim equal-columns--clear">
+        {% assign block_size = section.blocks | size %}
+        <div class="list-collections clearfix {% if block_size > 4 %} slide_collection_list {% endif %} {% if block_size < 5 %} equal-columns--outside-trim equal-columns--clear {% endif %}">
           {% for block in section.blocks %}
 
             {% assign feature_collection = block.settings.feature_collection %}
@@ -37,16 +38,16 @@
 
             <div class="
             {% if collections_per_row == 2 %}
-              eight columns {% cycle 'alpha', 'omega' %}
+              eight columns
             {% elsif collections_per_row == 3 %}
-              one-third column {% cycle 'alpha', '', 'omega' %}
+              one-third column
             {% elsif collections_per_row == 4 %}
-              four columns {% cycle 'alpha', '', '', 'omega' %}
+              four columns
             {% else %}
-              one-fifth column {% cycle 'alpha', '', '', '', 'omega' %}
+              one-fifth column
             {% endif %}
             {% if section.settings.collection_count == blank and section.settings.frontpage_collections_title == blank %}blank{% endif %}
-            thumbnail {% cycle 'even', 'odd' %}
+            thumbnail  {% if block_size < 5 %}{% cycle 'even', 'odd' %}{% endif %}
             {% if settings.mobile_products_per_row == '1' %}
               medium-down--one-half
               small-down--one-whole
@@ -54,40 +55,60 @@
               medium-down--one-half
               small-down--one-half
             {% endif %}" {{ block.shopify_attributes }}>
-
+            {% assign product = all_products[block.settings.featured_product] %}
               <div class="product-wrap">
-                {% if collection_image != nil %}
-                  <div class="image__container zoom">
-                    {% include 'image-element', image: collection_image.src, alt: collection_image_alt, object_fit: section.settings.align_height, max_height: section.settings.collection_height %}
-                  </div>
-                {% else %}
-                  {% capture num %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
-                  {{ 'collection-' | append: num | placeholder_svg_tag: 'placeholder-svg' }}
-                {% endif %}
+                <div class="content">
+                  {% if collection_image != nil %}
+                    <div class="image__container">
+                      <div class="feature_img animated">
+                        {% include 'image-element', image: collection_image.src, alt: collection_image_alt, object_fit: section.settings.align_height, max_height: section.settings.collection_height %}
+                      </div>
+                      <div class="feature_product animated">
+                        {% include 'image-element', image: product.featured_image, alt: collection_image_alt, object_fit: section.settings.align_height, max_height: section.settings.collection_height %}
+                      </div>
+                    </div>
+                  {% else %}
+                    {% capture num %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
+                    {{ 'collection-' | append: num | placeholder_svg_tag: 'placeholder-svg' }}
+                  {% endif %}
 
-                <div class="collection-info__caption" href="{{ collection.url }}">
-                  <p class="subtitle">
-                    {% if collection != blank %}
-                      {{ collection.title }}
-                    {% else %}
-                      {{ "homepage.onboarding.collection_title" | t }}
-                    {% endif %}
-                  </p>
-                  <div class="content">{{ collection.description }}</div>
-                  <a href="{{ collection.url }}" class="button" style="width: 100%;">{{ 'general.buttons.discover' | t }}</a>
+                  <div class="collection-info__caption" href="{{ collection.url }}">
+                    <p class="subtitle">
+                      {% if block.settings.title != blank %}
+                        {{ block.settings.title }}
+                      {% elsif collection != blank %}
+                        {{ collection.title }}
+                      {% else %}
+                        {{ "homepage.onboarding.collection_title" | t }}
+                      {% endif %}
+                    </p>
+                    <div class="content content-title animated fadeIn">
+                      {% if block.settings.content != blank %}
+                        {{ block.settings.content }}
+                      {% else %}
+                        {{ collection.description | strip_html | rstrip }}
+                      {% endif %}
+                    </div>
+                    <div class="content product-title animated fadeIn">
+                      <p>{{ product.title }}</p>
+                    </div>
+                  </div>
                 </div>
+                <a href="{% if block.settings.link != blank %}{{ block.settings.link }}{% else %}{{ collection.url }}{% endif %}" class="button" style="width: 185px">{{ 'general.buttons.discover' | t }}</a>
               </div>
             </div>
-
-            {% if collections_per_row == 2 %}
-              {% cycle '', '<br class="clear product_clear" />' %}
-            {% elsif collections_per_row == 3 %}
-              {% cycle '', '', '<br class="clear product_clear" />' %}
-            {% elsif collections_per_row == 4 %}
-              {% cycle '', '', '', '<br class="clear product_clear" />' %}
-            {% elsif collections_per_row == 5 %}
-              {% cycle '', '', '', '', '<br class="clear product_clear" />' %}
+            {% if block_size < 5 %}
+              {% if collections_per_row == 2 %}
+                {% cycle '', '<br class="clear product_clear" />' %}
+              {% elsif collections_per_row == 3 %}
+                {% cycle '', '', '<br class="clear product_clear" />' %}
+              {% elsif collections_per_row == 4 %}
+                {% cycle '', '', '', '<br class="clear product_clear" />' %}
+              {% elsif collections_per_row == 5 %}
+                {% cycle '', '', '', '', '<br class="clear product_clear" />' %}
+              {% endif %}
             {% endif %}
+            
 
           {% endfor %}
         </div>
@@ -97,11 +118,11 @@
 </div>
 
 {% if section.settings.align_height == true %}
-  <style>
+  <!-- <style>
     #shopify-section-{{ section.id }} .list-collections .thumbnail img {
       max-height: {{ section.settings.collection_height }}px;
     }
-  </style>
+  </style> -->
 {% endif %}
 
 {% schema %}
@@ -160,7 +181,13 @@
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "Image",
+          "info": "480 x 398px recommended"
+        },
+        {
+          "type": "product",
+          "id": "featured_product",
+          "label": "Featured product"
         }
       ]
     }

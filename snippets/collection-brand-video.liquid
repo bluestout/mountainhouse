@@ -1,0 +1,25 @@
+<div class="brand-video-block">
+    {% if collection.metafields["global"]["brand-video-url"] != blank %}
+        {% assign numberAutoplay = 0 %}
+        {% assign html5Autoplay = '' %}
+        {% assign numberAutoloop = 1 %}
+        {% assign playlistLoop = video.id %}
+        {% assign html5Autoloop = 'loop="loop"' %}
+        {% assign showPosterImage = false  %}
+        {% assign autoplayVideo = false  %}
+        {% assign variable = collection.metafields["global"]["brand-video-url"] | split: '/' | reverse  %}
+        {% assign video = collection.metafields["global"]["brand-video-url"] %}
+        {% if video contains 'youtu' %}
+          {% assign useLazyframe = true %} 
+          {%- capture iframeURL -%}https://www.youtube.com/embed/{{variable[0]}}?&autoplay={{numberAutoplay}}&loop={{numberAutoloop}}&playlist={{playlistLoop}}{%- endcapture -%}
+        {% elsif video contains 'vimeo' %}
+          {% assign useLazyframe = true %}
+          {%- capture iframeURL -%}https://player.vimeo.com/video/{{variable[0]}}?autoplay={{numberAutoplay}}&loop={{numberAutoloop}}{%- endcapture -%}
+        {% else %}
+          {% assign useLazyframe = false %}
+        {% endif %}
+        <div class="video-responsive">
+          <iframe src="{{ iframeURL }}"></iframe>
+        </div>
+      {% endif %}
+</div>

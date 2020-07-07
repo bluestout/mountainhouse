@@ -3,9 +3,15 @@
 - Draggable section
 - Uses blocks
 {% endcomment %}
-{% include 'image-text', title:page.title %}
-{{ page.content }}
-<p class="bottom-link">Or, are you a marketer? <a href="#">Request a proposal</a></p>
+{%- assign icons = 'ico_1.svg, ico_2.svg, ico_3.svg, ico_4.svg'  | split: ", "-%}
+
+{% include 'image-text', title:page.title,  icons: icons %}
+<div class="page-content">
+  {{ page.content }}
+  <p class="bottom-link">Or, are you a marketer? <a href="/pages/affiliate-program">Request a proposal</a></p>
+</div>
+
+
 {% schema %}
 {
   "name": "Image with text",
@@ -77,7 +83,7 @@
           "type": "image_picker",
           "id": "image",
           "label": "Image",
-          "info": "1024 x 1024px recommended"
+          "info": "1024 x 815px recommended"
         },
         {
           "type": "select",
@@ -171,10 +177,9 @@
           "info": "1024 x 1024px recommended"
         },
         {
-          "type": "text",
+          "type": "html",
           "id": "icon_title_1",
-          "label": "Icon Title",
-          "default": "Your headline"
+          "label": "Icon Title"
         },
         {
           "type": "url",
@@ -188,10 +193,10 @@
           "info": "1024 x 1024px recommended"
         },
         {
-          "type": "text",
+          "type": "html",
           "id": "icon_title_2",
           "label": "Icon Title",
-          "default": "Your headline"
+          "default": "<p>Promotion description appears here.</p>"
         },
         {
           "type": "url",
@@ -205,10 +210,9 @@
           "info": "1024 x 1024px recommended"
         },
         {
-          "type": "text",
+          "type": "html",
           "id": "icon_title_3",
-          "label": "Icon Title",
-          "default": "Your headline"
+          "label": "Icon Title"
         },
         {
           "type": "url",
@@ -222,10 +226,9 @@
           "info": "1024 x 1024px recommended"
         },
         {
-          "type": "text",
+          "type": "html",
           "id": "icon_title_4",
-          "label": "Icon Title",
-          "default": "Your headline"
+          "label": "Icon Title"
         },
         {
           "type": "url",

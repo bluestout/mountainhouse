@@ -3,7 +3,9 @@
 - Draggable section
 - Uses blocks
 {% endcomment %}
-{% include 'image-text' %}
+{%- assign icons = 'ico_lunch.svg, ico_weeknight_dinner.svg, ico_outdoor_recreation.svg, ico_after_the_gym.svg'  | split: ", "-%}
+
+{% include 'image-text', icons: icons%}
 {% schema %}
 {
   "name": "Image with text",
@@ -29,7 +31,7 @@
           "label": "2"
         }
       ]
-    },
+    }, 
     {
       "type": "select",
       "id": "frontpage_text_align",
@@ -75,7 +77,7 @@
           "type": "image_picker",
           "id": "image",
           "label": "Image",
-          "info": "1024 x 1024px recommended"
+          "info": "1024 x 620px recommended"
         },
         {
           "type": "select",
@@ -101,6 +103,11 @@
               "label": "None"
             }
           ]
+        },
+        {
+          "type": "url",
+          "id": "image_link",
+          "label": "Image Url"
         },
         {
           "type": "text",

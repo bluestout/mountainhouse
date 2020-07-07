@@ -1,6 +1,6 @@
 <div id="page-blog-section">
-    {% if section.settings.feature_header_banner and section.settings.header_banner_image != blank %}
-       {% include 'blog-header'%}
+    {% if section.settings.show_banner and section.settings.header_banner_image != blank %}
+        {% include 'page-brand'%}
     {% endif %}
     {% if section.settings.feature_category_slide and section.blocks.size > 0 %}
         {% include 'blog-category-slideshow' %}
@@ -21,24 +21,40 @@
         },
         {
             "type": "checkbox",
-            "id": "feature_header_banner",
+            "id": "show_banner",
             "label": "Feauture heading banner",
             "default": true
         },
         {
             "type": "image_picker",
             "id": "header_banner_image",
-            "label": "Header banner"
+            "label": "Header banner",
+            "info": "2048 x 415px recommended"
         },
         {
-            "type": "color",
-            "id": "bg_color",
-            "label": "Caption background color"
+        "type": "checkbox",
+        "id": "image_darken",
+        "label": "Darken image",
+        "default": false
         },
         {
-            "type": "color",
-            "id": "title_color",
-            "label": "Caption title color"
+        "type": "select",
+        "id": "collection_title_position",
+        "label": "Collection title position",
+        "options": [
+            {
+            "value": "left",
+            "label": "Left"
+            },
+            {
+            "value": "center",
+            "label": "Center"
+            },
+            {
+            "value": "right",
+            "label": "Right"
+            }
+        ]
         },
         {
             "type": "image_picker",
@@ -46,9 +62,58 @@
             "label": "Banner icon"
         },
         {
-            "type": "text",
-            "id": "heading_title",
-            "label": "Heading title"
+        "type": "checkbox",
+        "id": "display_collection_title",
+        "label": "Display caption title"
+        },
+        {
+            "type": "checkbox",
+            "id": "display_collection_content",
+            "label": "Display caption content"
+        },
+        {
+        "type": "select",
+        "id": "text_align",
+        "label": "Text alignment",
+        "options": [
+            {
+            "value": "left",
+            "label": "Left"
+            },
+            {
+            "value": "center",
+            "label": "Center"
+            },
+            {
+            "value": "right",
+            "label": "Right"
+            }
+        ],
+        "default": "center"
+        },
+        {
+        "type": "checkbox",
+        "id": "caption_background_transparency",
+        "label": "Enable text background transparency"
+        },
+        {
+        "type": "color",
+        "id": "cap_bg_color",
+        "label": "Caption background color"
+        },
+        {
+        "type": "color",
+        "id": "cap_title_color",
+        "label": "Caption title color"
+        },
+        {
+        "type": "checkbox",
+        "id": "red_caption",
+        "label": "Show red caption"
+        },
+        {
+        "type": "header",
+        "content": "Page content"
         },
         {
             "type": "header",
@@ -114,7 +179,8 @@
                 {
                     "type": "image_picker",
                     "id": "slide_image",
-                    "label": "Category image"
+                    "label": "Category image",
+                    "info": "480 x 480px recommended"
                 },
                 {
                     "type": "blog",

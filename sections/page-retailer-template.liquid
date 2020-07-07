@@ -4,8 +4,12 @@
 - Uses blocks
 {% endcomment %}
 {% include 'image-text', title:page.title %}
-{{ page.content }}
-<p class="bottom-link">Or, are you a marketer? <a href="#">Request a proposal</a></p>
+<div class="page-content" id="page-retalier-content">
+  {{ page.content }}
+  <p class="bottom-link">Or, are you a marketer? <a href="/pages/contact-us">Request a proposal</a></p>
+</div>
+
+
 {% schema %}
 {
   "name": "Image with text",
@@ -77,7 +81,7 @@
           "type": "image_picker",
           "id": "image",
           "label": "Image",
-          "info": "1024 x 1024px recommended"
+          "info": "1024 x 815px recommended"
         },
         {
           "type": "select",

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="26px" height="32px" viewBox="0 0 26 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>F73EC899-F515-431B-97A4-E3F4F15F048A</title>
+    <desc>Created with sketchtool.</desc>
+    <defs></defs>
+    <g id="style-guide" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icons" transform="translate(-569.000000, -195.000000)" fill="#030303" fill-rule="nonzero">
+            <g id="ico_pouch" transform="translate(569.000000, 195.000000)">
+                <rect id="Rectangle-path" x="0" y="0" width="25.88" height="5.75"></rect>
+                <path d="M0,7.75 L1.94,30.31 C5.51342596,31.2318808 9.18957918,31.6956003 12.88,31.69 C20.57,31.69 24.32,30.32 24.32,30.32 L25.88,7.75 L0,7.75 Z M22.75,26.34 C22.7445453,27.1827259 22.0627259,27.8645453 21.22,27.87 L5,27.87 C4.15727409,27.8645453 3.47545471,27.1827259 3.47,26.34 L3.47,23 C3.49157563,22.1690119 4.16874762,21.5051178 5,21.5 L21.22,21.5 C22.0512524,21.5051178 22.7284244,22.1690119 22.75,23 L22.75,26.34 Z" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

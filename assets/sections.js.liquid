@@ -142,6 +142,7 @@ var slideshow = {
                     prevNextButtons: arrowShow,
                     draggable: arrowShow,
                     pageDots: true,
+                    adaptiveHeight: true,
                     autoPlay: settings.slideshowSpeed,
                     arrowShape: 'm54 30h-39.899l15.278-14.552c.8-.762.831-2.028.069-2.828-.761-.799-2.027-.831-2.828-.069l-17.448 16.62c-.755.756-1.172 1.76-1.172 2.829 0 1.068.417 2.073 1.207 2.862l17.414 16.586c.387.369.883.552 1.379.552.528 0 1.056-.208 1.449-.621.762-.8.731-2.065-.069-2.827l-15.342-14.552h39.962c1.104 0 2-.896 2-2s-.896-2-2-2z'
                   });
@@ -171,10 +172,9 @@ var slideshow = {
       }
 
       $homepageSlider.find('.gallery-cell').each(function(){
-        
+
         if($(this).outerWidth() < 480){
           var src = $(this).find(".image-element__wrap").attr("mobile_img_data");
-          console.log(src);
           $(this).find(".image-element__wrap").html("<img src='"+src+"'>")
         }
         var buttonWidth = 0;
@@ -237,7 +237,7 @@ var slideshow = {
       }
 
       $videoSlider.find('.gallery-cell').each(function(){
-        
+
         var buttonWidth = 0;
         $(this).find('.action_button').each(function(){
           $button = $(this);
@@ -475,6 +475,7 @@ var cart = {
   Product
 ==============================================================================*/
 
+var variant_initialized = false;
 selectCallback = function(variant, selector) {
 
   var $product = $('.product-' + selector.product.id);
@@ -638,6 +639,27 @@ selectCallback = function(variant, selector) {
 
   if (Shopify.theme_settings.show_multiple_currencies){
     convertCurrencies();
+  }
+
+  if (variant) {
+    if (!variant_initialized) {
+      $('.swatch-element').each(function(){
+        if ($(this).data('url')) {
+          var url = $(this).data('url');
+          if (url.indexOf('-' + $(this).data('variant-handle')) > 0) {
+            variant_initialized = true;
+            var optionIndex = $(this).closest('.swatch').attr('data-option-index');
+            var optionValue = $(this).prev().val();
+            $(this)
+              .closest('form')
+              .find('.single-option-selector')
+              .eq(optionIndex)
+              .val(optionValue)
+              .trigger('change');
+          }
+        }
+      });
+    }
   }
 };
 
@@ -931,12 +953,38 @@ var productPage = {
       }
 
       //Add click event when there is more than one product on the page (eg. Collection in Detail)
-      if ($('.js-product_section').length > 1){
-        $('body').on('click', '.swatch-element', function(){
-          var swatchValue = $(this).data('value').toString();
+      $('body').on('click', '.swatch-element', function(e){
+        var swatchValue = $(this).data('value').toString();
+
+        if ($(this).data('url')) {
+          var url = $(this).data('url');
+          $('.swatch-element').each(function(){
+            url = url.replace("-" + $(this).data('variant-handle'), "");
+          });
+          if (!$(this).prev().is(':checked')) {
+            var src_variant_handle = swatchValue.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-$/, '').replace(/^-/, '');
+            $.ajax({
+              type: 'GET',
+              url: "/products/chicken-fried-rice-" + src_variant_handle + ".json",
+              success: function(data) {
+                var variants = data.product.variants;
+                var dst_variant_id = "";
+                for (var i = 0; i < variants.length; i++){
+                  var variant_title = variants[i].title;
+                  variant_title = variant_title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-$/, '').replace(/^-/, '');
+                  if (src_variant_handle == variant_title) {
+                    dst_variant_id = variants[i].id;
+                    url = url + "-" + src_variant_handle;
+                  }
+                }
+                window.location = url + '?variant=' + dst_variant_id;
+              }
+            });
+          }
+        } else {
 
           $(this)
-          .siblings('input[value="'+ swatchValue.replace(/\"/g,'\\"') +'"]')
+          .siblings('input[aria-label="'+ swatchValue.replace(/\"/g,'\\"') +'"]')
           .prop("checked", true)
           .trigger("change");
 
@@ -948,8 +996,8 @@ var productPage = {
           if (swatchOptions.length > 1){
             Shopify.linkOptionSelectors(JSONData, productSection);
           }
-        })
-      }
+        }
+      });
     }
   },
   recommendedProductsSlider: function(){

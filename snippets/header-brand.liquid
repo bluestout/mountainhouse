@@ -18,8 +18,11 @@
 
 {% comment %} {% include 'image-element', image: image, alt: collection.title, stretch_width: true, progressive: true %} {% endcomment %}
 {% if page.title != blank or page.content != blank%}
-<div class="caption captionOverlay--true"  style="background-color: {{section.settings.bg_color}};">
-  <div class="right-caption"></div>
+<div class="caption captionOverlay--true position--{{section.settings.collection_title_position}}"  style="background-color: {{section.settings.bg_color}};">
+  {% if section.settings.enable_red_caption %}
+    <div class="right-caption"></div>
+  {% endif %}
+  
   <h2 class="headline">{{ page.title }}</h2>
   <p>{{ page.content }}</p>
 </div>

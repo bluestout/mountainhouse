@@ -19,23 +19,23 @@
     <div class="sixteen">
       <div class="section list-collection-wrapper">
         <div class="list-collections clearfix equal-columns--outside-trim equal-columns--clear">
-            <div class="one-third columns small-down--one-whole">
-              <a href="{{ section.settings.icon_url_1 }}" >
-                <img src="{{ section.settings.icon_image_1 | img_url: 'original' }}">
+            <div class="one-third medium-down--one-third columns">
+              <div href="{{ section.settings.icon_url_1 }}" >
+                <img src="{{ icons[0] | asset_url }}">
                 <div>{{ section.settings.icon_title_1 }}</div>
-              </a>
+              </div>
             </div>
-            <div class="one-third columns small-down--one-whole">
-              <a href="{{ section.settings.icon_url_2 }}" >
-                <img src="{{ section.settings.icon_image_2 | img_url: 'original' }}">
+            <div class="one-third medium-down--one-third columns">
+              <div href="{{ section.settings.icon_url_2 }}" >
+                <img src="{{ icons[1] | asset_url }}">
                 <div>{{ section.settings.icon_title_2 }}</div>
-              </a>
+              </div>
             </div>
-            <div class="one-third columns small-down--one-whole">
-              <a href="{{ section.settings.icon_url_3 }}" >
-                <img src="{{ section.settings.icon_image_3 | img_url: 'original' }}">
+            <div class="one-third medium-down--one-third columns">
+              <div href="{{ section.settings.icon_url_3 }}" >
+                <img src="{{ icons[2] | asset_url }}">
                 <div>{{ section.settings.icon_title_3 }}</div>
-              </a>
+              </div>
             </div>
         </div>
       </div>

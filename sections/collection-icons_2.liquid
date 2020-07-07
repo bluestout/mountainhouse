@@ -3,8 +3,8 @@
 - Draggable section
 - Uses blocks
 {% endcomment %}
-
-{% include 'icon-bar' %}
+{%- assign icons = 'protein_ico.png, calories_ico.png, ico_anytime.svg'  | split: ", "-%}
+{% include 'icon-bar',icons:icons %}
 
 {% assign collections_per_row = section.settings.frontpage_collections_per_row %}
 
@@ -54,12 +54,6 @@
           "type": "text",
           "id": "title",
           "label": "Title",
-          "default": "Subscribe"
-        },
-        {
-          "type": "text",
-          "id": "url",
-          "label": "Url",
           "default": "Subscribe"
         }
       ]

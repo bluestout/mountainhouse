@@ -12,25 +12,26 @@
   
 
   <div class="section clearfix account-content">
+    <a href="/account/logout" class="logout">Log Out</a>
     <aside class="five columns account-sidebar">
       <!-- <h4 class="name"><a href="{{ routes.account_url }}" title="{{ 'layout.customer.my_account' | t }}">{{ customer.name }}</a></h4>
       <p class="email note">{{ customer.email }}</p> -->
       <a href="/account" class="active">Dashboard</a>
-      <a href="/account/order">Order History</a>
-      <a href="/account/addresses">Account ditails</a>
+      {% comment %} <a href="/account/order">Order History</a> {% endcomment %}
+      <a href="/account/addresses">Account details</a>
     </aside>
     <div class="account-options">
       <select>
         <option></option>
         <option value="" selected>Dashboard</option>
-        <option value="order">Order History</option>
-        <option value="addresses">Account ditails</option>
+        {% comment %} <option value="order">Order History</option> {% endcomment %}
+        <option value="addresses">Account details</option>
       </select>
     </div>
     
     <main class="eleven columns account-main">
       <div id="customer_orders">
-        <b>Order History</b>
+        <b>Order History</b> <a class="view-all right">view all</a>
         <div class="feature_divider"></div>
         {% if customer.orders.size != 0 %}
         <table width="100%">

@@ -3,6 +3,8 @@
     <div class="sixteen columns">
 {% endif %}
 
+{%- assign i = 0 -%}
+
     <div class="image-with-text
                 featured_collections
                 clearfix across-{{section.settings.featured_links_per_row}} image-align--{{ section.settings.frontpage_image_position }}
@@ -11,31 +13,59 @@
       {% if section.blocks.size > 0 %}
         {% for block in section.blocks %}
           <section class="featured-link--section featured-link--image section-{{ forloop.index }}" {{ block.shopify_attributes }}>
-            <div class="featured-link--half featured-link--image featured-link--margin image-crop--{{ block.settings.image_crop }}">
+            <div class="featured-link--half featured-link--image featured-link--margin image-crop--{{ block.settings.image_crop }} {% if block.settings.video != blank %}video{% endif %}">
               <div class="featured-link--wrap">
-                <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} title="{{ block.settings.title }}">
+
                   {% if type == 'product' %}
                     <div class="red-caption"></div>
                   {% endif %}
-                  {% if block.settings.image %}
-                    {% include 'image-element', image: block.settings.image, alt: block.settings.image.alt, stretch_width: true %}
+                  {% if block.settings.image != blank or  block.settings.video != blank  %}
+                    {% if block.settings.image_link != 'blank' %}
+                      <a href="{{ block.settings.image_link }}">
+                    {% endif %}
+                    {% if block.settings.video != blank %}
+                      {% assign numberAutoplay = 0 %}
+                      {% assign html5Autoplay = '' %}
+                      {% assign numberAutoloop = 1 %}
+                      {% assign playlistLoop = video.id %}
+                      {% assign html5Autoloop = 'loop="loop"' %}
+                      {% assign showPosterImage = false  %}
+                      {% assign autoplayVideo = false  %}
+                      {% assign video = block.settings.video %}
+                      {% if video contains 'youtu' %}
+                        {% assign useLazyframe = true %}
+                        {%- capture iframeURL -%}https://www.youtube.com/embed/{{video.id}}?&autoplay={{numberAutoplay}}&loop={{numberAutoloop}}&playlist={{playlistLoop}}{%- endcapture -%}
+                      {% elsif video contains 'vimeo' %}
+                        {% assign useLazyframe = true %}
+                        {%- capture iframeURL -%}https://player.vimeo.com/video/{{video.id}}?autoplay={{numberAutoplay}}&loop={{numberAutoloop}}{%- endcapture -%}
+                      {% else %}
+                        {% assign useLazyframe = false %}
+                      {% endif %}
+                      <div class="video-responsive">
+                        <iframe src="{{ iframeURL }}"></iframe>
+                      </div>
+                    {% else %}
+                      {% include 'image-element', image: block.settings.image, alt: block.settings.image.alt, stretch_width: true %}
+                    {% endif %}
+                    {% if block.settings.image_link != 'blank' %}
+                      </a>
+                    {% endif %}
                   {% else %}
                     {% capture i %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
                     {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--promotions' }}
                   {% endif %}
-                  
-                </a>
+
               </div>
             </div>
-            <div class="featured-link--half block--{{ block.id }}">
-              
+            <div class="featured-link--half block--{{ block.id }} {% if block.settings.video != blank %}video-text{% endif %}">
+
               <div class="info text-align--{{section.settings.frontpage_text_align}}">
                 {% if type == 'product' %}
                   <div class="title-icon">
                     <img class="left" src="{{ 'Group.png' | asset_img_url: 'original' }}" style="width: 35px;">
                   </div>
                 {% endif %}
-                
+
                 {%  if title != blank %}
                   <a class="collection_title">
                     {{ title }}
@@ -61,54 +91,58 @@
                       {{ block.settings.button_label }}
                   </a>
                 {% endif %}
-                {% if block.settings.feature_icon != blank %}
+                {% if block.settings.feature_icon %}
                 <div class="icons">
-                  {% if block.settings.icon_image_1 != blank or  block.settings.icon_title_1 != blank %}
+                  {% if  block.settings.icon_title_1 != blank %}
                     <div class="one-half columns small-down--one-whole">
                       <a href="{{ block.settings.icon_link_1 }}" >
-                        {% if block.settings.icon_image_1 != blank %}
-                          <img src="{{ block.settings.icon_image_1 | img_url: "original" }}">
+                        {% if icons[0] != blank %}
+                          <img src="{{ icons[0] | asset_url }}">
                         {% else %}
                           <span class="border-circle">1</span>
                         {% endif %}
-                        <div>{{ block.settings.icon_title_1 }}</div>
                       </a>
+                        <div>{{ block.settings.icon_title_1 }}</div>
+
                     </div>
                   {% endif %}
-                  {% if block.settings.icon_image_2 != blank or  block.settings.icon_title_2 != blank %}
+                  {% if block.settings.icon_title_2 != blank %}
                     <div class="one-half columns small-down--one-whole">
                       <a href="{{ block.settings.icon_link_2 }}" >
-                        {% if block.settings.icon_image_2 != blank %}
-                          <img src="{{ block.settings.icon_image_2 | img_url: "original" }}">
+                        {% if icons[1] != blank %}
+                          <img src="{{ icons[1] | asset_url }}">
                         {% else %}
                           <span class="border-circle">3</span>
                         {% endif %}
-                        <div>{{ block.settings.icon_title_2 }}</div>
                       </a>
+                        <div>{{ block.settings.icon_title_2 }}</div>
+
                     </div>
                   {% endif %}
-                  {% if block.settings.icon_image_3 != blank or  block.settings.icon_title_3 != blank %}
+                  {% if block.settings.icon_title_3 != blank %}
                     <div class="one-half columns small-down--one-whole">
                       <a href="{{ block.settings.icon_link_3 }}" >
-                        {% if block.settings.icon_image_3 != blank %}
-                          <img src="{{ block.settings.icon_image_3 | img_url: "original" }}">
+                        {% if icons[2] != blank %}
+                          <img src="{{ icons[2] | asset_url }}">
                         {% else %}
                           <span class="border-circle">2</span>
                         {% endif %}
-                        <div>{{ block.settings.icon_title_3 }}</div>
                       </a>
+                        <div>{{ block.settings.icon_title_3 }}</div>
+
                     </div>
                   {% endif %}
-                  {% if block.settings.icon_image_4 != blank or  block.settings.icon_title_4 != blank %}
+                  {% if block.settings.icon_title_4 != blank %}
                     <div class="one-half columns small-down--one-whole">
                       <a href="{{ block.settings.icon_link_4 }}" >
-                        {% if block.settings.icon_image_3 != blank %}
-                          <img src="{{ block.settings.icon_image_4 | img_url: "original" }}">
+                        {% if icons[3] != blank %}
+                          <img src="{{icons[3] | asset_url }}">
                         {% else %}
                           <span class="border-circle">4</span>
                         {% endif %}
-                        <div>{{ block.settings.icon_title_4 }}</div>
                       </a>
+                        <div>{{ block.settings.icon_title_4 }}</div>
+
                     </div>
                   {% endif %}
                 </div>
@@ -116,6 +150,7 @@
               </div>
             </div>
           </section>
+          {%- assign i = i | plus: 1 -%}
         {% endfor %}
       {% endif %}
     </div>
@@ -147,18 +182,7 @@
   {% endfor %}
 
   {% if section.settings.frontpage_grid_style == false and section.settings.featured_links_per_row == '1' %}
-      #shopify-section-{{ section.id }} .featured-link--section {
-        margin-bottom: 3%;
-      }
-      @media only screen and (max-width: 480px) {
-        #shopify-section-{{ section.id }} .featured-link--section {
-          margin-bottom: 10%;
-        }
-      }
 
-      #shopify-section-{{ section.id }} .featured-link--half {
-        width: 45%;
-      }
       #shopify-section-{{ section.id }} .featured-link--margin {
         {% if section.settings.frontpage_image_position == 'right' %}
           margin-left: 3%;
@@ -176,24 +200,5 @@
           margin-right: 0;
         {% endif %}
       }
-
-    {% elsif section.settings.frontpage_grid_style == false and section.settings.featured_links_per_row == '2' %}
-
-        @media only screen and (max-width: 480px) {
-          #shopify-section-{{ section.id }} .featured-link--section {
-            margin-bottom: 10%;
-          }
-        }
-
-        #shopify-section-{{ section.id }} .featured-link--margin {
-          margin-right: 0;
-          margin-left: 0;
-        }
-
-        #shopify-section-{{ section.id }} .featured-link--section:nth-child(even) .featured-link--margin {
-          margin-left: 0;
-          margin-right: 0;
-        }
-
-      {% endif %}
+  {% endif %}
 </style>

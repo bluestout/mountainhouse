@@ -10,6 +10,7 @@
 <!-- <a name="pagecontent" id="pagecontent"></a> -->
 
 <div class="container bg-grey">
+  <h1 class="text-align--center title">{{section.settings.title}}</h1>
   {% paginate collection.products by section.settings.pagination_limit %}
   {% if section.settings.collection_breadcrumb %}
     <div class="clearfix breadcrumb-collection">
@@ -80,11 +81,6 @@
     </div>
   {% endif %}
     <div class="section clearfix">
-      {% if section.settings.display_collection_title and section.settings.featured_collection_image == false %}
-        <div class="eight columns">
-          <h1>{{ collection.title }}</h1>
-        </div>
-      {% endif %}
       <div class="columns section_select medium-down--one-whole" style="width: 100%;">
         {% if collection.handle != blank and collection.products_count > 0 %}
           {% if section.settings.collection_tags %}
@@ -103,6 +99,7 @@
               {% endif %}
             {% endfor %}
           {% endif %}
+          
 
           {% if section.settings.collection_sort %}
             <select class="sort_by" id="sort-by" data-default-sort="{{ collection.sort_by | default: collection.default_sort_by  }}">
@@ -136,7 +133,36 @@
     {% else %}
       <div class="sixteen columns">
     {% endif %}
-
+    
+    {% if collection.handle == 'test-collection' %}
+      <div class="calculator">
+        <span class="calculator_btn modal_btn "> food supply calculator </span>
+        <div class="calculator_content modal">
+          <div class="heading">Calculatore</div>
+          <div class="body">
+            <div class="columns four panel">
+              <div class="control-form">
+                <label>People</label>
+                <input type="text" id="calc_food_per_people" value="5" >
+              </div>
+              <div class="control-form">
+                <label>Day of Food Needed</label>
+                <input type="text" id="calc_food_per_day" value="5" >
+              </div>
+            </div>
+            <div class="columns twelve content">
+                <div class="result_title">
+                  <p class="columns twelve">Selected calories per person per day: <span class="calory"></span></p>
+                  <button class="button add_total"> Add all </button>
+                </div>
+                <div class="result_content">
+                  <ul class="result"></ul>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
       {% comment %} {% if collection.description != blank %}
         <div class="section clearfix collection_description">
           {{ collection.description }}
@@ -152,7 +178,9 @@
         {% include 'product-thumbnail-loop', sidebar: sidebar %}
         
       {% endif %}
+      
 
+      {% include 'collection-brand-video' %}
     {% if settings.pagination_type == 'basic_pagination' %}
       {% include 'pagination' with sidebar %}
     {% endif %}
@@ -168,11 +196,6 @@
   "name": "Collection",
   "class": "collection-template-section",
   "settings": [
-    {
-      "type": "checkbox",
-      "id": "display_collection_title",
-      "label": "Show collection title"
-    },
     {
       "type": "checkbox",
       "id": "collection_breadcrumb",
@@ -196,20 +219,95 @@
     {
       "type": "checkbox",
       "id": "featured_collection_image",
-      "label": "Show image",
-      "info": "[Learn more](https://help.outofthesandbox.com/hc/en-us/articles/115009455768-How-to-add-a-Collection-Banner)"
+      "label": "Show banner"
     },
     {
       "type": "image_picker",
       "id": "image",
       "label": "Image",
-      "info": "1800 x 1000px recommended"
+      "info": "2048x537px recommended"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile image",
+      "info": "2048x1035px recommended"
     },
     {
       "type": "checkbox",
       "id": "image_darken",
       "label": "Darken image",
       "default": false
+    },
+    {
+      "type": "text",
+      "id": "default_title",
+      "label": "Default title"
+    },
+    {
+      "type": "richtext",
+      "id": "default_text",
+      "label": "Default description"
+    },
+    {
+      "type": "checkbox",
+      "id": "display_collection_title",
+      "label": "Show caption"
+    },
+    {
+      "type": "checkbox",
+      "id": "title_status",
+      "label": "Title status"
+    },
+    {
+      "type": "checkbox",
+      "id": "content_status",
+      "label": "Content status",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "collection_title_position",
+      "label": "Caption position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "caption_background_transparency",
+      "label": "Enable text background transparency"
     },
     {
       "type": "color",

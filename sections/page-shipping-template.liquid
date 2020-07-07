@@ -25,59 +25,8 @@
   }
   </script>
   
-  {% if section.settings.show_banner %}
-  
-    <section id="banner-{{section.id}}" class="banner page_banner">
-      {% if section.settings.image != nil %}
-        {% include 'image-element', image: section.settings.image, alt: section.settings.image.alt, stretch_width: true %}
-      {% else %}
-        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg placeholder-svg--banner' }}
-      {% endif %}
-      {% unless section.settings.button1_link != blank and section.settings.button2_link != blank %}
-        {% if section.settings.button1_link != blank %}
-          <a href="{{ section.settings.button1_link }}" class="banner-full-link">
-            {{ section.settings.button1 }}
-          </a>
-        {% endif %}
-        {% if section.settings.button2_link != blank %}
-          <a href="{{ section.settings.button2_link }}" class="banner-full-link">
-            {{ section.settings.button2 }}
-          </a>
-        {% endif %}
-      {% endunless %}
-      {% unless section.settings.pretext == blank and page.title == blank and page.content == blank and section.settings.button1 == blank and section.settings.button2 == blank %}
-        <div class="position-{{ section.settings.text_position }} caption js-caption">
-          <div class="caption-content caption-background-{{ section.settings.caption_background }} caption-transparency-{{ section.settings.caption_background_transparency }} align-{{ section.settings.text_align }}">
-            {% if section.settings.pretext != blank %}
-              <div class="pretext">
-                {{ section.settings.pretext }}
-              </div>
-            {% endif %}
-            {% if page.title != blank %}
-              <h1 class="headline">
-                {{ page.title }}
-              </h1>
-            {% endif %}
-            {% if page.content != blank %}
-              <div class="subtitle">
-                {{page.content }}
-              </div>
-            {% endif %}
-            {% if section.settings.button1 != blank %}
-              <a {% if section.settings.button1_link != blank %}href="{{ section.settings.button1_link }}"{% endif %} class="action_button first_button highlight-{{ section.settings.button1_highlight }}">
-                {{ section.settings.button1 }}
-              </a>
-            {% endif %}
-            {% if section.settings.button2 != blank %}
-              <a {% if section.settings.button2_link != blank %}href="{{ section.settings.button2_link }}"{% endif %} class="action_button second_button highlight-{{ section.settings.button2_highlight }}">
-                {{ section.settings.button2 }}
-              </a>
-            {% endif %}
-          </div>
-        </div>
-      {% endunless %}
-    </section>
-  
+  {% if section.settings.show_banner and section.settings.header_banner_image != blank %}
+    {% include 'page-brand'%} 
   {% endif %}
   
   <a name="pagecontent" id="pagecontent"></a>
@@ -235,105 +184,100 @@
     "class": "faq-section",
     "settings": [
       {
+        "type": "header",
+        "content": "Header banner"
+      },
+      {
+          "type": "checkbox",
+          "id": "show_banner",
+          "label": "Feauture heading banner",
+          "default": true
+      },
+      {
+          "type": "image_picker",
+          "id": "header_banner_image",
+          "label": "Header banner",
+          "info": "2048 x 1583px recommended"
+      },
+      {
         "type": "checkbox",
-        "id": "show_banner",
-        "label": "Show banner",
-        "default": true
-      },
-      {
-        "type": "image_picker",
-        "id": "image",
-        "label": "Image",
-        "info": "1800 x 1000px recommended"
-      },
-      {
-        "type": "richtext",
-        "id": "pretext",
-        "label": "Preheading"
-      },
-      {
-        "type": "checkbox",
-        "id": "caption_background",
-        "label": "Display solid text background",
+        "id": "image_darken",
+        "label": "Darken image",
         "default": false
       },
       {
-        "type": "checkbox",
-        "id": "caption_background_transparency",
-        "label": "Enable background transparency"
-      },
-      {
         "type": "select",
-        "id": "text_position",
-        "label": "Text position",
+        "id": "collection_title_position",
+        "label": "Collection title position",
         "options": [
-          {
+            {
             "value": "left",
             "label": "Left"
-          },
-          {
+            },
+            {
             "value": "center",
             "label": "Center"
-          },
-          {
+            },
+            {
             "value": "right",
             "label": "Right"
-          }
+            }
         ]
       },
       {
-        "type": "select",
-        "id": "text_align",
-        "label": "Text alignment",
-        "options": [
-          {
-            "value": "left",
-            "label": "Left"
-          },
-          {
-            "value": "center",
-            "label": "Center"
-          },
-          {
-            "value": "right",
-            "label": "Right"
-          }
-        ]
+          "type": "image_picker",
+          "id": "header_banner_icon",
+          "label": "Banner icon"
       },
       {
-        "type": "text",
-        "id": "button1",
-        "label": "First button label"
+          "type": "checkbox",
+          "id": "display_collection_title",
+          "label": "Display caption title"
       },
       {
-        "type": "url",
-        "id": "button1_link",
-        "label": "First button link"
+          "type": "checkbox",
+          "id": "display_collection_content",
+          "label": "Display caption content"
       },
       {
-        "type": "checkbox",
-        "id": "button1_highlight",
-        "label": "Highlight first button"
+          "type": "select",
+          "id": "text_align",
+          "label": "Text alignment",
+          "options": [
+              {
+              "value": "left",
+              "label": "Left"
+              },
+              {
+              "value": "center",
+              "label": "Center"
+              },
+              {
+              "value": "right",
+              "label": "Right"
+              }
+          ],
+          "default": "center"
       },
       {
-        "type": "text",
-        "id": "button2",
-        "label": "Second button label"
+          "type": "checkbox",
+          "id": "caption_background_transparency",
+          "label": "Enable text background transparency"
       },
       {
-        "type": "url",
-        "id": "button2_link",
-        "label": "Second button link"
+          "type": "color",
+          "id": "cap_bg_color",
+          "label": "Caption background color"
       },
       {
-        "type": "checkbox",
-        "id": "button2_highlight",
-        "label": "Highlight second button"
+          "type": "color",
+          "id": "cap_title_color",
+          "label": "Caption title color"
       },
       {
-        "type": "checkbox",
-        "id": "feature_tab",
-        "label": "Feature tab"
+          "type": "checkbox",
+          "id": "red_caption",
+          "label": "Show red caption"
       }
     ],
     "blocks": [
@@ -403,7 +347,6 @@
     ],
     "default": {
       "settings": {
-        "text_position": "center",
         "text_align": "center"
       },
       "blocks": [

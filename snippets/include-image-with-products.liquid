@@ -7,7 +7,7 @@
 {% assign caption_background = section.settings.caption_background %}
 {% assign caption_background_transparency = section.settings.caption_background_transparency %}
 {% assign text_position = section.settings.text_position %}
-{% assign text_align = section.settings.text_align %}
+
 {% assign mobile_image_crop = section.settings.mobile_image_crop %}
 {% assign link = section.settings.url %}
 {% assign mobile_text_color = section.settings.mobile_text_color %}
@@ -33,19 +33,19 @@
 
 
 {% if wide_display == false %}
-<div class="container">
+<div class="container"> 
   <div class="sixteen columns">
 {% endif %}
 
-<section id="banner-{{id}}" class="banner full-width--{{ wide_display }}">
+<section id="banner-{{id}}" class="banner full-width--{{ wide_display }} image-with-product">
   {% if image != nil %}
-    {% include 'image-element', image: image, alt: image.alt, stretch_width: true, additional_classes: mobile_crop %}
+    {% include 'image-element', image: image, alt: image.alt, stretch_width: true, additional_classes: mobile_crop, back_to_image: true %}
   {% else %}
     {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg placeholder-svg--banner' }}
   {% endif %}
   {% unless pretext == blank and title == blank and subtitle == blank and button1 == blank and button2 == blank %}
     <div class="position-{{ text_position }} caption js-caption mobile-text-below--{{ mobile_text_below_image }}">
-      <div class="caption-content caption-background-{{ caption_background }} caption-transparency-{{ caption_background_transparency }} align-{{ text_align }}">
+      <div class="caption-content caption-background-{{ caption_background }} caption-transparency-{{ caption_background_transparency }}">
         {% if pretext != blank %}
           <div class="pretext">
             {{ pretext }}

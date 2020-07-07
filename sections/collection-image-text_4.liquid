@@ -3,7 +3,8 @@
 - Draggable section
 - Uses blocks
 {% endcomment %}
-{% include 'image-text' %}
+{%- assign img_icons = 'ico_no_artificial_flavors.svg, ico_no_artificial_colors.svg' | split: ", "-%}
+{% include 'image-text', icons: img_icons %}
 {% schema %}
 {
   "name": "image&text (Collection 4)",
@@ -71,6 +72,13 @@
       "type": "image",
       "name": "Image with text",
       "settings": [
+        {
+          "type": "video_url",
+          "id": "video",
+          "label": "Video link",
+          "accept": ["youtube", "vimeo"],
+          "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+        },
         {
           "type": "image_picker",
           "id": "image",

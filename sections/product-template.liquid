@@ -3,32 +3,19 @@
 - Product template
 {% endcomment %}
 
+{% assign sold_out = false %}
+
+{% for tag in product.tags %}
+
+  {% if tag == "is_out_stock" or tag == "is_low_stock" %}
+    {% assign sold_out = true %}
+  {% endif %}
+{% endfor %}
+
 <a name="pagecontent" id="pagecontent"></a>
 
 <div class="container main content product-name--{{ product.handle }}">
 
-  <!-- <div class="sixteen columns">
-    {% if collection.previous_product or collection.next_product or section.settings.product_breadcrumb %}
-      <div class="clearfix breadcrumb-collection">
-        {% if collection.previous_product or collection.next_product %}
-          <div class="nav_arrows breadcrumb_text">
-            {% if collection.previous_product %}
-              <a href="{{ collection.previous_product }}" title="{{ 'products.general.previous_product_html' | t }}" class="breadcrumb_link"><span class="icon-left-arrow"> {{ 'products.general.previous_product_html' | t }}</span></a>
-            {% endif %}
-            {% if collection.previous_product and collection.next_product %}<span class="breadcrumb-divider"> | </span>{% endif %}
-
-            {% if collection.next_product %}
-              <a href="{{collection.next_product}}" title="{{ 'products.general.next_product_html' | t }}" class="breadcrumb_link">{{ 'products.general.next_product_html' | t }} <span class="icon-right-arrow"></span></a>
-            {% endif %}
-          </div>
-        {% endif %}
-
-        {% if section.settings.product_breadcrumb %}
-          {% include 'product__breadcrumb' %}
-        {% endif %}
-      </div>
-    {% endif %}
-  </div> -->
 
   {% comment %}Check to see if sidebar should be enabled{% endcomment %}
   {% if section.blocks.size > 0 and section.settings.feature_sidebar%}
@@ -53,11 +40,80 @@
         </div>
 
         <div class="eight columns medium-down--one-whole  product-info {% if section.settings.product_images_position == 'left' %}omega{% else %}alpha{% endif %}">
+          <div class="heading_title">
+            <span class="type">{{ product.type }}</span>
+          </div>
+          <h1 class="product_name">{{ product.title }}</h1>
+          {% if section.settings.enable_shopify_product_badges and settings.enable_shopify_review_comments %}
+            <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+          {% endif %}
 
+          {% assign product_tags = product.tags | join: ' ' %}
+          {% if product_tags contains 'meta-size-chart-' %}
+            {% for tag in product.tags %}
+              {% if tag contains 'meta-size-chart-' %}
+                <a href="javascript:;" class="size_chart" data-fancybox data-src="#size-chart{{product.id}}" data-type="inline" data-no-instant>{{ 'products.product.size_chart' | t }} <span class="icon-right-arrow"></span></a>
+                {% include 'popup-size-chart', product_id: product.id %}
+              {% endif %}
+            {% endfor %}
+          {% elsif settings.size_chart != blank %}
+            <a href="javascript:;" class="size_chart" data-fancybox data-src="#size-chart{{product.id}}" data-type="inline" data-no-instant>{{ 'products.product.size_chart' | t }} <span class="icon-right-arrow"></span></a>
+          {% endif %}
+          {% assign variant = product.first_available_variant %}
+          {% if collection_handles contains 'coming-soon' %}
+            <p class="modal_price">{{ 'collections.general.coming_soon' | t }}</p>
+          {% else %}
+            {% if sold_out == false and product.available == true %}
+              <div class="modal_price">
+                  {% unless product.available == false and settings.display_price == false %}
+                    <div class="price__container price__container--display-price-{{ settings.display_price }} {% if settings.display_price %}has-margin-right{% endif %}">
+                      <span content="{{ variant.price | money_without_currency | remove: "," }}" class="{% if variant.compare_at_price > variant.price %}sale{% endif %}">
+                        <span class="current_price">
+                          {% if variant.price > 0 %}
+                            <span class="money">{{ variant.price | money }}</span>
+                          {% else %}
+                            {{ settings.free_price_text }}
+                          {% endif %}
+                        </span>
+                      </span>
+                      <span class="was_price">
+                        {% if variant.price < variant.compare_at_price %}
+                          <span class="money">{{ variant.compare_at_price | money }}</span>
+                        {% endif %}
+                      </span>
+                      {% if section.settings.display_savings %}
+                        <span class="sale savings">
+                          {% if variant.price < variant.compare_at_price %}
+                            {{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{{ variant.compare_at_price | minus: variant.price | money }}</span>)
+                          {% endif %}
+                        </span>
+                    {% endif %}
+                    </div>
+                  {% endunless %}
+              </div>
+            {% else %}
+              <div class="sold-out__container">
+                <span class="sold_out"><span>{{ product.price | money }}</span></span>
+              </div>
+            {% endif %}
+          {% endif %}
+
+          {% if section.settings.product_description_position == "top" %}
+            {% if product.description != blank %}
+              <div class="description">
+                {{ product.description | split: '<!-- split -->' | first }}
+              </div>
+            {% endif %}
+          {% endif %}
+
+          {% unless collection_handles contains 'coming-soon' %}
+            {% include 'product-form' with 'product' %}
+            {% include 'product-notify-me' %}
+          {% endunless %}
           {% assign collection_handles = product.collections | map: 'handle' %}
           {% assign variant = product.selected_or_first_available_variant %}
 
-          {% if product.available %}
+          {% if product.available and sold_out == false %}
             {% if settings.sale_banner_enabled and product.compare_at_price_max > product.price %}
               <div class="sale_banner_product">{{ 'collections.general.sale' | t }}</div>
             {% endif %}
@@ -80,73 +136,8 @@
               <span>{{ variant.sku }}</span>
             </p>
           {% endif %}
-          
+
           {% include 'bv-summary' %}
-
-          <h1 class="product_name">{{ product.title }}</h1>
-          {% if section.settings.enable_shopify_product_badges and settings.enable_shopify_review_comments %}
-            <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
-          {% endif %}
-
-          {% assign product_tags = product.tags | join: ' ' %}
-          {% if product_tags contains 'meta-size-chart-' %}
-            {% for tag in product.tags %}
-              {% if tag contains 'meta-size-chart-' %}
-                <a href="javascript:;" class="size_chart" data-fancybox data-src="#size-chart{{product.id}}" data-type="inline" data-no-instant>{{ 'products.product.size_chart' | t }} <span class="icon-right-arrow"></span></a>
-                {% include 'popup-size-chart', product_id: product.id %}
-              {% endif %}
-            {% endfor %}
-          {% elsif settings.size_chart != blank %}
-            <a href="javascript:;" class="size_chart" data-fancybox data-src="#size-chart{{product.id}}" data-type="inline" data-no-instant>{{ 'products.product.size_chart' | t }} <span class="icon-right-arrow"></span></a>
-          {% endif %}
-
-          {% if collection_handles contains 'coming-soon' %}
-            <p class="modal_price">{{ 'collections.general.coming_soon' | t }}</p>
-          {% else %}
-            <div class="modal_price">
-              {% unless product.available == false and settings.display_price == false %}
-                <div class="price__container price__container--display-price-{{ settings.display_price }} {% if settings.display_price %}has-margin-right{% endif %}">
-                  <span content="{{ variant.price | money_without_currency | remove: "," }}" class="{% if variant.compare_at_price > variant.price %}sale{% endif %}">
-                    <span class="current_price">
-                      {% if variant.price > 0 %}
-                        <span class="money">{{ variant.price | money }}</span>
-                      {% else %}
-                        {{ settings.free_price_text }}
-                      {% endif %}
-                    </span>
-                  </span>
-                  <span class="was_price">
-                    {% if variant.price < variant.compare_at_price %}
-                      <span class="money">{{ variant.compare_at_price | money }}</span>
-                    {% endif %}
-                  </span>
-                  {% if section.settings.display_savings %}
-                    <span class="sale savings">
-                      {% if variant.price < variant.compare_at_price %}
-                        {{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{{ variant.compare_at_price | minus: variant.price | money }}</span>)
-                      {% endif %}
-                    </span>
-                {% endif %}
-                </div>
-              {% endunless %}
-              <div class="sold-out__container">
-                <span class="sold_out">{% if variant.available == false %}{{ settings.sold_out_text }}{% endif %}</span>
-              </div>
-            </div>
-          {% endif %}
-
-          {% if section.settings.product_description_position == "top" %}
-            {% if product.description != blank %}
-              <div class="description">
-                {{ product.description | split: '<!-- split -->' | first }}
-              </div>
-            {% endif %}
-          {% endif %}
-
-          {% unless collection_handles contains 'coming-soon' %}
-            {% include 'product-form' with 'product' %}
-            {% include 'product-notify-me' %}
-          {% endunless %}
 
           {% if section.settings.product_description_position == "bottom" %}
             {% if product.description != blank %}
@@ -158,9 +149,10 @@
               </div>
             {% endif %}
           {% endif %}
+
           <div class="links">
             <div class="eight columns">
-              <a href="../pages/faq"> <img src="{{ 'ico-ico_ask.png' | asset_img_url: 'original'}}"> <div> Ask a question</div></a>
+              <a href="/pages/frequently-asked-questions"> <img src="{{ 'ico-ico_ask.png' | asset_img_url: 'original'}}"> <div> Ask a question</div></a>
             </div>
             <!-- <div class="eight columns">
               <a href="#"> <img src="{{ 'ico-ico_wish.png' | asset_img_url: 'original'}}"> <div> Add to wish list </div></a>
@@ -256,13 +248,19 @@
 {% endif %}
   <div data-product-recommendations-container></div>
 {% endif %}
-{% include 'icon-bar' %}
-{% include 'product-ingredient' %}
-{% include 'image-text-product', type : "product" %}
-{% include 'icon-bar' %}
+
+{% include 'product-icon-bar', type: 'top'%}
+{% if product.metafields["global"]["integration-category"] != blank or product.metafields["global"]["integration-description"] != blank %}
+    {% include 'product-ingredient' %}
+{% endif %}
+
+{% if product.metafields["global"]["product-advertise-image"] != blank %}
+  {% include 'image-text-product', type : "product" %}
+{% endif %}
+
+{% include 'product-icon-bar', type: 'bottom'%}
 {% include 'bv-ratings-reviews' %}
 {% schema %}
-
 {
   "name": "Product",
   "class": "product-template",
@@ -610,25 +608,205 @@
       "limit": 1
     },
     {
-      "type": "collection",
+      "type":"icon",
       "name": "Icon",
       "settings": [
         {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Icon"
+          "type": "product",
+          "id": "product",
+          "label": "Product"
         },
-         {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Subscribe"
+        {
+          "type": "header",
+          "content": "Top icon bar"
+        },
+        {
+          "type": "image_picker",
+          "id": "top_icon_image_1",
+          "label": "Icon image"
+        },
+        {
+          "type": "html",
+          "id": "top_icon_svg_1",
+          "label": "Icon svg"
         },
         {
           "type": "text",
-          "id": "url",
-          "label": "Url",
-          "default": "Subscribe"
+          "id": "top_icon_title_1",
+          "label": "Title"
+        },
+        {
+          "type": "image_picker",
+          "id": "top_icon_image_2",
+          "label": "Icon image"
+        },
+        {
+          "type": "html",
+          "id": "top_icon_svg_2",
+          "label": "Icon svg"
+        },
+        {
+          "type": "text",
+          "id": "top_icon_title_2",
+          "label": "Title"
+        },
+        {
+          "type": "image_picker",
+          "id": "top_icon_image_3",
+          "label": "Icon image"
+        },
+        {
+          "type": "html",
+          "id": "top_icon_svg_3",
+          "label": "Icon svg"
+        },
+        {
+          "type": "text",
+          "id": "top_icon_title_3",
+          "label": "Title"
+        },
+        {
+          "type": "image_picker",
+          "id": "top_icon_image_4",
+          "label": "Icon image"
+        },
+        {
+          "type": "html",
+          "id": "top_icon_svg_4",
+          "label": "Icon svg"
+        },
+        {
+          "type": "text",
+          "id": "top_icon_title_4",
+          "label": "Title"
+        },
+        {
+          "type": "header",
+          "content": "Bottom icon bar"
+        },
+        {
+          "type": "image_picker",
+          "id": "bottom_icon_image_1",
+          "label": "Icon image"
+        },
+        {
+          "type": "html",
+          "id": "bottom_icon_svg_1",
+          "label": "Icon svg"
+        },
+        {
+          "type": "text",
+          "id": "bottom_icon_title_1",
+          "label": "Title"
+        },
+        {
+          "type": "image_picker",
+          "id": "bottom_icon_image_2",
+          "label": "Icon image"
+        },
+        {
+          "type": "html",
+          "id": "bottom_icon_svg_2",
+          "label": "Icon svg"
+        },
+        {
+          "type": "text",
+          "id": "bottom_icon_title_2",
+          "label": "Title"
+        },
+        {
+          "type": "image_picker",
+          "id": "bottom_icon_image_3",
+          "label": "Icon image"
+        },
+        {
+          "type": "html",
+          "id": "bottom_icon_svg_3",
+          "label": "Icon svg"
+        },
+        {
+          "type": "text",
+          "id": "bottom_icon_title_3",
+          "label": "Title"
+        },
+        {
+          "type": "image_picker",
+          "id": "bottom_icon_image_4",
+          "label": "Icon image"
+        },
+        {
+          "type": "html",
+          "id": "bottom_icon_svg_4",
+          "label": "Icon svg"
+        },
+        {
+          "type": "text",
+          "id": "bottom_icon_title_4",
+          "label": "Title"
+        },
+        {
+          "type": "header",
+          "content": "Ingredient icon bar"
+        },
+        {
+          "type": "image_picker",
+          "id": "integration_icon_image_1",
+          "label": "Icon image"
+        },
+        {
+          "type": "html",
+          "id": "integration_icon_svg_1",
+          "label": "Icon svg"
+        },
+        {
+          "type": "text",
+          "id": "integration_icon_title_1",
+          "label": "Title"
+        },
+        {
+          "type": "image_picker",
+          "id": "integration_icon_image_2",
+          "label": "Icon image"
+        },
+        {
+          "type": "html",
+          "id": "integration_icon_svg_2",
+          "label": "Icon svg"
+        },
+        {
+          "type": "text",
+          "id": "integration_icon_title_2",
+          "label": "Title"
+        },
+        {
+          "type": "image_picker",
+          "id": "integration_icon_image_3",
+          "label": "Icon image"
+        },
+        {
+          "type": "html",
+          "id": "integration_icon_svg_3",
+          "label": "Icon svg"
+        },
+        {
+          "type": "text",
+          "id": "integration_icon_title_3",
+          "label": "Title"
+        },
+        {
+          "type": "image_picker",
+          "id": "integration_icon_image_4",
+          "label": "Icon image"
+        },
+        {
+          "type": "html",
+          "id": "integration_icon_svg_4",
+          "label": "Icon svg"
+        },
+        {
+          "type": "text",
+          "id": "integration_icon_title_4",
+          "label": "Title"
         }
       ]
     },
@@ -642,7 +820,7 @@
           "label": "Menu"
         }
       ]
-    },
+    }, 
     {
       "type": "page",
       "name": "Page",
@@ -712,92 +890,7 @@
       "type": "filter_by_vendor",
       "name": "Vendor list",
       "limit": 1
-    },
-    {
-      "type": "image",
-      "name": "Image with text",
-      "settings": [
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Image",
-          "info": "1024 x 1024px recommended"
-        },
-        {
-          "type": "select",
-          "id": "image_crop",
-          "label": "Image cropping",
-          "default": "none",
-          "info": "Only applied when text area is taller than image.",
-          "options": [
-            {
-              "value": "left",
-              "label": "Left"
-            },
-            {
-              "value": "right",
-              "label": "Right"
-            },
-            {
-              "value": "center",
-              "label": "Center"
-            },
-            {
-              "value": "none",
-              "label": "None"
-            }
-          ]
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Heading",
-          "default": "Your headline"
-        },
-        {
-          "type": "richtext",
-          "id": "text",
-          "label": "Text",
-          "default": "<p>Promotion description appears here.</p>"
-        },
-        {
-          "type": "text",
-          "id": "button_label",
-          "label": "Button label",
-          "default": "View all"
-        },
-        {
-          "type": "checkbox",
-          "id": "is_donation_button",
-          "label": "Donation"
-        },
-        {
-          "type": "text",
-          "id": "donation_count",
-          "label": "Donation Count",
-          "default": "1234"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Button link"
-        },
-        {
-          "type": "header",
-          "content": "Colors"
-        },
-        {
-          "type": "color",
-          "id": "bg_color",
-          "label": "Background"
-        },
-        {
-          "type": "color",
-          "id": "text_color",
-          "label": "Text"
-        }
-      ]
-    }
+    } 
   ],
   "default": {
     "settings": {

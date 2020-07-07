@@ -36,11 +36,10 @@
         {% endunless %}
       {% endform %}
 
-      <div class="large--right">
+      <div class="large--right" style="width: 100%;">
         {% if shop.checkout.guest_login %}
-          <span class="or"> {{ 'customer.login.or' | t }} </span>
           {% form 'guest_login' %}
-            <input class="guest_button" type="submit" value="{{ 'customer.login.guest_title_html' | t }}" />
+            <input class="btn action_button guest_button" type="submit" value="{{ 'customer.login.guest_title_html' | t }}" />
           {% endform %}
         {% endif %}
       </div>

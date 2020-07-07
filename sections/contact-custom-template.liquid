@@ -3,20 +3,13 @@
 - Page template
 {% endcomment %}
 
-{% if section.settings.image != nil %}
-{% include 'header-brand_contact' %}
+{% if section.settings.show_banner and section.settings.header_banner_image != blank %}
+    {% include 'page-brand'%}
 {% endif %}
 
 <a name="pagecontent" id="pagecontent"></a>
 
 <div class="container main content">
-  <div class="sixteen columns">
-    {% if section.settings.image == nil %}
-      <h1>{{ page.title }}</h1>
-      <div class="feature_divider"></div>
-    {% endif %}
-    {{ page.content }}
-  </div>
   {% include 'include-custom-contact-form' %}
 </div>
 
@@ -32,40 +25,99 @@
     },
     {
         "type": "checkbox",
-        "id": "feature_header_banner",
+        "id": "show_banner",
         "label": "Feauture heading banner",
         "default": true
     },
     {
         "type": "image_picker",
-        "id": "image",
-        "label": "Header banner"
-    },
-    {
-      "type": "color",
-      "id": "bg_color",
-      "label": "Caption background color"
-    },
-    {
-      "type": "color",
-      "id": "title_color",
-      "label": "Caption title color"
+        "id": "header_banner_image",
+        "label": "Header banner",
+        "info": "2048 x 415px recommended"
     },
     {
       "type": "checkbox",
       "id": "image_darken",
-      "label": "Darken banner image",
+      "label": "Darken image",
       "default": false
+    },
+    {
+      "type": "select",
+      "id": "collection_title_position",
+      "label": "Collection title position",
+      "options": [
+          {
+          "value": "left",
+          "label": "Left"
+          },
+          {
+          "value": "center",
+          "label": "Center"
+          },
+          {
+          "value": "right",
+          "label": "Right"
+          }
+      ]
+    },
+    {
+        "type": "image_picker",
+        "id": "header_banner_icon",
+        "label": "Banner icon"
+    },
+    {
+        "type": "checkbox",
+        "id": "display_collection_title",
+        "label": "Display caption title"
+    },
+    {
+        "type": "checkbox",
+        "id": "display_collection_content",
+        "label": "Display caption content"
+    },
+    {
+        "type": "select",
+        "id": "text_align",
+        "label": "Text alignment",
+        "options": [
+            {
+            "value": "left",
+            "label": "Left"
+            },
+            {
+            "value": "center",
+            "label": "Center"
+            },
+            {
+            "value": "right",
+            "label": "Right"
+            }
+        ],
+        "default": "center"
+    },
+    {
+        "type": "checkbox",
+        "id": "caption_background_transparency",
+        "label": "Enable text background transparency"
+    },
+    {
+        "type": "color",
+        "id": "cap_bg_color",
+        "label": "Caption background color"
+    },
+    {
+        "type": "color",
+        "id": "cap_title_color",
+        "label": "Caption title color"
+    },
+    {
+        "type": "checkbox",
+        "id": "red_caption",
+        "label": "Show red caption"
     },
     {
       "type": "header",
       "content": "Contact Form"
-    },
-    {
-      "type": "image_picker",
-      "id": "contact_image",
-      "label": "Image",
-      "info": "1024 x 1024px recommended"
     },
     {
       "type": "text",

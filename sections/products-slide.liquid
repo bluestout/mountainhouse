@@ -5,7 +5,7 @@
 <div class="products-slide-section bg-grey">
   {% include 'include-products-slide' %}
 </div>
-{% schema %}
+{% schema %} 
 {
   "name": "Products slide",
   "class": "featured-collection-section",
@@ -13,7 +13,8 @@
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Image"
+      "label": "Image",
+      "info": "480 x 398px recommended"
     },
     {
       "type": "text",
@@ -32,11 +33,6 @@
       "id": "collection_description",
       "label": "Show description",
       "default": true
-    },
-    {
-      "type": "collection",
-      "id": "collection",
-      "label": "Collection"
     },
     {
       "type": "header",
@@ -59,6 +55,36 @@
       "max": 50,
       "step": 1,
       "default": 9
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "info": "This is optional, when it's empty, product title will be used."
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "This is optional, when it's empty, product featured image will be used."
+        }
+      ]
     }
   ],
   "presets": [{

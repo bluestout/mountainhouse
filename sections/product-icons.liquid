@@ -3,8 +3,16 @@
 - Draggable section
 - Uses blocks
 {% endcomment %}
+{% assign status = true %}
+{% for block in section.blocks %}
+    {% if block.settings.svg == blank  and block.settings.image == blank %}
+      {% assign status = false %}    
+    {% endif %}
+{% endfor %}
 
-{% include 'icon-bar' %}
+{% if section.settings.status and status %}
+  {% include 'icon-bar'%}  
+{% endif %}
 
 {% assign collections_per_row = section.settings.frontpage_collections_per_row %}
 
@@ -12,7 +20,6 @@
 {
   "name": "Icons",
   "class": "bar-section",
-  "max_blocks": 4,
   "settings": [
     {
       "type": "select",
@@ -38,6 +45,12 @@
       "type": "color",
       "id": "bg_color",
       "label": "Background color"
+    },
+    {
+      "type": "checkbox",
+      "id": "status",
+      "label": "Show enable ?",
+      "default": true
     }
   ],
   "blocks": [
@@ -50,16 +63,15 @@
           "id": "image",
           "label": "Icon"
         },
-         {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Subscribe"
+        {
+          "type": "html",
+          "id": "svg",
+          "label": "Svg content"
         },
         {
           "type": "text",
-          "id": "url",
-          "label": "Url",
+          "id": "title",
+          "label": "Title",
           "default": "Subscribe"
         }
       ]

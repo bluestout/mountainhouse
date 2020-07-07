@@ -1,6 +1,23 @@
+{% assign sold_out = false %}
+
+{% for tag in product.tags %}
+  {% if tag == "is_out_stock" or tag == "is_low_stock" %}
+    {% assign sold_out = true %}
+  {% endif %}
+{% endfor %}
+
 <div class="product-details">
+  {% if collection.title != blank %}
+    <span class="category">{{ product.type }}</span>
+  {% else %}
+    <span class="category">{{ product.type }}</span>
+  {% endif %}
+
   <span class="title" itemprop="name">{{ product.title }}</span>
+
+    <!-- <span class="sub-desc">{{ product_content | truncatewords: 5, "..." }}</span> -->
   {% if settings.display_vendor %}
+
     <span class="brand">{{ product.vendor }}</span>
   {% endif %}
   {% if settings.enable_shopify_collection_badges %}
@@ -12,29 +29,22 @@
     <span class="coming-soon">{{ 'collections.general.coming_soon' | t }}</span>
   {% else %}
     <span class="price {% if product.compare_at_price_max > product.price %}sale{% endif %}">
-      {% unless product.available == false and settings.display_price == false %}
-        <span class="current_price">
-          {% if product.price_varies and product.price_min > 0 %}
-            <small><em>{{ 'products.general.from' | t }}</em></small>
-          {% endif %}
-          {% if product.price_min > 0 %}
-            <span class="money">{{ product.price_min | money }}</span>
-          {% else %}
-            {{ settings.free_price_text }}
-          {% endif %}
-        </span>
-        {% assign variant = product.selected_or_first_available_variant %}
-        <span class="was_price">
-          {% if variant.price < variant.compare_at_price %}
-            <span class="money">{{ variant.compare_at_price | money }}</span>
-          {% endif %}
-        </span>
-      {% endunless %}
-      <div class="sold-out">
-        {% unless product.available %}
-          {{ settings.sold_out_text }}
-        {% endunless %}
-      </div>
+          <span class="current_price">
+            {% if product.price_varies and product.price_min > 0 %}
+              <small><em>{{ 'products.general.from' | t }}</em></small>
+            {% endif %}
+            {% if product.price_min > 0 %}
+              <span class="money">{{ product.price_min | money }}</span>
+            {% else %}
+              {{ settings.free_price_text }}
+            {% endif %}
+          </span>
+          {% assign variant = product.selected_or_first_available_variant %}
+          <span class="was_price">
+            {% if variant.price < variant.compare_at_price %}
+              <span class="money">{{ variant.compare_at_price | money }}</span>
+            {% endif %}
+          </span>
     </span>
   {% endif %}
 </div>

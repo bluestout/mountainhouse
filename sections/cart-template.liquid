@@ -1,7 +1,5 @@
-{% comment %}
-** Cart page - default view **
-- Template section
-{% endcomment %}
+<script class="cartFlagX"></script>
+
 {% include 'header-brand' %}
 <div class="container main content">
   <a name="pagecontent" id="pagecontent"></a>
@@ -32,11 +30,12 @@
     <form action="{{ routes.cart_url }}" method="post" id="cart_form" data-cart-form="cart-template" data-total-discount="{{ cart.total_discount }}">
       <div class="section clearfix cart__wrapper">
         <div class="nine columns medium-down--one-whole">
-          <h5 class="uppercase">YOUR SHAPPING BAG</h5>
+          <h5 class="uppercase">{{ section.settings.title }}</h5>
           <div class="feature_divider"></div>
-          
+
           {% assign total_saving = 0 %}
           {% for item in cart.items %}
+
             {% if item.variant.compare_at_price > item.variant.price %}
               {% assign saving = item.variant.compare_at_price | minus: item.variant.price | times: item.quantity %}
               {% assign total_saving = saving | plus: total_saving %}
@@ -45,22 +44,21 @@
             <div class="section clearfix cart__item" data-cart-item data-line-id="{{ forloop.index }}" data-variant-id="{{ item.id }}">
               <div class="five columns small-down--one-fifth alpha cart__item--image">
                 <a href="{{ item.url }}" title="{{ item.title | escape }}" class="cart_page_image">
-                  {% include 'image-element', image: item, alt: item.title, object_fit: settings.align_height, max_height: settings.collection_height %}
+                  {% if item.image %}
+                  {% include 'image-element', image: item.product.featured_image, alt: item.title, object_fit: settings.align_height, max_height: settings.collection_height %}
+                  {% else %}
+                  <div class="image-element__wrap">
+                    <img src="https://cdn.shopify.com/s/images/themes/product-1.png" data-sizes="auto">
+                  </div>
+                  {% endif %}
                 </a>
               </div>
 
               <div class="eleven columns small-down--four-fifths omega cart_content_info cart__item--content">
                 <h3 class="cart__item--title">
-                  <a href="{{ item.url }}">{{ item.product.title }}</a>
+                  <a href="{{ item.url }}">{{ item.product.title }}<span class="tdf-cart-item-t"></span></a>
                 </h3>
                 <p class="meta">{{ item.sku }}</p>
-                {% unless item.product.has_only_default_variant or item.variant.title contains "Title" %}
-                  <p class="meta">
-                    {% for option in item.product.options %}
-                      <span class="label">{{ option }}:</span> <span>{{ item.variant.options[forloop.index0] }}</span><br />
-                    {% endfor %}
-                  </p>
-                {% endunless %}
 
                 {% if item.properties %}
                   <p>
@@ -80,7 +78,7 @@
                   </p>
                 {% endif %}
 
-                <p class="modal_price">
+                <p class="modal_price cart__price-wrapper tdf-cart-item-p-p">
                   {% if item.price > 0 %}
                     <span class="money {% if item.price < item.variant.compare_at_price or item.line_level_discount_allocations.size > 0 %}sale{% endif %}">
                       {{ item.final_price | money }}
@@ -110,18 +108,6 @@
                   <span class="ss-icon product-plus js-change-quantity" data-func="plus"><span class="icon-plus"></span></span>
                 </div>
 
-                <!-- <p class="price_total">
-                  <strong>{{ 'cart.general.total' | t }}:</strong>
-                  {% if item.line_level_discount_allocations.size > 0 %}
-                    <span class="money">
-                      {{ item.final_line_price | money }}
-                    </span>
-                  {% endif %}
-                  <span class="money {% if item.line_level_discount_allocations.size > 0 %}was_price{% endif %}">
-                    {{ item.original_line_price | money }}
-                  </span>
-                </p> -->
-
                 <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&amp;quantity=0" class="cart__remove-btn" data-line-id="{{ forloop.index }}" data-remove-item="cart-template"><span class="remove-icon"></span></a>
 
               </div>
@@ -133,20 +119,33 @@
         </div>
         {% assign max_price = section.settings.max_price %}
         {% assign rate_value = cart.total_price %}
-        
-        <div class="six columns medium-down--one-whole right">
+        {% assign shipping_status = true %}
+        {% for tag in customer.tags %}
+          {% if tag == 'Ambassador' or tag == 'freeshipping orders' %}
+              {% assign shipping_status = false %}
+          {% endif %}
+        {% endfor %}
+        <div class="seven columns medium-down--one-whole right">
           <div class="section clearfix">
             <div class="subtotal">
-              <h5 class="uppercase">summary</h5>
+              <h6 class="uppercase">summary</h6>
               <div class="feature_divider"></div>
-              <div class="free-shipping-progress">
-                <div class="progress-bar" style="width: {{  rate_value | divided_by: max_price }}%;"></div>
-                <div class="bg_content">
-                  <img src="{{ 'ico-ico_delivery_black.png' | asset_url}}">
-                  <span>Spend ${{ max_price }} to FREE shipping</span>
+              {% if shipping_status == true %}
+                <div class="free-shipping-progress">
+                  {% assign progress = rate_value | divided_by: max_price %}
+                  <div class="progress-bar" style="width: {{  progress }}%;"></div>
+                  <div class="bg_content">
+                    <img src="{{ 'ico-ico_delivery_black.png' | asset_url}}">
+                    {% if progress < 100 %}
+                      <span>Spend ${{ max_price }} to FREE shipping</span>
+                    {% else %}
+                      <span>FREE SHIPPING!</span>
+                    {% endif %}
+
+                  </div>
                 </div>
-                
-              </div>
+              {% endif %}
+
               {% if cart.cart_level_discount_applications != blank %}
                 <p class="cart_discounts js-cart_discounts sale">
                 {% for discount_application in cart.cart_level_discount_applications %}
@@ -162,7 +161,7 @@
 
               <p class="cart_subtotal js-cart_subtotal">
                 <span class="right">
-                  <span class="money">{{ cart.total_price | money }}</span>
+                  <span class="money"><span style="display:none" class="tdf-cart-total-flag"></span>{{ cart.total_price | money }}</span>
                 </span>
                 <span>{{ 'cart.general.subtotal' | t }}</span>
               </p>
@@ -229,7 +228,8 @@
   {% endif %}
 </div>
 {% if section.settings.feature_icon_bar %}
-  {% include 'icon-bar' %}
+{%- assign icons = 'ico_just_add_water.svg, ico_delivery.svg, ico_anytime.svg'  | split: ", "-%}
+  {% include 'icon-bar', icons: icons %}
 {% endif %}
 <div class="cart__blocks">
   {% for block in section.blocks %}
@@ -242,7 +242,6 @@
 </div>
 
 {% schema %}
-
 {
   "name": "Cart page",
   "class": "cart-section",
@@ -289,14 +288,12 @@
       "label": "Cart message"
     },
     {
-      "type": "range",
+      "type": "text",
       "id": "max_price",
       "label": "Free shipping max price",
-      "min": 900,
-      "max": 9000,
-      "step": 150,
-      "default": 1200
-    },{
+      "default": "1300"
+    },
+    {
       "type": "checkbox",
       "id": "feature_calculate",
       "label": "Show calculate",
@@ -417,5 +414,4 @@
     }
   ]
 }
-
 {% endschema %}

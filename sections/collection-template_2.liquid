@@ -4,25 +4,26 @@
 - Uses blocks
 {% endcomment %}
 {% style %}
-  .add_to_cart{
-    background-color:{{ section.settings.bg_color }};
-    border-color:{{ section.settings.bg_color }};
+  .add_to_cart, .sold_out_btn{
+    background-color:{{ section.settings.bg_color }}!important;
+    border-color:{{ section.settings.bg_color }}!important;
   }
 {% endstyle %}
 {% if section.settings.featured_collection_image %}
   {% include 'collection-header-brand' %}
 {% endif %}
 {% if section.settings.featured_icon_bar %}
-  {% include 'collection-icon-bar' %}
+  {%- assign icons = 'protein_ico.png, calories_ico.png, ico_anytime.svg'  | split: ", "-%}
+  {% include 'collection-icon-bar', icons: icons %}
 {% endif %}
 {% if section.settings.featured_image_text %}
   {% include 'collection-image-text' %}
 {% endif %}
 <a name="pagecontent" id="pagecontent"></a>
 <div class="collection-content">
-  <img class="bg-left" src="{{ 'collection-bg-1.png' | asset_url }}">
+  <!-- <img class="bg-left" src="{{ 'collection-bg-1.png' | asset_url }}">
   <img class="bg-center" src="{{ 'collection-bg-2.png' | asset_url }}">
-  <img class="bg-right" src="{{ 'collection-bg-3.png' | asset_url }}">
+  <img class="bg-right" src="{{ 'collection-bg-3.png' | asset_url }}"> -->
   <div class="container bg-grey">
     <h1 class="text-align--center title">{{section.settings.title}}</h1>
     {% paginate collection.products by section.settings.pagination_limit %}
@@ -97,11 +98,6 @@
       </div>
       {% endif %}
       <div class="section clearfix">
-        {% if section.settings.display_collection_title and section.settings.featured_collection_image == false %}
-          <div class="eight columns">
-            <h1>{{ section.settings.title }}</h1>
-          </div>
-        {% endif %}
         <div class="columns section_select medium-down--one-whole">
           {% if collection.handle != blank and collection.products_count > 0 %}
             {% if section.settings.collection_tags %}
@@ -169,7 +165,7 @@
           {% include 'product-thumbnail-loop', sidebar: sidebar %}
           
         {% endif %}
-
+      {% include 'collection-brand-video' %}
       {% if settings.pagination_type == 'basic_pagination' %}
         {% include 'pagination' with sidebar %}
       {% endif %}
@@ -213,14 +209,19 @@
     {
       "type": "checkbox",
       "id": "featured_collection_image",
-      "label": "Show image",
-      "info": "[Learn more](https://help.outofthesandbox.com/hc/en-us/articles/115009455768-How-to-add-a-Collection-Banner)"
+      "label": "Show banner"
     },
     {
       "type": "image_picker",
       "id": "image",
       "label": "Image",
-      "info": "1800 x 1000px recommended"
+      "info": "2048x537px recommended"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile image",
+      "info": "2048x1035px recommended"
     },
     {
       "type": "checkbox",
@@ -229,9 +230,30 @@
       "default": false
     },
     {
+      "type": "text",
+      "id": "default_title",
+      "label": "Default title"
+    },
+    {
+      "type": "richtext",
+      "id": "default_text",
+      "label": "Default description"
+    },
+    {
       "type": "checkbox",
       "id": "display_collection_title",
-      "label": "Show collection title"
+      "label": "Show caption"
+    },
+    {
+      "type": "checkbox",
+      "id": "title_status",
+      "label": "Title status"
+    },
+    {
+      "type": "checkbox",
+      "id": "content_status",
+      "label": "Content status",
+      "default": true
     },
     {
       "type": "text",
@@ -241,7 +263,7 @@
     {
       "type": "select",
       "id": "collection_title_position",
-      "label": "Collection title position",
+      "label": "Caption position",
       "options": [
         {
           "value": "left",
@@ -256,6 +278,31 @@
           "label": "Right"
         }
       ]
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "caption_background_transparency",
+      "label": "Enable text background transparency"
     },
     {
       "type": "color",

@@ -16,7 +16,12 @@
       data-collection-handles="{{ collection_handles | join: ','}}"
   >{{ 'collections.general.quick_shop' | t }}
   </span>
-
+  <div class="quickshop-forms__container js-quickshop-forms__container js-quickshop-forms--{{ product.id }}">
+    {% unless collection_handles contains 'coming-soon' %}
+      {% include 'product-notify-me' %}
+      {% include 'product-form', show_payment_button_quickshop: settings.show_payment_button %}
+    {% endunless %}
+</div>
   <a href="{{ product.url | within: collection }}" class="button ss-icon quick_shop cart"
       data-id="{{ product.id }}"
       data-handle="{{ product.handle }}"

@@ -1,0 +1,247 @@
+<div id="page-blog-section" class="infography-content">
+    {% if section.settings.show_banner and section.settings.header_banner_image != blank %}
+        {% include 'page-brand'%}
+    {% endif %}
+
+    {% assign items_per_row = section.settings.item_per_row %}
+
+    {% assign page = 0 %}
+    <div class="container video-content">
+        <div class="sixteen columns" data-blog-size="">
+            {% if section.blocks.size >0 %}
+                {% for block in section.blocks %}
+                    {% if page > section.settings.blog_posts_per_page %}
+                        <div class="video-item blogBox moreBox {% if items_per_row == 2 %}eight columns{% elsif items_per_row == 3 %}one-third column{% else %}four columns{% endif %} article medium-down--one-whole" style="display: none;">
+                            <p class="sub_title" style="margin-top: 20px;">
+                                <a href="{{ block.settings.item_url }}">{{ block.settings.item_title }}</a>
+                            </p>
+                            {% if block.settings.item_image != blank %}
+                                {% include 'image-element', image: block.settings.item_featured_image, back_to_image:true %}
+                                <div class="image_overlay">
+                                    <a href="javascript:;" class="play">
+                                        <img src="{{ 'play_btn.png' | asset_url }}">
+                                        <span>WATCH<br><strong>Inforgraphy</strong></span>
+                                        <div class="js-image-popup" style="display: none; background: transparent;">
+                                            <div class="video-popup">
+                                                {% if block.settings.read_more_status %}
+                                                    <a class="read_more" class="right" href="{{ block.settings.page_url }}">Read more</a>
+                                                {% endif %}
+                                                <img src="{{ block.settings.item_image | img_url: 'original' }}" class="responsive__image  download-{{block.settings.download_status}}">
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <div class="video-item blogBox moreBox {% if items_per_row == 2 %}eight columns{% elsif items_per_row == 3 %}one-third column{% else %}four columns{% endif %} article medium-down--one-whole" >
+                            <p class="sub_title" style="margin-top: 20px;">
+                                <a href="{{ block.settings.page_url }}">{{ block.settings.item_title }}</a>
+                            </p>
+                            {% if block.settings.item_image != blank %}
+                                {% include 'image-element', image: block.settings.item_featured_image, back_to_image:true %}
+                                <div class="image_overlay">
+                                    <a href="javascript:;" class="play">
+                                        <div class="js-image-popup" style="display: none; background: transparent;">
+                                            <div class="video-popup">
+                                                {% if block.settings.read_more_status %}
+                                                    <a class="read_more" target="_blank" href="{{ block.settings.page_url }}">Read more</a>
+                                                {% endif %}
+                                                <img src="{{ block.settings.item_image | img_url: 'original' }}" class="responsive__image download-{{block.settings.download_status}}">
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    {% assign page =  page | plus: 1 %}
+
+                {% endfor %}
+                <div id="loadMore">
+                    <a href="#">Load More</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+{% schema %}
+{
+    "name"  : "Content section",
+    "class" : "infography-section",
+    "max_blocks": 20,
+    "settings"  : [
+        {
+            "type": "header",
+            "content": "Header banner"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_banner",
+            "label": "Feauture heading banner",
+            "default": true
+        },
+        {
+            "type": "image_picker",
+            "id": "header_banner_image",
+            "label": "Header banner",
+            "info": "2048 x 415px recommended"
+        },
+        {
+        "type": "checkbox",
+        "id": "image_darken",
+        "label": "Darken image",
+        "default": false
+        },
+        {
+        "type": "select",
+        "id": "collection_title_position",
+        "label": "Collection title position",
+        "options": [
+            {
+            "value": "left",
+            "label": "Left"
+            },
+            {
+            "value": "center",
+            "label": "Center"
+            },
+            {
+            "value": "right",
+            "label": "Right"
+            }
+        ]
+        },
+        {
+            "type": "image_picker",
+            "id": "header_banner_icon",
+            "label": "Banner icon"
+        },
+        {
+            "type": "checkbox",
+            "id": "display_collection_title",
+            "label": "Display caption title"
+        },
+        {
+            "type": "checkbox",
+            "id": "display_collection_content",
+            "label": "Display caption content"
+        },
+        {
+            "type": "select",
+            "id": "text_align",
+            "label": "Text alignment",
+            "options": [
+                {
+                "value": "left",
+                "label": "Left"
+                },
+                {
+                "value": "center",
+                "label": "Center"
+                },
+                {
+                "value": "right",
+                "label": "Right"
+                }
+            ],
+            "default": "center"
+        },
+        {
+            "type": "checkbox",
+            "id": "caption_background_transparency",
+            "label": "Enable text background transparency"
+        },
+        {
+            "type": "color",
+            "id": "cap_bg_color",
+            "label": "Caption background color"
+        },
+        {
+            "type": "color",
+            "id": "cap_title_color",
+            "label": "Caption title color"
+        },
+        {
+            "type": "checkbox",
+            "id": "red_caption",
+            "label": "Show red caption"
+        },
+        {
+            "type": "header",
+            "content": "Page content"
+        },
+        {
+            "type": "range",
+            "id": "item_per_row",
+            "label": "Items per row",
+            "min": 2,
+            "max": 7,
+            "step": 1,
+            "default": 4
+        },
+        {
+            "type": "range",
+            "id": "mobile_item_row",
+            "label": "Mobile items per row",
+            "min": 2,
+            "max": 4,
+            "step": 1,
+            "default": 2
+        },
+        {
+            "type": "range",
+            "id": "blog_posts_per_page",
+            "label": "Blog posts per page",
+            "min": 1,
+            "max": 50,
+            "step": 1,
+            "default": 12
+        }
+    ],
+    "blocks" : [
+        {
+        "type": "image",
+        "name": "Items",
+        "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "item_image",
+                    "label": "Image",
+                    "info": "1024 x 1024px recommended"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "item_featured_image",
+                    "label": "Featured image",
+                    "info": "380 X 245px recommended"
+                },
+                {
+                    "type": "text",
+                    "id": "item_title",
+                    "label": "Item title",
+                    "default": "heading title"
+                },
+                {
+                    "type": "url",
+                    "id": "page_url",
+                    "label": "Page url"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "download_status",
+                    "label": "Download button enable ?",
+                    "default": true
+                },
+                {
+                    "type": "checkbox",
+                    "id": "read_more_status",
+                    "label": "Read more button enable ?",
+                    "default": true
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

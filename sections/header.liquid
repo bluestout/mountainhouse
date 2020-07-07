@@ -1,4 +1,4 @@
-{% comment %}
+<script class="cartFlagX"></script>{% comment %}
 ** Header - default view **
 - Static section
 {% endcomment %}
@@ -108,13 +108,13 @@
       {% if section.settings.show_cart %}
         <div class="cart_container clearfix">
           <div r2 class="header_user">
-            <a href="{{ routes.account_url }}" class="icon-user2" title="{{ 'layout.customer.my_account' | t }} {% if customer %}({{ customer.email }}){% endif %}"> 
-              <img src="https://cdn.shopify.com/s/files/1/0085/1171/7440/t/3/assets/user.png?v=1580846157" />
+            <a href="{{ routes.account_url }}" class="icon-user2" title="{{ 'layout.customer.my_account' | t }} {% if customer %}({{ customer.email }}){% endif %}">
+              <img src="{{'accounts_ico.svg' | asset_url}}" />
               </a>
           </div>
-          <div class="search_link" style="display:inline-block !important;">
+          <div class="search_link">
               <a r2 href="{{ routes.search_url }}" class="icon-search2 dropdown_link" title="{{ 'general.search.title' | t | escape }}" data-dropdown-rel="search">
-            <img src="https://cdn.shopify.com/s/files/1/0085/1171/7440/t/3/assets/search.png?v=1580846172" />
+            <img src="{{'search_ico.svg' | asset_url}}" />
             </a>
             <ul class="search_menu">
               <li>
@@ -127,13 +127,14 @@
           </ul>
           </div>
           <a href="{{ routes.cart_url }}" class="{% if section.settings.cart_icon == "cart" %}icon-cart{% else %}{% endif %} mini_cart dropdown_link" data-no-instant>
-            <img src="https://cdn.shopify.com/s/files/1/0085/1171/7440/t/3/assets/cart.png?v=1580846183" />
+            <img src="{{'bag_ico.svg' | asset_url}}" />
             <span class="cart_count">{{ cart.item_count }}</span>
           </a>
           {% unless settings.cart_action == 'ajax' and template contains 'cart' %}
             <div class="tos_warning cart_content animated fadeIn">
               <div class="js-empty-cart__message {% if cart.item_count > 0 %}hidden{% endif %}">
                 <p class="empty_cart">{{ 'layout.general.empty_cart' | t }}</p>
+                <a class="button shopping_button" href="/collections/all">Start Shopping</a>
               </div>
               <form action="/checkout" method="post" data-total-discount="{{ cart.total_discount }}" data-money-format="{{ shop.money_format }}" data-shop-currency="{{ shop.currency }}" data-shop-name="{{ shop.name | escape }}" class="{% if cart.item_count == 0 %}hidden{% endif %}" data-cart-form="mini-cart">
                 <a class="cart_content__continue-shopping secondary_button">
@@ -142,10 +143,8 @@
                 <ul class="cart_items js-cart_items clearfix">
                   {% assign total_saving = 0 %}
 
-                  <p class="title">your cart</p>
-
                   {% for item in cart.items %}
-                    
+
                     {% if item.variant.compare_at_price > item.variant.price %}
                       {% assign saving = item.variant.compare_at_price | minus: item.variant.price | times: item.quantity %}
                       {% assign total_saving = saving | plus: total_saving %}
@@ -159,13 +158,17 @@
                             <div class="cart_image mini-cart__item-image">
                               <img src="{{ item.product.images[0] | img_url: '320x' }}" alt="{{ item.title | escape }}" class="lazyload" />
                             </div>
+                          {% else %}
+                          <div class="cart_image mini-cart__item-image">
+                            <img src="https://cdn.shopify.com/s/images/themes/product-1_500x500.png" alt="{{ item.title | escape }}" class="lazyload" />
+                          </div>
                           {% endif %}
                         </a>
                         <div class="mini-cart__item__title">
                           <div class="item_title">
                             <a href="{{ item.url }}">
                               {{ item.product.title }}
-                              {% if item.properties %}
+<span class=tdf-cart-item-t></span>                               {% if item.properties %}
                                 {% for p in item.properties %}
                                   {% if p.last != blank %}
                                     <div class="line-item">
@@ -176,46 +179,20 @@
                               {% endif %}
                             </a>
                           </div>
-                        </div>
-                      </div>
-                      <div class="mini-cart__item_content sixteen section">
-                        {% if item.line_level_discount_allocations.size > 0 %}
-                          {% for discount_allocation in item.line_level_discount_allocations %}
-                            <p class="notification-discount meta">
-                              {{ discount_allocation.discount_application.title }}
-                            </p>
-                          {% endfor %}
-                        {% endif %}
-                        <div class="section">
-                          {% if item.product.variants.size > 1 %}
-                            {% include 'cart-swatch', item: item %}
-                          {% endif %}
-                        </div>
-                        <div class="section">
-                          <div class="eleven columns">
-                            <div class="left product-quantity-box">
-                              <input type="number" min="0" size="2" class="quantity" name="updates[]" id="updates_{{ item.id }}" value="{{ item.quantity }}" data-cart-quantity-input="mini-cart" {% if settings.limit_quantity and item.variant.inventory_management != blank and item.variant.inventory_quantity > 0 and item.variant.inventory_policy == "deny" %}max="{{ item.variant.inventory_quantity }}"{% endif %}/>
-                              <input type="button" class="action_button" data-cart-quantity-button="mini-cart" value="add bag">
-                            </div>
-                          </div>
-                          <div class="five columns">
-                              {% if item.price > 0 %}
-                                <p class="money {% if item.price < item.variant.compare_at_price or item.line_level_discount_allocations.size > 0 %}sale{% endif %}">
-                                  {{ item.final_price | money }}
-                                </p>
-                                {% if item.price < item.variant.compare_at_price or item.line_level_discount_allocations.size > 0 %}
-                                  <p class="money was_price">
-                                    {{ item.variant.compare_at_price | money }}
-                                  </p>
-                                {% endif %}
-                              {% else %}
-                                  {{ settings.free_price_text }}
-                              {% endif %}
+                          <div class="variant_type">
+                            {% comment %}
+                            {% if item.image %}
+                              <img src="{{ item.image | img_url: '500x' }}">
+                            {% else %}
+                              <img src="https://cdn.shopify.com/s/images/themes/product-1_500x500.png">
+                            {% endif %}
+                            {% if item.variant.title != 'Default Title' %}
+                            <span class="sub-title">{{ item.variant.title }}</span>
+                            {% endif %}
+                            {% endcomment %}
+                            <span class="sub-title">{{ item.variant.sku }}</span>
                           </div>
                         </div>
-                        
-                        
-
                       </div>
                     </li>
                   {% endfor %}
@@ -235,9 +212,9 @@
 
                   <li class="cart_subtotal js-cart_subtotal">
                     <span class="right">
-                      <span class="money">{{ cart.total_price | money }}</span>
+                      <span class="money"><span style="display:none" class="tdf-cart-total-flag"></span>{{ cart.total_price | money }}</span>
                     </span>
-                    <span>ORDER TOTAL</span>
+                    <span>SUB TOTAL</span>
                   </li>
                   {% if settings.display_savings and total_saving > 0 or settings.display_savings and cart.total_discount > 0 %}
                   <li class="cart_savings sale js-cart_savings">
@@ -267,7 +244,7 @@
                   {% endif %}
                   {% if settings.cart_message != blank %}
                   <li>
-                    
+
                       <div class="cart_text">
                         {{ settings.cart_message }}
                       </div>
@@ -276,9 +253,11 @@
                 </ul>
 
                 {% if settings.go_to_checkout %}
-                  <button type="submit" class="button white add_to_cart">{% if settings.show_lock_icon %}<span class="icon-lock"></span>{% endif %}{{ 'layout.general.checkout' | t }}</button>
-                {% else %}
-                  <button type="submit" class="button white add_to_cart">{% if settings.show_lock_icon %}<span class="icon-lock"></span>{% endif %}{{ 'layout.general.go_to_cart' | t }} </button>
+                  <div class="columns one-half"><a class="button white" href="{{ routes.cart_url }}" style="width: 100%; padding: 0px 10px;"> go to cart</a></div>
+                  <div class="columns one-half"><button type="submit" class="button add_to_cart">{% if settings.show_lock_icon %}<span class="icon-lock"></span>{% endif %}{{ 'layout.general.checkout' | t }}</button></div>
+                  {% else %}
+                  <a class="button white" href="{{ routes.cart_url }}"> go to cart</a>
+                  {% comment %} <button type="submit" class="button white add_to_cart">{% if settings.show_lock_icon %}<span class="icon-lock"></span>{% endif %}{{ 'layout.general.go_to_cart' | t }} </button> {% endcomment %}
                 {% endif %}
               </form>
             </div>
@@ -325,9 +304,6 @@
             </ul>
           </div>
         {% endif %}
-<!-- 
-        {% include 'sub-menu' with section.settings.main_linklist %}
-        {% include 'sub-menu' with section.settings.main_linklist2 %} -->
       </div>
     </div>
   </div>

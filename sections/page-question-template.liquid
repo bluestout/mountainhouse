@@ -25,7 +25,8 @@
 }
 </script>
 {% include 'question-image-text' %}
-{% include 'question-icon-bar' %}
+{%- assign icons = 'ico_blogers.svg, ico_forums.svg, ico_club.svg, ico_YT_channel.svg, ico_other_platforms.svg'  | split: ", "-%}
+{% include 'question-icon-bar', icons: icons %}
 {% if section.settings.show_banner %}
 
   <section id="banner-{{section.id}}" class="banner page_banner">
@@ -105,7 +106,7 @@
           <li><a data-toggle="pill" href="#menu4">Just In case…(r)</a></li>
           <li><a data-toggle="pill" href="#menu5">Pro-pak</a></li>
         </ul>
-        
+
         <div class="tab-content">
           <div id="menu1" class="tab-pane fade in active">
             <dl class="faqAccordion">
@@ -223,8 +224,8 @@
     {% endif %}
   </div>
   <div class="sixteen columns bottom-content">
-    <p>If you think you can abide by the rules and you have the kind of content that matches our products, click the big ‘Apply’ button!</p>
-    <a href="#" class="action_button apply_btn"> Apply Now </a>
+    <p>If you think you can abide by the rules and you have the kind of content that matches our products, click the big ‘Apply Now’ button!</p>
+    <a href="https://www.avantlink.com/signup/affiliate/us?merchant=13809" class="action_button apply_btn"> Apply Now </a>
   </div>
 </div>
 
@@ -342,41 +343,6 @@
           "label": "Right"
         }
       ]
-    },
-    {
-      "type": "text",
-      "id": "button1",
-      "label": "First button label"
-    },
-    {
-      "type": "url",
-      "id": "button1_link",
-      "label": "First button link"
-    },
-    {
-      "type": "checkbox",
-      "id": "button1_highlight",
-      "label": "Highlight first button"
-    },
-    {
-      "type": "text",
-      "id": "button2",
-      "label": "Second button label"
-    },
-    {
-      "type": "url",
-      "id": "button2_link",
-      "label": "Second button link"
-    },
-    {
-      "type": "checkbox",
-      "id": "button2_highlight",
-      "label": "Highlight second button"
-    },
-    {
-      "type": "checkbox",
-      "id": "feature_tab",
-      "label": "Feature tab"
     },
     {
       "type": "header",
@@ -577,6 +543,12 @@
           "type": "color",
           "id": "text_color",
           "label": "Text"
+        },
+        {
+          "type": "checkbox",
+          "id": "feature_icon",
+          "label": "Feature icon",
+          "default": true
         },
         {
           "type": "image_picker",

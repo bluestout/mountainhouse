@@ -18,27 +18,46 @@
   {% assign blog_comment_count = section.settings.blog_comment_count %}
   {% assign read_more_link = section.settings.read_more_link %}
 {% endif %}
-
+{% assign page = 1 %}
 {% if articles != blank %}
   {% for article in articles %}
   {% assign handles = article.handle | split: '/' %}
     {% if article.url != blank %}
-      <div class="blog-item {% if home_page_articles == 2 %}eight columns{% elsif home_page_articles == 3 %}one-third column{% else %}four columns{% endif %} article medium-down--one-whole">
-        {% if article.image %}
-          <a href="{{ article.url }}">
-            {% include 'image-element', image: article.image, alt: article.image.alt,back_to_image:true %}
-          </a>
-        {% endif %}
-        <span class="category">{{ handles[0] }}</span>
-        <p class="sub_title">
-          <a href="{{ article.url }}">{{ article.title }}</a>
-        </p>
-        <p class="blog_meta">
-          <span>{{ article.published_at | date: format: "month_day_year" }}</span> | <span>{{ 'blogs.article.by_author' | t: author: article.author }}</span>
-        </p>
-      </div>
+      {% if page > section.settings.blog_posts_per_page %}
+        <div class="blog-item blogBox moreBox {% if home_page_articles == 2 %}eight columns{% elsif home_page_articles == 3 %}one-third column{% else %}four columns{% endif %} article medium-down--one-whole"  style="display: none;">
+          {% if article.image %}
+            <a href="{{ article.url }}" class="zoom">
+              {% include 'image-element', image: article.image, alt: article.image.alt,back_to_image:true %}
+            </a>
+          {% endif %}
+          <span class="category">{{ handles[0] }}</span>
+          <p class="sub_title">
+            <a href="{{ article.url }}">{{ article.title }}</a>
+          </p>
+          <p class="blog_meta">
+            <span>{{ article.published_at | date: format: "month_day_year" }}</span> | <span>{{ 'blogs.article.by_author' | t: author: article.author }}</span>
+          </p>
+        </div>
+      {% else %}
+        <div class="blog-item blogBox moreBox {% if home_page_articles == 2 %}eight columns{% elsif home_page_articles == 3 %}one-third column{% else %}four columns{% endif %} article medium-down--one-whole">
+          {% if article.image %}
+            <a href="{{ article.url }}" class="zoom">
+              {% include 'image-element', image: article.image, alt: article.image.alt,back_to_image:true %}
+            </a>
+          {% endif %}
+          <span class="category">{{ handles[0] }}</span>
+          <p class="sub_title">
+            <a href="{{ article.url }}">{{ article.title }}</a>
+          </p>
+          <p class="blog_meta">
+            <span>{{ article.published_at | date: format: "month_day_year" }}</span> | <span>{{ 'blogs.article.by_author' | t: author: article.author }}</span>
+          </p>
+        </div>
+      {% endif %}
+      {% assign page =  page | plus: 1 %}
     {% endif %}
   {% endfor %}
-
+  <div id="loadMore">
+      <a href="#">Load More</a>
+  </div>
 {% endif %}
-

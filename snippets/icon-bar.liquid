@@ -2,16 +2,20 @@
     .icon-bar{
         background: {{section.settings.bg_color}};
     }
-    .icon-bar .columns a{
-        float: none;
-    }
-    .icon-bar .columns a div{
+
+    .icon-bar .columns div div{
         margin-top : 4px;
         color: {{section.settings.title_color}};	
     }
-    .icon-bar .columns a img{
+    .icon-bar .columns div img{
         max-width  : 30px;
         max-height : 33px;
+    }
+    .icon-bar .columns div svg{
+      max-width  : 30px;
+      max-height : 33px;
+      filter: brightness(100);
+      float: left;
     }
     .bar-large .columns{
         margin: 50px 0px;
@@ -33,6 +37,7 @@
 {% else %}
   {% assign class_name = 'one-fourth' %}
 {% endif %}
+{%- assign i = 0 -%}
 <div class="icons icon-bar bar-{{section.settings.bar_size}}">
   {% if size_val > 0 %}
     <div class="sixteen">
@@ -40,13 +45,21 @@
         <div class="list-collections clearfix equal-columns--outside-trim equal-columns--clear">
           {% for block in section.blocks %}
             {% if block.type == 'collection'%}
-            
-            <div class="{{ class_name }} columns small-down--one-whole">
-              <a href="{{ block.settings.url }}" >
-                <img src="{{ block.settings.image | img_url: "original" }}">
-                <div>{{ block.settings.title }}</div>
-              </a>
-            </div>
+              {% if block.settings.svg != blank %}
+                <div class="{{ class_name }} columns small-down--one-whole">
+                  <div >
+                    {{ block.settings.svg }}
+                    <div>{{ block.settings.title }}</div>
+                  </div>
+                </div> 
+              {% else %}
+                <div class="{{ class_name }} columns small-down--one-whole">
+                  <div >
+                    <img src="{{ block.settings.image | img_url: 'original' }}">
+                    <div>{{ block.settings.title }}</div>
+                  </div>
+                </div> 
+              {% endif %}
             {% endif %}
           {% endfor %}
         </div>
