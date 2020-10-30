@@ -85,7 +85,7 @@ This file can be re-written at any time.
     {% if settings.enable_shopify_review_comments %}
       <link rel="preconnect dns-prefetch" href="https://productreviews.shopifycdn.com" />
     {% endif %}
-
+    <link rel="stylesheet" href="{{ "jquery-ui.css" | asset_url }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.6/jquery.fancybox.css">
     <!-- Stylesheets for Turbo "5.0.3" -->
     {{ 'styles.scss.css' | asset_url | stylesheet_tag }}
@@ -190,6 +190,10 @@ This file can be re-written at any time.
     {% assign feature_image = true %}
   {% elsif template contains "page.sponsorship" %}
     {% assign feature_image = true %}
+  {% elsif template contains "page.store-locator" %}
+    {% assign feature_image = true %}
+  {% elsif template contains "page.store-locator-usa" %}
+    {% assign feature_image = true %}
   {% else %}
     {% assign feature_image = false %}
   {% endif %}
@@ -223,6 +227,7 @@ This file can be re-written at any time.
   
   <script id="dsq-count-scr" src="//{{ settings.disqus_shortname }}.disqus.com/count.js" async></script>
 <script src="{{ 'jquery.min.js' | asset_url }}"></script>
+<script src="{{ 'jquery-ui.min.js' | asset_url }}"></script>
 <script src="{{ 'jquery.fileDownload.js' | asset_url }}"></script>
 <script src="{{ 'vendors.js' | asset_url }}"></script>
 <script src="{{ 'sections.js' | asset_url }}"></script>

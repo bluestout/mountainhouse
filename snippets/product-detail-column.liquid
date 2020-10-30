@@ -4,6 +4,7 @@
     <a href="{{ product.url | within: collection }}" itemprop="url" class="hidden-product-link">{{ product.title }}</a>
     <div class="info">
       {% if settings.thumbnail_hover_enabled %}
+        
         {% include "product-info" %}
       {% endif %}
       {% if settings.quick_shop_enabled and settings.quick_shop_style == 'popup' %}

@@ -40,21 +40,21 @@
         <select class="faq-select">
           <option value="#general">General</option>
           {% for filter_item in filter_array %}
-            <option value="#{{filter_item | strip_newlines | handleize}}">{{filter_item}}</option>
+            <option value="#{{filter_item  | remove: '®' | strip_newlines | handleize }}">{{filter_item}}</option>
           {% endfor %}
-        
+         
         </select>
         {% assign filter_count = filter_array  | size %}
         <ul class="tabs tab-links {% if filter_count  > 6 %} carousel {% endif %}">
           <li class="active"><a data-toggle="pill" href="#general">General</a></li>
           {% for filter_item in filter_array %}
-            <li><a data-toggle="pill" href="#{{ filter_item | strip_newlines | handleize }}">{{ filter_item }}</a></li>
+            <li><a data-toggle="pill" href="#{{ filter_item | remove: '®' | strip_newlines | handleize }}">{{ filter_item }}</a></li>
           {% endfor %}
         </ul>
 
         <div class="tab-content">
           {% for filter_item in filter_array %}
-            <div id="{{ filter_item | strip_newlines | handleize }}" class="tab-pane fade">
+            <div id="{{ filter_item | remove: '®' | strip_newlines | handleize }}" class="tab-pane fade">
               <dl class="faqAccordion">
                 {% for block in section.blocks %}
                 {% assign filter_val = filter_item | strip_newlines %}

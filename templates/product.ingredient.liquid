@@ -1,0 +1,13 @@
+{% include 'shogun-products', content: product %}
+{{product.metafields.shogun.above}}
+{% comment %}
+  The contents of the product.liquid template can be found in /sections/product-template.liquid
+{% endcomment %}
+
+{% section 'product-template-ingredient' %}
+{% section 'product-recommendations' %}
+{% include 'product__structured-data' %}
+{% section 'instafeed' %}
+{% render 'product_infox' %}
+
+{{product.metafields.shogun.below}}

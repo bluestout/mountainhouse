@@ -3,9 +3,7 @@ blocks {% endcomment %}
 
 <div class="article">
   <div class="container main content">
-    <div
-      class="twelve columns offset-by-two medium-down--one-whole equal-columns--outside-trim"
-    >
+    <div class="twelve columns offset-by-two medium-down--one-whole equal-columns--outside-trim">
       <div class="section clearfix">
         <h1 class="headline">
           <!-- <span class="date">
@@ -15,7 +13,7 @@ blocks {% endcomment %}
           <span class="category">{{ page.metafields["global"]["Ambassador-filters"] }}</span>
         </h1>
         <div class="featured_image">
-          <img src="{% if page.metafields['global']['Content-image'] %}{{ page.metafields['global']['Content-image'] | image_url: 'original' }}{% else %}{{ page.metafields['global']['Featured-image'] | image_url: 'original' }}{% endif %}" />
+          <img src="{% if page.metafields['global']['Content-image'] %}{{ page.metafields['global']['Content-image'] | image_url: 'original' }}{% else %}{{ page.metafields['global']['Featured-image'] | image_url: 'original' }}{% endif %}" alt="{{ page.title }}" />
         </div>
         <div class="article_content clearfix">
           {{ page.content }}

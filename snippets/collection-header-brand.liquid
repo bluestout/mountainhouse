@@ -37,6 +37,11 @@
   {% else %}
     {% assign title = section.settings.default_title %}
   {% endif %}
+  {% if collection.metafields["global"]["header-banner-textbox-position"] != blank and collection.metafields["global"]["header-banner-textbox-position"] != 'none' %}
+    {% assign position = collection.metafields["global"]["header-banner-textbox-position"] %}
+  {% else %}
+    {% assign position = section.settings.collection_title_position %}
+  {% endif %}
 
 <div class="collection-header">
   <header class="banner center page_banner {{ cls }} dark-overlay-{{ section.settings.image_darken }}">
@@ -50,7 +55,6 @@
         {% assign showPosterImage = false  %}
         {% assign autoplayVideo = false  %}
         {% assign variable = collection.metafields["global"]["header-banner-video-url"] | split: '/' | reverse  %}
-        <script> console.log({{ variable | json }}) </script>
         {% assign video = collection.metafields["global"]["header-banner-video-url"] %}
         {% if video contains 'youtu' %}
           {% assign useLazyframe = true %} 
@@ -71,35 +75,40 @@
         stretch_width: true,
         max_width: 2048,
         max_height: 500,
-        additional_classes: "medium-down--hide"
+        additional_classes: "medium-down--hide",
+        alt: collection.title
       %}
       {% if collection.metafields["global"]["mobile-banner-image"] != blank %}
-        <img src="{{ collection.metafields["global"]["mobile-banner-image"] }}" class="hide medium-down--show">
+        <img src="{{ collection.metafields["global"]["mobile-banner-image"] }}" class="hide medium-down--show" alt="{{ title }}">
       {% else %}
         {% include 'image-element' with 
           image: mobile_image,
           stretch_width: true,
           max_width: 2048,
           max_height: 500,
-          additional_classes: "hide medium-down--show"
+          additional_classes: "hide medium-down--show",
+          alt: collection.title
         %}
       {% endif %}
       {% if section.settings.display_collection_title and collection.metafields["global"]["header-banner-video-url"] == blank %}
-        <div class="caption captionOverlay--true position--{{section.settings.collection_title_position}} caption-transparency-{{ section.settings.caption_background_transparency }}
-        " style="background-color: {{section.settings.cap_bg_color}};">
-          {% if section.settings.red_caption %}
-            <div class="right-caption"></div>
-          {% endif %}
-          {% if collection.metafields["global"]["collection-icon"] != blank %}
-            <img src="{{ collection.metafields["global"]["collection-icon"] }}" class="img brand--logo position--{{section.settings.text_align}}">
-          {% endif%}
-          {% if section.settings.title_status %}
-            <h2 class="headline text-align--{{section.settings.text_align}}" style="color: {{section.settings.cap_title_color}};">{{ title }}</h2>
-          {% endif %}
-          {% if section.settings.content_status %}
-            <div class="text-align--{{section.settings.text_align}} desc"><p>{{ text | strip_html }}</p></div>
-          {% endif %}
-        </div>
+        <div class="caption-container">
+          <div class="caption captionOverlay--true position--{{position}} caption-transparency-{{ section.settings.caption_background_transparency }}
+          " style="background-color: {{section.settings.cap_bg_color}};">
+            {% if section.settings.red_caption %}
+              <div class="right-caption"></div>
+            {% endif %}
+            {% if collection.metafields["global"]["collection-icon"] != blank %}
+              <img src="{{ collection.metafields["global"]["collection-icon"] }}" class="img brand--logo position--{{section.settings.text_align}}" alt="{{ title }}">
+            {% endif%}
+            {% if title != blank %}
+              <h2 class="headline text-align--{{section.settings.text_align}}" style="color: {{section.settings.cap_title_color}};">{{ title }}</h2>
+            {% endif %}
+            {% if text != blank %}
+              <div class="text-align--{{section.settings.text_align}} full desc"><p>{{ text | strip_html }}</p></div>
+              <div class="text-align--{{section.settings.text_align}} less desc"><p>{{ text | strip_html | truncate: 300, '... <a class="read_more">More</a>' }}</p></div>
+            {% endif %}
+          </div>
+        </div>    
       {% endif %}
   </header>
 </div>

@@ -1,0 +1,85 @@
+
+<div class="ingredient_bg extension">
+    <img src="{{ product.metafields["global"]["integration-bg-image-2"] }}" class="bg-1" alt="{{ product.title }}">
+    <h1 class="bg-title">{{ product.metafields["global"]["integration-bg-text"] }}</h1>
+    <div class="ingredient_content columns ">
+        <div class="column one-half banner-image">
+            <img src="{{ product.metafields["global"]["integration-bg-image-1"] }}" class="bg-2" alt="{{ product.title }}">
+            <ul class="link_list">
+                {% assign blocks_str = product.metafields["global"]["ingredient-icons"] | replace: '<p>', '<--splite-->' | remove: '</p>' %}
+                {% assign blocks_str = blocks_str | remove_first: '<--splite-->' %}
+                {% assign blocks = blocks_str | split: '<--splite-->' %}
+                {% assign size_val = 0 %}
+                {% assign i = 1 %}
+                {% assign type = 'integration' %}
+
+                {% for block in blocks %}
+                    {% assign modulo = forloop.index | modulo: 2 %}
+                    {% unless modulo == 0 %}
+                        {% assign size_val =  size_val | plus: 1 %}
+                    {% endunless %}
+                {% endfor %}
+
+                {%if size_val == 3 %}
+                    {% assign class_name = 'medium-down--one-third' %}
+                {% else %}
+                    {% assign class_name = 'medium-down--one-half' %}
+                {% endif %}
+
+                {% for icon_block in blocks %}
+                    {% assign modulo = forloop.index | modulo: 2 %}
+                    {% unless modulo == 0 %}
+                        <li class="{{class_name}}">
+                            <div class="row">
+                                <div class="icon">
+                                    {% if icon_block contains '.svg' %}
+                                        <img src="{{ icon_block }}" alt="{{ forloop.index }}">
+                                    {% else %}
+                                        {{ icon_block }}
+                                    {% endif %}
+                                </div>
+                                <span>{{ blocks[forloop.index] }}</span>
+                            </div>
+                        </li>
+                    {% endunless %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="column one-half info">
+            <div class="ingredient_caption tab-content">
+                <div class="desc-content">
+                    {% if product.metafields["global"]["integration-title"] != blank %}
+                        <h2>{{ product.metafields["global"]["integration-title"] }}</h2>
+                    {% endif %}
+                    {{ product.metafields["global"]["integration-category"] }}
+                    {% if product.metafields["global"]["integration-description"] != blank %}
+                        <div class="ingredient_desc">
+                            {{ product.metafields["global"]["integration-description"] }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="desc-content">
+                    {% if product.metafields["global"]["integration-title-1"] != blank %}
+                        <h2>{{ product.metafields["global"]["integration-title-1"] }}</h2>
+                    {% endif %}
+                    {{ product.metafields["global"]["integration-category-1"] }}
+                    {% if product.metafields["global"]["integration-description-1"] != blank %}
+                        <div class="ingredient_desc">
+                            <h4 class="h2">Ingredients</h4>
+                            {{ product.metafields["global"]["integration-description-1"] }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="desc-content">
+                    {{ product.metafields["global"]["integration-category-2"] }}
+                    {% if product.metafields["global"]["integration-description-2"] != blank %}
+                        <div class="ingredient_desc">
+                            <h4 class="h2">Ingredients</h4>
+                            {{ product.metafields["global"]["integration-description-2"] }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

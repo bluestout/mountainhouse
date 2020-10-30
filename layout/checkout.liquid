@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="{{ locale }}" dir="{{ direction }}" class="{{ checkout_html_classes }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, user-scalable=0">
+    <meta name="referrer" content="origin">
+
+    <title>{{ page_title }}</title>
+
+    {{ content_for_header }}
+
+    {{ checkout_stylesheets }}
+
+    {{ '//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js' | script_tag }}
+    {{ checkout_scripts }}
+
+  {% include 'shogun-head' %}
+  <style>
+  @media (min-width: 1000px) {
+    .page--banner .banner {
+      padding: 0;
+      min-height: 250px;
+      position: relative;
+    }
+    .page--banner .banner .logo img {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+  </style>
+</head>
+  <body>
+    {{ skip_to_content_link }}
+
+    <header class="banner" data-header role="banner">
+      <div class="wrap">
+        {{ content_for_logo }}
+      </div>
+    </header>
+
+    {{ order_summary_toggle }}
+    <div class="content" data-content>
+      <div class="wrap">
+        <div class="main">
+          <header class="main__header" role="banner">
+            {{ content_for_logo }}
+            {{ breadcrumb }}
+            {{ alternative_payment_methods }}
+          </header>
+          <main class="main__content" role="main">
+            {{ content_for_layout }}
+
+            {% if settings.display_special_instructions and checkout.note != blank %}
+            <div class="section">
+              <div class="section__header">
+                <h2 class="section__title">{{ 'cart.general.note' | t }}</h2>
+              </div>
+              <div class="section__content">
+                <div class="fieldset">
+                  <div class="field">
+                    <textarea name="checkout[note]" class="input-full field__input" id="CartSpecialInstructions" maxlength="250" aria-describedby="cart" aria-labelledby="cart" readonly>{{ checkout.note }}</textarea>
+                    <!--<a href="#" class="update_note">Update Note</a>-->
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+          </main>
+          <footer class="main__footer" role="contentinfo">
+            {{ content_for_footer }}
+          </footer>
+        </div>
+        <aside class="sidebar" role="complementary">
+          <div class="sidebar__header">
+            {{ content_for_logo }}
+          </div>
+          <div class="sidebar__content">
+            {{ content_for_order_summary }}
+          </div>
+        </aside>
+      </div>
+    </div>
+ <script> Shopify = window.Shopify || {}; Shopify.shop = Shopify.shop || 'mountainhouse.myshopify.com'; (function (doc) { if (window.location.href.indexOf('checkouts') == -1) { return; } var sc, node; sc = doc.createElement("script"); sc.type = "text/javascript"; sc.async = !0; sc.src = '/apps/sap/fe/loader_2.js?shop=mountainhouse.myshopify.com'; node = doc.getElementsByTagName("script")[0]; node.parentNode.insertBefore(sc, node); })(document); </script> 
+    {{ tracking_code }}
+  </body>
+  <script type="text/javascript">
+  $(document).ready(function(){
+    $('.update_note').on('click', function(){
+      $.ajax({
+        url: '/cart/update.js',
+        type: 'POST',
+        dataType: 'json',
+        data: 'note=' + $('#CartSpecialInstructions').val(),
+        success: function(result) {
+
+        },
+        error: function(error) {
+
+        }
+      });
+    });
+  });
+  </script>
+</html>

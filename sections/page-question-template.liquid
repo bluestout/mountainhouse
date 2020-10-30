@@ -52,7 +52,7 @@
         <div class="caption-content caption-background-{{ section.settings.caption_background }} caption-transparency-{{ section.settings.caption_background_transparency }} align-{{ section.settings.text_align }}">
           {% if section.settings.caption_icon != blank %}
             <div class="text_align_left">
-              <img src="{{ section.settings.caption_icon | img_url: "original" }}">
+              <img src="{{ section.settings.caption_icon | img_url: "original" }}" alt="{{ section.settings.title }}">
             </div>
           {% endif %}
           {% if section.settings.title != blank %}

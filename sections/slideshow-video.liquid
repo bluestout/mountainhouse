@@ -59,7 +59,7 @@
               {% if block.settings.video != blank %}
               <div class="video_overlay">
                 <a href="javascript:;" class="play">
-                  <img src="{{ 'play_btn.png' | asset_url }}">
+                  <img src="{{ 'play_btn.png' | asset_url }}" alt="{{ block.settings.title }}">
                   <span>WATCH<br><strong>Video</strong></span>
                 </a>
                 {% include 'popup-video-slide' pop_video: block%}

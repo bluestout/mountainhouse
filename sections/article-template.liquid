@@ -4,12 +4,10 @@
 - Uses blocks
 {% endcomment %}
 <div class="article">
-  {% if article.image and section.settings.featured_image == 'banner' %}
+  {% if section.settings.featured_image == 'banner' %}
     <header class="banner center page_banner dark-overlay-{{section.settings.image_darken}}">
-      {% include 'image-element', image: article.image, alt: article.image.alt, stretch_width: true %}
-      <div class="caption captionOverlay--true transparent">
-        
-      </div>
+      <img src="{{ article.metafields["global"]["featured-image"] }}" class="medium-down--hide" alt="{{ page.title }}">
+      <img src="{{ article.image | img_url: 'original' }}" class="hide medium-down--show" alt="{{ page.title }}">
     </header>
   {% endif %}
 
@@ -86,7 +84,12 @@
 
           <p class="blog_meta">
             {% if section.settings.blog_byline %}
-              <span><a href="/search?type=article&q={{ article.author }}">{{ a.author }}{{ 'blogs.article.by_author' | t: author: article.author }}</a></span>
+            {% if article.metafields["global"]["autor"] != blank %}
+              {% assign author_name = 'blogs.article.by_author' | t: author: article.metafields["global"]["autor"] %}
+            {% else %}
+              {% assign author_name = 'blogs.article.by_author' | t: author: article.author %}
+            {% endif %}
+              <span><a href="/search?type=article&q={{ author_name}}">{{ a.author }}{{ author_name }}</a></span>
             {% endif %}
 
             {% if section.settings.blog_date %}
@@ -242,63 +245,13 @@
     </div>
     {% if section.settings.blog_additional_posts and blog.articles_count > 1 %}
       <div class="section clearfix blog-content" style="clear: both;">
-        {% assign article_found = false %}
-        {% for a in blog.articles limit: 4 %}
-          {% assign skip_article = false %}
-          {% if article_found == false and forloop.last %}
-            {% assign skip_article = true %}
-          {% endif %}
-          {% if article.id == a.id %}
-            {% assign article_found = true %}
-            {% assign skip_article = true %}
-          {% endif %}
-          {% unless skip_article %}
-            <div class="one-fourth columns article blog-item">
-              {% if a.image %}
-                <a href="{{ a.url }}" title="{{ a.title | escape }}">
-                  {% include 'image-element', image: a.image, alt: a.image.alt, back_to_image:true %}
-                </a>
-              {% endif %}
-              <span class="category">{{blog.title}}</span>
-              <p class="sub_title">
-                <a href="{{ a.url }}" title="{{ a.title | escape }}">{{ a.title }}</a>
-              </p>
-              <p class="blog_meta">
-                {% if section.settings.blog_byline and section.settings.blog_date %}
-                <span>{{ a.published_at | date: format: "month_day_year" }}</span> | <span>{{ 'blogs.article.by_author' | t: author: a.author }}</span>
-                {% endif %}
-
-                {% if section.settings.read_time %}
-                  {% include 'include-read-time', article: a %}
-                {% endif %}
-
-                {% if settings.disqus_enabled %}
-                  <span>
-                    <a href="{{ a.url }}#disqus_thread" data-disqus-identifier="{{ a.id }}" class="disqus-comment-count">{{ 'blogs.counts.comments_with_count' | t: count: 0 }}</a>
-                  </span>
-                {% elsif section.settings.blog_comment_count and a.comments_count > 0 %}
-                  <span>
-                    <a href="{{ a.url }}#comments">{{ 'blogs.counts.comments_with_count' | t: count: a.comments_count }}</a>
-                  </span>
-                {% endif %}
-              </p>
-              {% if section.settings.blog_tags %}
-                <div class="blog_meta tags">
-                  {% for tag in a.tags %}
-                    <span><a href="{{ shop.url}}/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}" title="{{ blog.title | escape }} {{ 'blogs.general.tagged' | t }} {{ tag | escape }}">{{ tag }}</a></span>
-                  {% endfor %}
-                </div>
-              {% endif %}
-
-              {% if a.excerpt != blank %}
-                <div class="excerpt">{{ a.excerpt }}</div>
-              {% endif %}
-              {% if section.settings.read_more_link %}
-                <a href="{{ a.url }}" title="{{ a.title | escape }}" {% if settings.read_more_style == 'button' %}class="action_button continue-button"{% endif %}>{{ 'blogs.general.continue_reading_html' | t }}</a>
-              {% endif %}
-            </div>
-          {% endunless %}
-        {% endfor %}
+        <div class="columns">
+          {% assign articles = blog.articles %}
+          {% include 'include-featured-blog-content', type: 'block', back_to_image:true, skip_id: article.id %}
+        </div>
+        <div id="loadMore">
+          <a href="#">Load More</a>
+        </div>
       </div>
     {% endif %}
     {% include "blog-sidebar", blog_handle: blog.handle %}

@@ -76,18 +76,7 @@
   {% endif %}
 
   {% comment %}Check to see if sidebar should be enabled{% endcomment %}
-  {% if section.blocks.size > 0 %}
-    {% assign sidebar = true %}
-  {% else %}
-    {% assign sidebar = false %}
-  {% endif %}
-
-  {% if sidebar %}
-    {% include 'sidebar' %}
-    <div class="twelve columns medium-down--one-whole">
-  {% else %}
-    <div class="sixteen columns">
-  {% endif %}
+  <div class="sixteen columns">
 
     {% if search.performed %}
 
@@ -107,106 +96,117 @@
         </div>
       {% else %}
 
-    {% if settings.search_option == 'everything' or search.results.first.price == blank %}
+        {% if settings.search_option == 'everything' %}
 
-      <div class="search-matrix">
-        {% for item in search.results %}
-          <div class="product_row clearfix">
-            {% assign featured_image = false %}
+          <div class="search-matrix">
+            {% for item in search.results %}
 
-            {% if item.object_type == 'article' and item.image %}
-              {% assign featured_image = true %}
-              <div class="four columns alpha">
-                <a href="{{ item.url }}" title="{{ item.title | escape }}">
-                    {% include 'image-element', image: item.image, alt: item.title, object_fit: settings.align_height, max_height: settings.collection_height %}
-                </a>
-              </div>
-            {% elsif item.featured_image %}
-              {% assign featured_image = true %}
-              <div class="four columns alpha">
-                <a href="{{ item.url }}" title="{{ item.title | escape }}">
-                    {% include 'image-element', image: item.featured_image, alt: item.title, object_fit: settings.align_height, max_height: settings.collection_height  %}
-                </a>
-              </div>
-            {% endif %}
+              {% assign sold_out = false %}
 
-            {% if sidebar %}
-              <div class="{% if featured_image %}eight{% else %}twelve{% endif %} columns omega align_left">
-            {% else %}
-              <div class="{% if featured_image %}twelve{% else %}sixteen alpha{% endif %} columns omega align_left">
-            {% endif %}
+              {% for tag in item.tags %}
+                {% if tag == "is_out_stock" or tag == "is_low_stock" %}
+                  {% assign sold_out = true %}
+                {% endif %}
+              {% endfor %}
 
-              <h5 class="sub_title">
-                <a href="{{ item.url }}" title="{{ item.title | escape }}">{{ item.title }}</a>
-              </h5>
+              <div class="item_row sixteen columns clearfix">
+                {% assign featured_image = false %}
 
-              {% if item.price %}
-                <div class="info">
-                  {% unless settings.display_price == false and item.available == false %}
-                    <span class="price">
-                      {% if item.compare_at_price_max > item.price %}
-                        <span class="was_price">{{ item.compare_at_price_max | money }}</span>
+                {% if item.object_type == 'article' and item.image %}
+                  {% assign featured_image = true %}
+                  <div class="four large-down--sixteen column alpha">
+                    <a href="{{ item.url }}" title="{{ item.title | escape }}">
+                        {% include 'image-element', image: item.image, alt: item.title, object_fit: settings.align_height, max_height: settings.collection_height %}
+                    </a>
+                  </div>
+                {% elsif item.featured_image %}
+                  {% assign featured_image = true %}
+                  <div class="four large-down--sixteen column alpha">
+                    <a href="{{ item.url }}" title="{{ item.title | escape }}">
+                        {% include 'image-element', image: item.featured_image, alt: item.title, object_fit: settings.align_height, max_height: settings.collection_height  %}
+                    </a>
+                  </div>
+                {% endif %}
+
+                <div class="{% if featured_image %}twelve large-down--sixteen{% else %}sixteen alpha{% endif %} column omega align_left">
+                  <h5 class="sub_title">
+                    <a href="{{ item.url }}" title="{{ item.title | escape }}">{{ item.title }}</a>
+                  </h5>
+
+                  {% if item.price %}
+                    <div class="info">
+                      {% if sold_out == false %}
+                        {% unless settings.display_price == false and item.available == false %}
+                          <span class="price">
+                            {% if item.compare_at_price_max > item.price %}
+                              <span class="was_price">{{ item.compare_at_price_max | money }}</span>
+                            {% endif %}
+                              {% if item.price_varies %}
+                                {% if item.compare_at_price_max > item.price %}
+                                  <br />
+                                {% endif %}
+                                <small><em>{{ 'products.general.from' | t }}</em></small>
+                              {% endif %}
+                              {{ item.price_min | money }}
+                          </span>
+                        {% endunless %}
                       {% endif %}
-                        {% if item.price_varies %}
-                          {% if item.compare_at_price_max > item.price %}
-                            <br />
-                          {% endif %}
-                          <small><em>{{ 'products.general.from' | t }}</em></small>
-                        {% endif %}
-                        {{ item.price_min | money }}
-                    </span>
-                  {% endunless %}
-                  {% if item.available == false %}
-                    <span class="sold-out-text">{{ settings.sold_out_text }}</span>
+                      {% if item.available == false or sold_out == true %}
+                        <span class="sold-out-text">{{ settings.sold_out_text }}</span>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+
+                  {% if item.object_type == 'article' %}
+                    <p class="blog_meta">
+                      {% if section.settings.blog_author %}
+                        <span>{{ 'blogs.article.by_author' | t: author: item.author }}</span>
+                      {% endif %}
+
+                      {% if section.settings.blog_date %}
+                        <span>{{ item.published_at | date: format: "month_day_year" }}</span>
+                      {% endif %}
+                    </p>
+                  {% endif %}
+
+                  {% if item.excerpt %}
+                    <div class="excerpt">{{ item.excerpt }}</div>
+
+                    {% if section.settings.read_more_link %}
+                      <p>
+                        <a href="{{ item.url }}" title="{{ item.title | escape }}">{{ 'blogs.general.continue_reading_html' | t }} <span class="icon-right-arrow"></span></a>
+                      </p>
+                    {% endif %}
+                  {% else %}
+                    <p>
+                      {{ item.content | strip_html | truncatewords: 40 | highlight: search.terms | replace: 'Description', '' | replace: 'Specs', '' | replace: 'Shipping', '' | replace: 'Size', '' }}
+                    </p>
+                    {% if item.price %}
+                      {% assign product = item %}
+                      {% assign variant = product.first_available_variant %}
+                      {% include 'product-control-button' , discover_title : 'LEARN MORE'%}
+                    {% endif %}
                   {% endif %}
                 </div>
+              </div>
+            {% endfor %}
+
+            {% if settings.search_pagination_type == 'load_more' or settings.search_pagination_type == 'infinite_scroll' %}
+              {% if paginate.next.url %}
+                <span class="js-load-more load-more">
+                  <a href="{{ paginate.next.url }}" data-no-instant class="load-more__btn action_button continue-button">{{ 'general.search.load_more' | t }}</a>
+                </span>
               {% endif %}
-
-              {% if item.object_type == 'article' %}
-                <p class="blog_meta">
-                  {% if section.settings.blog_author %}
-                    <span>{{ 'blogs.article.by_author' | t: author: item.author }}</span>
-                  {% endif %}
-
-                  {% if section.settings.blog_date %}
-                    <span>{{ item.published_at | date: format: "month_day_year" }}</span>
-                  {% endif %}
-                </p>
-              {% endif %}
-
-              {% if item.excerpt %}
-                <div class="excerpt">{{ item.excerpt }}</div>
-
-                {% if section.settings.read_more_link %}
-                  <p>
-                    <a href="{{ item.url }}" title="{{ item.title | escape }}">{{ 'blogs.general.continue_reading_html' | t }} <span class="icon-right-arrow"></span></a>
-                  </p>
-                {% endif %}
-              {% else %}
-                <p>
-                  {{ item.content | strip_html | truncatewords: 40 | highlight: search.terms | replace: 'Description', '' | replace: 'Specs', '' | replace: 'Shipping', '' | replace: 'Size', '' }}
-                </p>
-              {% endif %}
-            </div>
+            {% endif %}
           </div>
-      {% endfor %}
-      {% if settings.search_pagination_type == 'load_more' or settings.search_pagination_type == 'infinite_scroll' %}
-        {% if paginate.next.url %}
-          <span class="js-load-more load-more">
-            <a href="{{ paginate.next.url }}" data-no-instant class="load-more__btn action_button continue-button">{{ 'general.search.load_more' | t }}</a>
-          </span>
+          <div class="load-more__icon"></div>
+
+        {% else %}
+          {% assign products = search.results %}
+          {% assign products_per_row = section.settings.products_per_row %}
+          {% include 'product-loop', sidebar: sidebar %}
         {% endif %}
       {% endif %}
-    </div>
-    <div class="load-more__icon"></div>
-
-    {% else %}
-      {% assign products = search.results %}
-      {% assign products_per_row = section.settings.products_per_row %}
-      {% include 'product-loop', sidebar: sidebar %}
-
-    {% endif %}
-  {% endif %}
 
     {% else %}
       <div class="clearfix search_page text-align--center">

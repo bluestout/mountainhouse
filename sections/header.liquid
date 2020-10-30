@@ -109,12 +109,12 @@
         <div class="cart_container clearfix">
           <div r2 class="header_user">
             <a href="{{ routes.account_url }}" class="icon-user2" title="{{ 'layout.customer.my_account' | t }} {% if customer %}({{ customer.email }}){% endif %}">
-              <img src="{{'accounts_ico.svg' | asset_url}}" />
+              <img src="{{'accounts_ico.svg' | asset_url}}" alt="{{ 'customer.account.title' | t }}" />
               </a>
           </div>
           <div class="search_link">
               <a r2 href="{{ routes.search_url }}" class="icon-search2 dropdown_link" title="{{ 'general.search.title' | t | escape }}" data-dropdown-rel="search">
-            <img src="{{'search_ico.svg' | asset_url}}" />
+            <img src="{{'search_ico.svg' | asset_url}}" alt="{{ 'general.search.title' | t }}" />
             </a>
             <ul class="search_menu">
               <li>
@@ -127,7 +127,7 @@
           </ul>
           </div>
           <a href="{{ routes.cart_url }}" class="{% if section.settings.cart_icon == "cart" %}icon-cart{% else %}{% endif %} mini_cart dropdown_link" data-no-instant>
-            <img src="{{'bag_ico.svg' | asset_url}}" />
+            <img src="{{'bag_ico.svg' | asset_url}}" alt="{{ 'cart.general.title' | t }}" />
             <span class="cart_count">{{ cart.item_count }}</span>
           </a>
           {% unless settings.cart_action == 'ajax' and template contains 'cart' %}

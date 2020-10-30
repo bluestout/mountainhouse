@@ -13,8 +13,7 @@
   {% include 'collection-header-brand' %}
 {% endif %}
 {% if section.settings.featured_icon_bar %}
-  {%- assign icons = 'ico_just_add_water.svg, ico_anytime.svg, ico_no_artificial_colors.svg'  | split: ", "-%}
-  {% include 'collection-icon-bar', icons:icons %}
+  {% include 'icon-bar', icons:icons %}
 {% endif %}
 {% if section.settings.featured_image_text %}
   {%- assign img_icons = 'ico_just_add_water.svg, ico_anytime.svg, ico_no_artificial_colors.svg'  | split: ", "-%}
@@ -22,9 +21,6 @@
 {% endif %}
 <a name="pagecontent" id="pagecontent"></a>
 <div class="collection-content">
-  <!-- <img class="bg-left" src="{{ 'collection-bg-1.png' | asset_url }}"> -->
-  <!-- <img class="bg-center" src="{{ 'collection-bg-2.png' | asset_url }}"> -->
-  <!-- <img class="bg-right" src="{{ 'collection-bg-3.png' | asset_url }}"> -->
   <div class="container bg-grey">
     <h1 class="text-align--center title">{{section.settings.title}}</h1>
     {% paginate collection.products by section.settings.pagination_limit %}
@@ -97,7 +93,7 @@
           </div>
 
       </div>
-      {% endif %}
+    {% endif %}
       <div class="section clearfix">
         <div class="columns section_select medium-down--one-whole">
           {% if collection.handle != blank and collection.products_count > 0 %}
@@ -133,24 +129,7 @@
           {% endif %}
         </div>
       </div>
-      {% comment %} <div class="sixteen columns">
-        <div class="feature_divider"></div>
-      </div> {% endcomment %}
-
-      {% comment %}Check to see if sidebar should be enabled{% endcomment %}
-      {% if section.blocks.size > 0 and collection.handle != 'types' and collection.handle != 'vendors'%}
-        {% assign sidebar = true %}
-      {% else %}
-        {% assign sidebar = false %}
-      {% endif %}
-
-      {% if sidebar %}
-        {% include 'sidebar' %}
-        <div class="twelve columns medium-down--one-whole">
-      {% else %}
-        <div class="sixteen columns">
-      {% endif %}
-
+      <div class="sixteen columns">
         {% if collection.products.size == 0 %}
           <div class="section clearfix collection-matrix">
             <p class="quote">{{ 'collections.general.no_matches' | t }}</p>
@@ -158,16 +137,14 @@
         {% else %}
           {% assign products_per_row = section.settings.products_per_row %}
           {% include 'product-thumbnail-loop', sidebar: sidebar %}
-
         {% endif %}
-      {% include 'collection-brand-video' %}
-      {% if settings.pagination_type == 'basic_pagination' %}
-        {% include 'pagination' with sidebar %}
-      {% endif %}
+        {% include 'collection-brand-video' %}
+        {% if settings.pagination_type == 'basic_pagination' %}
+          {% include 'pagination' with sidebar %}
+        {% endif %}
 
       </div>
     {% endpaginate %}
-
   </div>
 </div>
 {% schema %}
@@ -181,11 +158,6 @@
       "id": "collection_breadcrumb",
       "label": "Show breadcrumb links",
       "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "collection_tags",
-      "label": "Enable filtering by product tag"
     },
     {
       "type": "checkbox",
@@ -206,94 +178,20 @@
       "id": "featured_collection_image",
       "label": "Show banner"
     },
-    {
-      "type": "image_picker",
-      "id": "image",
-      "label": "Image",
-      "info": "2048x537px recommended"
-    },
-    {
-      "type": "image_picker",
-      "id": "mobile_image",
-      "label": "Mobile image",
-      "info": "2048x1035px recommended"
-    },
+    
     {
       "type": "checkbox",
       "id": "image_darken",
       "label": "Darken image",
       "default": false
     },
-    {
-      "type": "text",
-      "id": "default_title",
-      "label": "Default title"
-    },
-    {
-      "type": "richtext",
-      "id": "default_text",
-      "label": "Default description"
-    },
+    
     {
       "type": "checkbox",
       "id": "display_collection_title",
       "label": "Show caption"
     },
-    {
-      "type": "checkbox",
-      "id": "title_status",
-      "label": "Title status"
-    },
-    {
-      "type": "checkbox",
-      "id": "content_status",
-      "label": "Content status",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Title"
-    },
-    {
-      "type": "select",
-      "id": "collection_title_position",
-      "label": "Caption position",
-      "options": [
-        {
-          "value": "left",
-          "label": "Left"
-        },
-        {
-          "value": "center",
-          "label": "Center"
-        },
-        {
-          "value": "right",
-          "label": "Right"
-        }
-      ]
-    },
-    {
-      "type": "select",
-      "id": "text_align",
-      "label": "Text alignment",
-      "options": [
-        {
-          "value": "left",
-          "label": "Left"
-        },
-        {
-          "value": "center",
-          "label": "Center"
-        },
-        {
-          "value": "right",
-          "label": "Right"
-        }
-      ],
-      "default": "center"
-    },
+    
     {
       "type": "checkbox",
       "id": "caption_background_transparency",
@@ -340,6 +238,21 @@
       ]
     },
     {
+      "type": "select",
+      "id": "icon_color",
+      "label": "Icon color",
+      "options": [
+        {
+          "value": "invert",
+          "label": "Invert color"
+        },
+        {
+          "value": "origin_val",
+          "label": "Origin color"
+        }
+      ]
+    },
+    {
       "type": "color",
       "id": "title_color",
       "label": "Title color"
@@ -348,93 +261,6 @@
       "type": "color",
       "id": "bg_color",
       "label": "Background color"
-    },
-    {
-      "type": "image_picker",
-      "id": "icon_image_1",
-      "label": "Icon image 1"
-    },
-    {
-      "type": "text",
-      "id": "icon_title_1",
-      "label": "Icon title 1",
-      "default": "Subscribe"
-    },
-    {
-      "type": "text",
-      "id": "icon_url_1",
-      "label": "Icon url 1",
-      "default": "Subscribe"
-    },
-    {
-      "type": "image_picker",
-      "id": "icon_image_2",
-      "label": "Icon image 2"
-    },
-    {
-      "type": "text",
-      "id": "icon_title_2",
-      "label": "Icon title 2",
-      "default": "Subscribe"
-    },
-    {
-      "type": "text",
-      "id": "icon_url_2",
-      "label": "Icon url",
-      "default": "Subscribe"
-    },
-    {
-      "type": "image_picker",
-      "id": "icon_image_3",
-      "label": "Icon image 3"
-    },
-    {
-      "type": "text",
-      "id": "icon_title_3",
-      "label": "Icon title 3",
-      "default": "Subscribe"
-    },
-    {
-      "type": "text",
-      "id": "icon_url_3",
-      "label": "Icon url",
-      "default": "Subscribe"
-    },
-    {
-      "type": "header",
-      "content": "Products"
-    },
-    {
-      "type": "range",
-      "id": "products_per_row",
-      "label": "Products per row",
-      "min": 2,
-      "max": 5,
-      "step": 1,
-      "default": 3
-    },
-    {
-      "type": "range",
-      "id": "pagination_limit",
-      "label": "Products per page",
-      "min": 2,
-      "max": 50,
-      "step": 1,
-      "default": 48
-    },
-    {
-      "type": "header",
-      "content": "Sidebar"
-    },
-    {
-      "type": "paragraph",
-      "content": "Create a sidebar by adding content blocks."
-    },
-    {
-      "type": "checkbox",
-      "id": "toggle",
-      "label": "Toggle sidebar content",
-      "default": false
     },
     {
       "type": "header",
@@ -482,31 +308,6 @@
       "info": "1024 x 1024px recommended"
     },
     {
-      "type": "select",
-      "id": "image_text_crop",
-      "label": "Image cropping",
-      "default": "none",
-      "info": "Only applied when text area is taller than image.",
-      "options": [
-        {
-          "value": "left",
-          "label": "Left"
-        },
-        {
-          "value": "right",
-          "label": "Right"
-        },
-        {
-          "value": "center",
-          "label": "Center"
-        },
-        {
-          "value": "none",
-          "label": "None"
-        }
-      ]
-    },
-    {
       "type": "text",
       "id": "image_text_title",
       "label": "Heading",
@@ -532,113 +333,26 @@
   ],
   "blocks": [
     {
-      "type": "filter_by_collection",
-      "name": "Collection list",
-      "limit": 1
-    },
-    {
-      "type": "menu",
-      "name": "Menu",
+      "type": "collection",
+      "name": "Collection",
       "settings": [
         {
-          "type": "link_list",
-          "id": "custom_menu_linklist",
-          "label": "Menu"
-        }
-      ]
-    },
-    {
-      "type": "page",
-      "name": "Page",
-      "settings": [
-        {
-          "type": "page",
-          "id": "content_page",
-          "label": "Page"
-        }
-      ]
-    },
-    {
-      "type": "recently_viewed",
-      "name": "Recently viewed products",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "paragraph",
-          "content": "To test the recently viewed products, view your online store outside of the Editor and visit multiple product pages. [Learn more](https:\/\/help.outofthesandbox.com\/hc\/en-us\/articles\/115008765228)"
+          "type": "image_picker",
+          "id": "image",
+          "label": "Icon"
         },
         {
-          "type": "text",
-          "id": "sidebar_rv_title",
-          "label": "Title",
-          "default": "Recently Viewed"
+          "type": "html",
+          "id": "svg",
+          "label": "Svg content"
         },
-        {
-          "type": "range",
-          "id": "sidebar_rv_per",
-          "label": "Products limit",
-          "min": 1,
-          "max": 4,
-          "step": 1,
-          "default": 3
-        }
-      ]
-    },
-    {
-      "type": "filter",
-      "name": "Tag filter",
-      "limit": 5,
-      "settings": [
-        {
-          "type": "text",
-          "id": "filter_name",
-          "label": "Title"
-        },
-        {
-          "type": "textarea",
-          "id": "filter_tags",
-          "label": "Filter tags",
-          "info": "Add a comma-separated list of product tags. Only the tags found in the collection will be displayed as filters. [Learn more](https://help.outofthesandbox.com/hc/en-us/articles/115008642047)"
-        },
-        {
-          "type": "checkbox",
-          "id": "enable_filter_swatches",
-          "label": "Display color swatches"
-        }
-      ]
-    },
-    {
-      "type": "filter_by_tag",
-      "name": "Tag list",
-      "limit": 1
-    },
-    {
-      "type": "text",
-      "name": "Text",
-      "settings": [
         {
           "type": "text",
           "id": "title",
-          "label": "Heading",
-          "default": "Heading"
-        },
-        {
-          "type": "richtext",
-          "id": "text",
-          "label": "Text",
-          "default": "<p>Text area can be used for special announcements or general information.</p>"
+          "label": "Title",
+          "default": "Subscribe"
         }
       ]
-    },
-    {
-      "type": "filter_by_type",
-      "name": "Type list",
-      "limit": 1
-    },
-    {
-      "type": "filter_by_vendor",
-      "name": "Vendor list",
-      "limit": 1
     }
   ]
 }

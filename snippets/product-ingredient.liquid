@@ -2,7 +2,7 @@
     <h1 class="bg-title">{{ product.metafields["global"]["integration-bg-text"] }}</h1>
     <div class="ingredient_content">
         <div class="columns nine">
-            <img src="{{ product.metafields["global"]["integration-bg-image-2"] }}" class="bg-1">
+            <img src="{{ product.metafields["global"]["integration-bg-image-2"] }}" class="bg-1" alt="{{ product.title }}">
             <div class="ingredient_caption tab-content">
                 <ul class="tab-links grid">
                     {% if product.metafields["global"]["integration-title"] != blank %}
@@ -22,54 +22,71 @@
                     {% endif %} 
                 </ul>
                 <div class="tab-content animated">
-                    <div id="tab1" class="tab active fadeIn">
-                        <div class="desc-content">
-                            {{ product.metafields["global"]["integration-category"] }}
-                            <div class="ingredient_desc">
-                                <h4 class="h2">Ingredients</h4>
-                                {{ product.metafields["global"]["integration-description"] }}
+                    {% if product.metafields["global"]["integration-category"] != blank or product.metafields["global"]["integration-description"] != blank %}
+                        <div id="tab1" class="tab active fadeIn">
+                            <div class="desc-content">
+                                {{ product.metafields["global"]["integration-category"] }}
+                                {% if product.metafields["global"]["integration-description"] != blank %}
+                                    <div class="ingredient_desc">
+                                        <h4 class="h2">Ingredients</h4>
+                                        {{ product.metafields["global"]["integration-description"] }}
+                                    </div>
+                                {% endif %}
                             </div>
+                            {% if product.metafields["global"]["integration-description"] != blank %}
+                                <a class="show_btn">See Less</a>
+                            {% endif %}
                         </div>
-                        <a class="show_btn">See Less</a>
-                    </div>
-                    <div id="tab2" class="tab fadeIn">
-                        <div class="desc-content">
-                            {{ product.metafields["global"]["integration-category-1"] }}
-                            <div class="ingredient_desc">
-                                <h4 class="h2">Ingredients</h4>
-                                {{ product.metafields["global"]["integration-description-1"] }}
+                    {% endif %}
+                    {% if product.metafields["global"]["integration-category-1"] != blank or product.metafields["global"]["integration-description-1"] != blank %}
+                        <div id="tab2" class="tab fadeIn">
+                            <div class="desc-content">
+                                {{ product.metafields["global"]["integration-category-1"] }}
+                                {% if product.metafields["global"]["integration-description-1"] != blank %}
+                                    <div class="ingredient_desc">
+                                        <h4 class="h2">Ingredients</h4>
+                                        {{ product.metafields["global"]["integration-description-1"] }}
+                                    </div>
+                                {% endif %}
                             </div>
+                            {% if product.metafields["global"]["integration-description-1"] != blank %}
+                                <a class="show_btn">See Less</a>
+                            {% endif %}
                         </div>
-                        <a class="show_btn">See Less</a>
-                    </div>
-                    <div id="tab3" class="tab fadeIn">
-                        <div class="desc-content">
-                            {{ product.metafields["global"]["integration-category-2"] }}
-                            <div class="ingredient_desc">
-                                <h4 class="h2">Ingredients</h4>
-                                {{ product.metafields["global"]["integration-description-2"] }}
+                    {% endif %}
+                    {% if product.metafields["global"]["integration-category-2"] != blank or product.metafields["global"]["integration-description-2"] != blank %}
+                        <div id="tab3" class="tab fadeIn">
+                            <div class="desc-content">
+                                {{ product.metafields["global"]["integration-category-2"] }}
+                                {% if product.metafields["global"]["integration-description-2"] != blank %}
+                                    <div class="ingredient_desc">
+                                        <h4 class="h2">Ingredients</h4>
+                                        {{ product.metafields["global"]["integration-description-2"] }}
+                                    </div>
+                                {% endif %}
                             </div>
+                            {% if product.metafields["global"]["integration-description-2"] != blank %}
+                                <a class="show_btn">See Less</a>
+                            {% endif %}
                         </div>
-                        <a class="show_btn">See Less</a>
-                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
-        <img src="{{ product.metafields["global"]["integration-bg-image-1"] }}" class="bg-2">
+        <img src="{{ product.metafields["global"]["integration-bg-image-1"] }}" class="bg-2" alt="{{ product.title }}">
         <ul class="link_list">
+            {% assign blocks_str = product.metafields["global"]["ingredient-icons"] | replace: '<p>', '<--splite-->' | remove: '</p>' %}
+            {% assign blocks_str = blocks_str | remove_first: '<--splite-->' %}
+            {% assign blocks = blocks_str | split: '<--splite-->' %}
             {% assign size_val = 0 %}
             {% assign i = 1 %}
             {% assign type = 'integration' %}
-            {% for block in section.blocks %}
-                {% if block.type == 'icon' and block.settings.product == product.handle%}
-                    {% for item in  (1..4) %}
-                    {% assign icon_handle = type | append: '_icon_title_' | append: item %}
-                        {% if block.settings[icon_handle] != blank %}
-                        {% assign size_val =  size_val | plus: 1 %}
-                        {% endif %}
-                    {% endfor %}
-                    
-                {% endif %}
+
+            {% for block in blocks %}
+                {% assign modulo = forloop.index | modulo: 2 %}
+                {% unless modulo == 0 %}
+                    {% assign size_val =  size_val | plus: 1 %}
+                {% endunless %}
             {% endfor %}
 
             {%if size_val == 3 %}
@@ -78,29 +95,22 @@
                 {% assign class_name = 'medium-down--one-half' %}
             {% endif %}
 
-            
-            {% for icon_block in section.blocks %}
-                {% if icon_block.type == 'icon' and icon_block.settings.product == product.handle %}
-                    {% for i in  (1..4) %}
-
-                        {% assign icon_handle = type | append: '_icon_title_' | append: i %}
-                        {% assign image_handle = type | append: '_icon_image_' | append: i %}
-                        {% assign svg_handle = type | append: '_icon_svg_' | append: i %}
-                        {% if icon_block.settings[icon_handle] != blank %}
-                            <li class="{{class_name}}">
-                                <div>
-                                    {% if icon_block.settings[svg_handle] != blank %}
-                                        {{ icon_block.settings[svg_handle] }}
-                                    {% else %}
-                                        <img src="{{ icon_block.settings[image_handle] | img_url: 'original' }}">
-                                    {% endif %}
-                                    <span>{{ icon_block.settings[icon_handle] }}</span>
-                                </div>
-                            </li>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
+            {% for icon_block in blocks %}
+                {% assign modulo = forloop.index | modulo: 2 %}
+                {% unless modulo == 0 %}
+                    <li class="{{class_name}}">
+                        <div>
+                            {% if icon_block contains '.svg' %}
+                                <img src="{{ icon_block }}" alt="{{ forloop.index }}">
+                            {% else %}
+                                {{ icon_block | remove: '&nbsp;' }}
+                            {% endif %}
+                            <span>{{ blocks[forloop.index] }}</span>
+                        </div>
+                    </li>
+                {% endunless %}
             {% endfor %}
         </ul>
     </div>
 </div>
+

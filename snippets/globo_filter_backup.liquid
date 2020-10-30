@@ -106,6 +106,7 @@
                 data-aspectratio="{{featured_image.aspect_ratio}}"
                 data-parent-fit="contain"
                 class="gflazyload secondary"
+                alt="{{ product.title }}"
                 />
              </div>
            {% endif %}
@@ -269,11 +270,11 @@
                                       {% endif %}
                                       {% if is_color %}
                                         <label for="swatch-{{ option_index }}-{{ value | handle }}-{{ product.id }}{% if section.id %}-{{ section.id }}{% endif %}" style="background-image: url({{ value | handle | append: '.' | append: file_extension | asset_img_url: '50x' | prepend: 'https:' }}); background-color: {{ value | split: ' ' | last | handle }};">
-                                          <img class="crossed-out" src="{{ 'soldout.png' | asset_url }}"/>
+                                          <img class="crossed-out" src="{{ 'soldout.png' | asset_url }}" alt="{{ 'products.product.sold_out' | t }}"/>
                                         </label>
                                       {% else %}
                                         <label translatable for="swatch-{{ option_index }}-{{ value | handle }}-{{ product.id }}{% if section.id %}-{{ section.id }}{% endif %}">
-                                          {{ value }}                                      <img class="crossed-out" src="{{ 'soldout.png' | asset_url }}"/>
+                                          {{ value }}<img class="crossed-out" src="{{ 'soldout.png' | asset_url }}" alt="{{ 'products.product.sold_out' | t }}"/>
                                         </label>
                                       {% endif %}
                                     </div>

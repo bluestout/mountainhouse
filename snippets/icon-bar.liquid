@@ -7,14 +7,14 @@
         margin-top : 4px;
         color: {{section.settings.title_color}};	
     }
-    .icon-bar .columns div img{
-        max-width  : 30px;
-        max-height : 33px;
-    }
+    
     .icon-bar .columns div svg{
       max-width  : 30px;
       max-height : 33px;
-      filter: brightness(100);
+      {% if section.settings.icon_color != 'origin_val' %}
+        filter: brightness(100);
+      {% endif %}
+
       float: left;
     }
     .bar-large .columns{
@@ -31,7 +31,7 @@
   {% endif %}
 {% endfor %}
 {%if size_val == 2%}
-    {% assign class_name = 'one-two' %}
+    {% assign class_name = 'one-half' %}
 {% elsif size_val == 3 %}
   {% assign class_name = 'one-third' %}
 {% else %}
@@ -54,8 +54,8 @@
                 </div> 
               {% else %}
                 <div class="{{ class_name }} columns small-down--one-whole">
-                  <div >
-                    <img src="{{ block.settings.image | img_url: 'original' }}">
+                  <div>
+                    <img src="{{ block.settings.image | img_url: 'original' }}" style="{% if section.settings.icon_color != 'origin_val' %}  filter: invert(1); {% endif %}" alt="{{ block.settings.title }}">
                     <div>{{ block.settings.title }}</div>
                   </div>
                 </div> 

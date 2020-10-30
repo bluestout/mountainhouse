@@ -22,7 +22,7 @@
   data-adaptive-height="{{section.settings.activate_adaptiveHeight}}"
   >
   {% if product.images.size == 0 %}
-  <img src="https://cdn.shopify.com/s/images/themes/product-1.png">
+  <img src="https://cdn.shopify.com/s/images/themes/product-1.png" alt="{{ product.title }}">
   {% else %}
   {% for image_item in image_list %}
     {% if image_item != blank %}
@@ -100,7 +100,7 @@
                     data-image-id="{{ image_id }}"
                     />
               {% else %}
-              <img src="{{ image | img_url: 'master' }}" />
+              <img src="{{ image | img_url: 'master' }}" alt="{{ image.alt }}"/>
               {% endif %}
             </div>
           {% else %}
@@ -122,7 +122,7 @@
                                   {{ image_2000x }} 2000w"
                       />
                 {% else %}
-                <img src="{{ image | img_url: 'master' }}" />
+                <img src="{{ image | img_url: 'master' }}" alt="{{ image.alt }}"/>
                 {% endif %}
             </div>
           {% endif %}
@@ -135,31 +135,3 @@
   {% endfor %}
   {% endif %}
 </section>
-
-{% if section.settings.product_thumbs %}
-  {% if product.images.size > 1 and image_width != 'full' %}
-    <div class="product_gallery_nav product_gallery_nav--{{ section.settings.thumbnail_position }} product-{{ product.id }}-gallery-nav">
-
-        {% for image_item in image_list %}
-          {% assign image = image_item | split: "`~`" %}
-          {% capture image_id %}{{ image[0] | strip }}{% endcapture %}
-          {% capture image_alt %}{{ image[1] | strip }}{% endcapture %}
-          {% capture image_100x %}{{ image[2] }}{% endcapture %}
-          {% capture image_200x %}{{ image[3] }}{% endcapture %}
-          {% capture image_400x %}{{ image[4] }}{% endcapture %}
-          {% capture image_600x %}{{ image[5] }}{% endcapture %}
-          {% capture image_800x %}{{ image[6] }}{% endcapture %}
-          {% capture image_1200x %}{{ image[7] }}{% endcapture %}
-          {% capture image_2000x %}{{ image[8] }}{% endcapture %}
-          <div class="gallery-cell" data-title="{{ image_alt | escape }}">
-              <img  src="{{ image_400x }}"
-                    alt="{{ image_alt | escape }}"
-                    data-index="{{ forloop.index0 }}"
-                    data-image-id="{{ image_id }}"
-                    data-featured-image="{{featured_image.id}}"
-                    />
-          </div>
-        {% endfor %}
-    </div>
-  {% endif %}
-{% endif %}

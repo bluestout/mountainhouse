@@ -1,19 +1,19 @@
-{% comment %}
-** Image with text (half and half view) - homepage partial **
-- Draggable section
-- Uses blocks
-{% endcomment %}
-{% include 'image-text', title:page.title %}
-<div class="container main content">
-  <div class="sixteen columns main-content">
-    {{ page.content }}
+<a name="pagecontent" id="pagecontent"></a>
+{% include 'image-text' %}
+<div class="sixteen columns page clearfix">
+  <h1>
+    {{ page.title }}
+  </h1>
+  <div class="feature_divider"></div>
+
+  <div>
+    {% include 'page-multi-column', content: page.content %}
   </div>
 </div>
 
-
 {% schema %}
 {
-  "name": "Image with text",
+  "name": "Where to by section",
   "class": "image-with-text-section",
   "max_blocks": 16,
   "settings": [
@@ -83,11 +83,6 @@
           "id": "image",
           "label": "Image",
           "info": "1024 x 815px recommended"
-        },
-        {
-          "type": "image_picker",
-          "id": "icon",
-          "label": "Icon"
         },
         {
           "type": "select",
@@ -238,22 +233,6 @@
         }
       ]
     }
-  ],
-  "presets": [{
-    "name": "Image with text",
-    "category": "Image",
-    "settings": {
-      "featured_links_per_row": "1",
-      "frontpage_text_align": "left"
-    },
-    "blocks": [
-      {
-        "type": "image"
-      },
-      {
-        "type": "image"
-      }
-    ]
-  }]
+  ]
 }
 {% endschema %}

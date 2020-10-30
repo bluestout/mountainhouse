@@ -42,12 +42,12 @@
               <div class="{{ class_name }} columns small-down--one-whole">
                 {% if section.settings.image_center %}
                   <a class="image-center" href="{{ block.settings.url }}" >
-                    <img  src="{{ icons[i] | asset_url }}">
+                    <img src="{{ icons[i] | asset_url }}" alt="{{ block.settings.title }}">
                     <div>{{ block.settings.title }}</div>
                   </a>
                 {% else %}
                   <a href="{{ block.settings.url }}" >
-                    <img  src="{{ icons[i] | asset_url }}">
+                    <img src="{{ icons[i] | asset_url }}" alt="{{ block.settings.title }}">
                     <div>{{ block.settings.title }}</div>
                   </a>
                 {% endif %}

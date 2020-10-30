@@ -20,7 +20,7 @@
       <div class="right-caption"></div>
     {% endif %}
     {% if section.settings.header_banner_icon != blank %}
-      <img src="{{ section.settings.header_banner_icon | img_url: 'original' }}" class="img position--center">
+      <img src="{{ section.settings.header_banner_icon | img_url: 'original' }}" class="img position--center" alt="{{ title }}">
     {% endif%}
       <h2 class="headline text-align--center">{{ title }}</h2>
       <p>{{ content }}</p>

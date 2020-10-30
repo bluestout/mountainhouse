@@ -33,7 +33,7 @@
               <div class="info text-align--left" style="margin-top: 50px;">
                 {% if type == 'product' %}
                   <div class="title-icon">
-                    <img class="left" src="{{ 'Group.png' | asset_img_url: 'original' }}" style="width: 35px;">
+                    <img class="left" src="{{ 'Group.png' | asset_img_url: 'original' }}" style="width: 35px;" alt="{{ page.title }}">
                   </div>
                 {% endif %}
                 <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="collection_title">
@@ -55,7 +55,7 @@
                   {% if block.settings.icon_image_1 != blank %}
                     <div class="one-half columns small-down--one-whole">
                       <a href="{{ block.settings.icon_link_1 }}" >
-                        <img src="{{ block.settings.icon_image_1 | img_url: "original" }}">
+                        <img src="{{ block.settings.icon_image_1 | img_url: "original" }}" alt="1">
                         <div>{{ block.settings.icon_title_1 }}</div>
                       </a>
                     </div>
@@ -63,7 +63,7 @@
                   {% if block.settings.icon_image_2 != blank %}
                     <div class="one-half columns small-down--one-whole">
                       <a href="{{ block.settings.icon_link_2 }}" >
-                        <img src="{{ block.settings.icon_image_2 | img_url: "original" }}">
+                        <img src="{{ block.settings.icon_image_2 | img_url: "original" }}" alt="2">
                         <div>{{ block.settings.icon_title_2 }}</div>
                       </a>
                     </div>
@@ -71,7 +71,7 @@
                   {% if block.settings.icon_image_3 != blank %}
                     <div class="one-half columns small-down--one-whole">
                       <a href="{{ block.settings.icon_link_3 }}" >
-                        <img src="{{ block.settings.icon_image_3 | img_url: "original" }}">
+                        <img src="{{ block.settings.icon_image_3 | img_url: "original" }}" alt="3">
                         <div>{{ block.settings.icon_title_3 }}</div>
                       </a>
                     </div>
@@ -79,7 +79,7 @@
                   {% if block.settings.icon_image_4 != blank %}
                     <div class="one-half columns small-down--one-whole">
                       <a href="{{ block.settings.icon_link_4 }}" >
-                        <img src="{{ block.settings.icon_image_4 | img_url: "original" }}">
+                        <img src="{{ block.settings.icon_image_4 | img_url: "original" }}" alt="4">
                         <div>{{ block.settings.icon_title_4 }}</div>
                       </a>
                     </div>

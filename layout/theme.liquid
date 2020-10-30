@@ -2,9 +2,18 @@
 <!DOCTYPE html>
 <html lang="{{ shop.locale }}">
   <head>
+      
+{% render 'orbislabs_sitemap_noindex' %}
+    
+    {%- if template == 'page.search-result' -%}
+    <meta name="robots" content="noindex" />
+    {%- endif -%}
+
     <meta charset="utf-8">
     <meta http-equiv="cleartype" content="on">
+    {% comment %}
     <meta name="robots" content="index,follow">
+    {% endcomment %}
 
     <!-- Mobile Specific Metas -->
     <meta name="HandheldFriendly" content="True">
@@ -23,6 +32,9 @@
     <link rel="preconnect dns-prefetch" href="https://v.shopify.com" />
     <link rel="preconnect dns-prefetch" href="https://cdn.shopifycloud.com" />
 
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118277366-1"></script>
+
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -33,11 +45,19 @@
 
     <!-- Start Google Analytics -->
     <script>
+      {% comment %}
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
     ga('create', 'UA-118277366-1', 'auto');
+    {% endcomment %}
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-118277366-1');
+
+
     var mvga_basketitems = [
     ];
 
@@ -78,7 +98,7 @@
     {% if settings.enable_shopify_review_comments %}
       <link rel="preconnect dns-prefetch" href="https://productreviews.shopifycdn.com" />
     {% endif %}
-
+    <link rel="stylesheet" href="{{ "jquery-ui.css" | asset_url }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.6/jquery.fancybox.css">
     <!-- Stylesheets for Turbo "5.0.3" -->
     {{ 'styles.scss.css' | asset_url | stylesheet_tag }}
@@ -181,6 +201,10 @@
     {% assign feature_image = true %}
   {% elsif template contains "page.sponsorship" %}
     {% assign feature_image = true %}
+  {% elsif template contains "page.store-locator" %}
+    {% assign feature_image = true %}
+  {% elsif template contains "page.store-locator-usa" %}
+    {% assign feature_image = true %}
   {% else %}
     {% assign feature_image = false %}
   {% endif %}
@@ -278,7 +302,7 @@
     {% endif %}
 
     {% unless settings.performance == "sport" or template contains "customer" %}
-      <script src="{{ 'instantclick.min.js' | asset_url }}" type="tpl" data-no-instant></script>
+      <script src="{{ 'instantclick.min.js' | asset_url }}" type="tpl"></script>
 
       <script data-no-instant>
 
@@ -326,7 +350,11 @@
       {% endif %}
     </div>
   {% endif %}
-	</body>
+	 {% include 'smile-initializer' %}
+
+  <script>(function(){var s = document.createElement('script'),e = ! document.body ? document.querySelector('head') : document.body;s.src = 'https://acsbapp.com/apps/app/assets/js/acsb.js';s.async = s.defer = true;s.onload = function(){acsbJS.init({statementLink : '',feedbackLink : 'https://graybox.co/contact',footerHtml : 'Web Accessibility Solution By GRAYBOX',hideMobile : false,hideTrigger : false,language : 'en',position : 'left',leadColor : '#003da5',triggerColor : '#003da5',triggerRadius : '50%',triggerPositionX : 'left',triggerPositionY : 'bottom',triggerIcon : 'wheel_chair3',triggerSize : 'medium',triggerOffsetX : 20,triggerOffsetY : 20,mobile : {triggerSize : 'small',triggerPositionX : 'left',triggerPositionY : 'center',triggerOffsetX : 0,triggerOffsetY : 0,triggerRadius : '0'}});};e.appendChild(s);}());</script>
+  
+</body>
 </html>
 {% endcapture %}
 {% assign content = content | replace_first: '<!DOCTYPE', '!DOCTYPE' | split: ' <' %}

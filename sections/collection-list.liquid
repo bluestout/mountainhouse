@@ -19,7 +19,7 @@
     <div class="sixteen columns">
       <div class="section list-collection-wrapper">
         {% assign block_size = section.blocks | size %}
-        <div class="list-collections clearfix {% if block_size > 4 %} slide_collection_list {% endif %} {% if block_size < 5 %} equal-columns--outside-trim equal-columns--clear {% endif %}">
+        <div class="list-collections clearfix {% if block_size > 4 %} slide_collection_list {% else %} flex-column {% endif %} {% if block_size < 5 %} equal-columns--outside-trim equal-columns--clear {% endif %}">
           {% for block in section.blocks %}
 
             {% assign feature_collection = block.settings.feature_collection %}
@@ -47,24 +47,13 @@
               one-fifth column
             {% endif %}
             {% if section.settings.collection_count == blank and section.settings.frontpage_collections_title == blank %}blank{% endif %}
-            thumbnail  {% if block_size < 5 %}{% cycle 'even', 'odd' %}{% endif %}
-            {% if settings.mobile_products_per_row == '1' %}
-              medium-down--one-half
-              small-down--one-whole
-            {% else %}
-              medium-down--one-half
-              small-down--one-half
-            {% endif %}" {{ block.shopify_attributes }}>
+            thumbnail  {% cycle 'even', 'odd' %}" {{ block.shopify_attributes }}>
             {% assign product = all_products[block.settings.featured_product] %}
               <div class="product-wrap">
-                <div class="content">
+                <div class="hover-view animated fadeIn">
                   {% if collection_image != nil %}
                     <div class="image__container">
-                      <div class="feature_img animated">
-                        {% include 'image-element', image: collection_image.src, alt: collection_image_alt, object_fit: section.settings.align_height, max_height: section.settings.collection_height %}
-                      </div>
-                      <div class="feature_product animated">
-                        {% include 'image-element', image: product.featured_image, alt: collection_image_alt, object_fit: section.settings.align_height, max_height: section.settings.collection_height %}
+                      <div class="feature_product" style="background: url({{ product.featured_image | img_url: '720x'}}) no-repeat 50% 50% / contain;">
                       </div>
                     </div>
                   {% else %}
@@ -73,28 +62,55 @@
                   {% endif %}
 
                   <div class="collection-info__caption" href="{{ collection.url }}">
-                    <p class="subtitle">
-                      {% if block.settings.title != blank %}
-                        {{ block.settings.title }}
-                      {% elsif collection != blank %}
-                        {{ collection.title }}
-                      {% else %}
-                        {{ "homepage.onboarding.collection_title" | t }}
-                      {% endif %}
-                    </p>
-                    <div class="content content-title animated fadeIn">
-                      {% if block.settings.content != blank %}
-                        {{ block.settings.content }}
-                      {% else %}
-                        {{ collection.description | strip_html | rstrip }}
-                      {% endif %}
-                    </div>
-                    <div class="content product-title animated fadeIn">
-                      <p>{{ product.title }}</p>
+                    <div class="info">
+                      <p class="subtitle">
+                        {% if block.settings.title != blank %}
+                          {{ block.settings.title }}
+                        {% elsif collection != blank %}
+                          {{ collection.title }}
+                        {% else %}
+                          {{ "homepage.onboarding.collection_title" | t }}
+                        {% endif %}
+                      </p>
+                      <div class="content product-title">
+                        <p>{{ product.title }}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <a href="{% if block.settings.link != blank %}{{ block.settings.link }}{% else %}{{ collection.url }}{% endif %}" class="button" style="width: 185px">{{ 'general.buttons.discover' | t }}</a>
+                <div class="content">
+                  {% if collection_image != nil %}
+                    <div class="image__container">
+                      <div class="feature_img  small-down--show" style="background: url({{collection_image.src | img_url: '720x'}}) no-repeat 50% 50% / cover;">
+                      </div>
+                    </div>
+                  {% else %}
+                    {% capture num %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
+                    {{ 'collection-' | append: num | placeholder_svg_tag: 'placeholder-svg' }}
+                  {% endif %}
+
+                  <div class="collection-info__caption" href="{{ collection.url }}">
+                    <div class="info">
+                      <p class="subtitle">
+                        {% if block.settings.title != blank %}
+                          {{ block.settings.title }}
+                        {% elsif collection != blank %}
+                          {{ collection.title }}
+                        {% else %}
+                          {{ "homepage.onboarding.collection_title" | t }}
+                        {% endif %}
+                      </p>
+                      <div class="content content-title  small-down--show">
+                        {% if block.settings.content != blank %}
+                          {{ block.settings.content }}
+                        {% else %}
+                          {{ collection.description | strip_html | rstrip }}
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <a href="{% if block.settings.link != blank %}{{ block.settings.link }}{% else %}{{ collection.url }}{% endif %}" class="button">{{ 'general.buttons.discover' | t }}</a>
               </div>
             </div>
             {% if block_size < 5 %}
@@ -108,22 +124,12 @@
                 {% cycle '', '', '', '', '<br class="clear product_clear" />' %}
               {% endif %}
             {% endif %}
-            
-
           {% endfor %}
         </div>
       </div>
     </div>
   {% endif %}
 </div>
-
-{% if section.settings.align_height == true %}
-  <!-- <style>
-    #shopify-section-{{ section.id }} .list-collections .thumbnail img {
-      max-height: {{ section.settings.collection_height }}px;
-    }
-  </style> -->
-{% endif %}
 
 {% schema %}
 {
@@ -183,6 +189,16 @@
           "id": "image",
           "label": "Image",
           "info": "480 x 398px recommended"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Text"
         },
         {
           "type": "product",

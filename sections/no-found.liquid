@@ -1,0 +1,50 @@
+<div class="twelve offset-by-two columns notfound">
+
+    <div class="eleven columns background">
+  
+    </div>
+    <div class="five columns">
+      <img src="{{ section.settings.caption_image | img_url: 'large'}}">
+      <div class="descript">
+        {{ section.settings.text }}
+        {% if section.settings.link %}
+            <a href="{{ section.settings.link }}" class="button">View Bestsellers</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+    <style>
+        .background{
+            background: url({{section.settings.bg_image | img_url: 'large'}}) no-repeat 50% 50% / cover;;
+        }
+    </style>
+  
+  {% schema %}
+  {
+      "name": "404 template",
+      "class": "not-found-section",
+      "settings": [
+          {
+              "type": "image_picker",
+              "id": "bg_image",
+              "label": "Background image"
+          },
+          {
+              "type": "image_picker",
+              "id": "caption_image",
+              "label": "Caption image"
+          },
+          {
+              "type": "richtext",
+              "id": "text",
+              "label": "Text"
+          },
+          {
+              "type": "url",
+              "id": "link",
+              "label": "Best seller link"
+          }
+      ]
+  }
+  {% endschema %}

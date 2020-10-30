@@ -58,7 +58,7 @@
             </div>
             {% if collection_secondary_image %}
              <div class="image__container">
-               <img src="{% if images_count > 1 %}{{ product.images[1].src | img_url: 'grande' }} ?>{% else %}{{ featured_image | img_url: 'grande' }}{% endif %}" class="secondary"/>
+               <img src="{% if images_count > 1 %}{{ product.images[1].src | img_url: 'grande' }} ?>{% else %}{{ featured_image | img_url: 'grande' }}{% endif %}" class="secondary" alt="{{ product.title | escape }}"/>
              </div>
            {% endif %}
           </a>
@@ -167,11 +167,11 @@
                                   {% endif %}
                                   {% if is_color %}
                                     <label for="swatch-{{ option_index }}-{{ value | handle }}-{{ product.id }}{% if section.id %}-{{ section.id }}{% endif %}" style="background-image: url({{ value | handle | append: '.' | append: file_extension | asset_img_url: '50x' | prepend: 'https:' }}); background-color: {{ value | split: ' ' | last | handle }};">
-                                      <img class="crossed-out" src="{{ soldout.png' | asset_url }}"/>
+                                      <img class="crossed-out" src="{{ soldout.png' | asset_url }}" alt="{{ 'products.product.sold_out' | t }}"/>
                                     </label>
                                   {% else %}
                                     <label for="swatch-{{ option_index }}-{{ value | handle }}-{{ product.id }}{% if section.id %}-{{ section.id }}{% endif %}">
-                                      {{ value }}                                      <img class="crossed-out" src="{{ soldout.png' | asset_url }}"/>
+                                      {{ value }}<img class="crossed-out" src="{{ soldout.png' | asset_url }}" alt="{{ 'products.product.sold_out' | t }}"/>
                                     </label>
                                   {% endif %}
                                 </div>

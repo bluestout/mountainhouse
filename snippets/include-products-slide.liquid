@@ -24,7 +24,7 @@
     <div class="one-fourth large-down--one-whole columns info text-align--left">
       <div class="content">
         {% if image != blank %}
-        <img src="{{ image |  img_url: "original"  }}">
+        <img src="{{ image |  img_url: "original" }}" alt="{{ title }}">
         {% endif %}
         {% if title != blank %}
           <a href="{{ collections[settingCollection].url }}"><h1 class="title">{{ title }}</h1></a>

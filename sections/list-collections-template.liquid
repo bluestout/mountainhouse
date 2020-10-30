@@ -120,7 +120,7 @@
               {% include 'image-element', image: collection_image, alt: collection.title, object_fit: true, max_height: section.settings.collection_height, back_to_basics: true %}
             {% else %}
               <div class="image-element__wrap">
-                <img src="https://cdn.shopify.com/s/images/themes/product-1.png" />
+                <img src="https://cdn.shopify.com/s/images/themes/product-1.png" alt="{{ collection.title }}"/>
               </div>
             {% endif %}
 

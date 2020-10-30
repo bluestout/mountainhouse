@@ -4,17 +4,18 @@
   {% if has_filter %}
   <div class="gf-selection-wrapper">
     <div class="gf-block-title">
-      <h3><span translatable>Filter By</span></h3>
-      <a translatable href="javascript:;" onclick="clearAllFilter()" class="gf-refine-toggle">Clear All</a>
+      <h3><span translatable>{{ translation.filter.filter_by | default: "Filter by"}}</span></h3>
+      <a translatable href="javascript:;" onclick="clearAllFilter()" class="gf-refine-toggle">{{ translation.filter.clear_all | default: "Clear all"}}</a>
     </div>
     <div class="gf-block-content globo-selected-items">
       {% for filter in filters %}
         {% if filter.is_selected %}
           {% if filter.style == 'Slider' %}
             <div class="selected-item gf-option-label">
-              <a href="javascript:" onclick="removeFilter({{filter.id}})">
+              <a href="javascript:;" onclick="removeFilter({{filter.id}})">
                 <span translatable class="selected-item">
-                  {{filter.label}}                  <strong>
+                  {% if translation.labels and translation.labels[filter.label_handle] %}{{translation.labels[filter.label_handle]}}{% else %}{{filter.label}}{% endif %}
+                  <strong>
                     {% if filter.attribute == 'Price' %}
                       <span class="money">{{filter.values.min | times: 100 | money}}</span> - <span class="money">{{filter.values.max | times: 100 | money}}</span>
                     {% else %}
@@ -29,8 +30,8 @@
             {% for value in filter.values %}
               {% if value.selected %}
                 <div class="selected-item gf-option-label">
-                  <a href="javascript:" onclick="removeFilterValue({{filter.id}},'{{value.value | replace:"'", "\'" | escape_once}}')">
-                    <span class="selected-item"><span translatable>{{filter.label}}</span><strong{% unless filter.attribute == 'Vendor' %} translatable{% endunless %}>{{value.label}}</strong></span><span class="gf-clear"></span>
+                  <a href="javascript:;" onclick="removeFilterValue({{filter.id}},'{{value.value | replace:"'", "\'" | escape_once}}')">
+                    <span class="selected-item"><span translatable>{% if translation.labels and translation.labels[filter.label_handle] %}{{translation.labels[filter.label_handle]}}{% else %}{{filter.label}}{% endif %}</span><strong{% unless filter.attribute == 'Vendor' %} translatable{% endunless %}>{{value.label}}</strong></span><span class="gf-clear"></span>
                   </a>
                 </div>
               {% endif %}
@@ -45,17 +46,17 @@
     {% for filter in filters %}
     <div data-filter-type="{{filter.attribute | replace: 'option:', ''}}" data-filter-id="{{filter.id}}" class="gf-option-block {{filter.class}}{% if filter.is_collapse %} is-collapsed{% endif %}">
       <div class="gf-block-title">
-        <h3><span translatable>{{filter.label}}</span></h3>
+        <h3><span translatable>{% if translation.labels and translation.labels[filter.label_handle] %}{{translation.labels[filter.label_handle]}}{% else %}{{filter.label}}{% endif %}</span></h3>
         {% if filter.help %}
         <span class="gf-tooltip-trigger" aria-hidden="true">?</span>
         <div class="gf-tooltip"><div class="gf-tooltip-content" translatable>{{filter.help | newline_to_br}}</div></div>
         {% endif %}
         {% if filter.is_selected %}
-        <a translatable href="javascript:" class="gf-clear" onclick="removeFilter({{filter.id}})">Clear</a>
+        <a translatable href="javascript:;" class="gf-clear" onclick="removeFilter({{filter.id}})">{{ translation.filter.clear | default: "Clear"}}</a>
         {% endif %}
       </div>
       <div class="gf-block-content">
-        {% if filter.searchable and filter.style != 'Slider' %}<input type="text" value="" onkeyup="GloboFilter.searchValues(this);" class="gf-search">{% endif %}
+        {% if filter.searchable and filter.style != 'Slider' %}<input type="text" value="" onkeyup="globofilter.searchValues(this);" class="gf-search">{% endif %}
         {% assign values_count = filter.values | size %}
         <div class="gf-scroll {% if filter.style != 'Slider' and values_count > 10 %}gf-block-scroll{% endif %}">
           {% if filter.style == 'Slider' %}
@@ -69,14 +70,15 @@
           {% else %}
           <ul class="gf-option-box">
             {% if filter.attribute == 'Collection' %}
+              {% assign collection_id = {% endraw %}{{collection.id | default: 0}}{% raw %} %}
               {% if filter.tree %}
                 {% for node in filter.tree %}
                   <li>
                     <div>
                     {% if filter.style == 'Checkbox' %}
-                      <a translatable{% if node.selected %} class="checked"{% endif %} onclick="toggleCheckboxFilter({{filter.id}},'{{node.value | replace:"'", "\'" | escape_once}}')" href="javascript:" title="{{node.label | escape_once}}">{{node.label}} ({{node.count}})</a>
+                      <a translatable{% if node.selected or node.value == collection_id %} class="checked"{% endif %} onclick="toggleCheckboxFilter({{filter.id}},'{{node.value}}')" href="javascript:;" title="{{node.label | escape_once}}">{{node.label}} ({{node.count}})</a>
                     {% elsif filter.style == 'Radio' %}
-                      <a translatable{% if node.selected %} class="checked"{% endif %} onclick="toggleRadioFilter({{filter.id}},'{{node.value | replace:"'", "\'" | escape_once}}')" href="javascript:" title="{{node.label | escape_once}}">{{node.label}} ({{node.count}})</a>
+                      <a translatable{% if node.selected or node.value == collection_id %} class="checked"{% endif %} onclick="toggleRadioFilter({{filter.id}},'{{node.value}}')" href="javascript:;" title="{{node.label | escape_once}}">{{node.label}} ({{node.count}})</a>
                     {% endif %}
                     {% if node.children %}<span></span>{% endif %}
                     </div>
@@ -86,9 +88,9 @@
                         <li>
                           <div>
                           {% if filter.style == 'Checkbox' %}
-                            <a translatable{% if child.selected %} class="checked"{% endif %} onclick="toggleCheckboxFilter({{filter.id}},'{{child.value | replace:"'", "\'" | escape_once}}')" href="javascript:" title="{{child.label | escape_once}}">{{child.label}} ({{child.count}})</a>
+                            <a translatable{% if child.selected or child.value == collection_id %} class="checked"{% endif %} onclick="toggleCheckboxFilter({{filter.id}},'{{child.value | replace:"'", "\'" | escape_once}}')" href="javascript:;" title="{{child.label | escape_once}}">{{child.label}} ({{child.count}})</a>
                           {% elsif filter.style == 'Radio' %}
-                            <a translatable{% if child.selected %} class="checked"{% endif %} onclick="toggleRadioFilter({{filter.id}},'{{child.value | replace:"'", "\'" | escape_once}}')" href="javascript:" title="{{child.label | escape_once}}">{{child.label}} ({{child.count}})</a>
+                            <a translatable{% if child.selected or child.value == collection_id %} class="checked"{% endif %} onclick="toggleRadioFilter({{filter.id}},'{{child.value | replace:"'", "\'" | escape_once}}')" href="javascript:;" title="{{child.label | escape_once}}">{{child.label}} ({{child.count}})</a>
                           {% endif %}
                           {% if child.children %}<span></span>{% endif %}
                           </div>
@@ -97,9 +99,9 @@
                               {% for child2 in child.children %}
                                 <li>
                                   {% if filter.style == 'Checkbox' %}
-                                    <a translatable{% if child2.selected %} class="checked"{% endif %} onclick="toggleCheckboxFilter({{filter.id}},'{{child2.value | replace:"'", "\'" | escape_once}}')" href="javascript:" title="{{child2.label | escape_once}}">{{child2.label}} ({{child2.count}})</a>
+                                    <a translatable{% if child2.selected or child2.value == collection_id %} class="checked"{% endif %} onclick="toggleCheckboxFilter({{filter.id}},'{{child2.value | replace:"'", "\'" | escape_once}}')" href="javascript:;" title="{{child2.label | escape_once}}">{{child2.label}} ({{child2.count}})</a>
                                   {% elsif filter.style == 'Radio' %}
-                                    <a translatable{% if child2.selected %} class="checked"{% endif %} onclick="toggleRadioFilter({{filter.id}},'{{child2.value | replace:"'", "\'" | escape_once}}')" href="javascript:" title="{{child2.label | escape_once}}">{{child2.label}} ({{child2.count}})</a>
+                                    <a translatable{% if child2.selected or child2.value == collection_id %} class="checked"{% endif %} onclick="toggleRadioFilter({{filter.id}},'{{child2.value | replace:"'", "\'" | escape_once}}')" href="javascript:;" title="{{child2.label | escape_once}}">{{child2.label}} ({{child2.count}})</a>
                                   {% endif %}
                                 </li>
                               {% endfor %}
@@ -116,9 +118,9 @@
                 <li>
                   <div>
                   {% if filter.style == 'Checkbox' %}
-                    <a translatable{% if value.selected %} class="checked"{% endif %} onclick="toggleCheckboxFilter({{filter.id}},'{{value.value | replace:"'", "\'" | escape_once}}')" href="javascript:" title="{{value.label | escape_once}}">{{value.label}} ({{value.count}})</a>
+                    <a translatable{% if value.selected or value.value == collection_id %} class="checked"{% endif %} onclick="toggleCheckboxFilter({{filter.id}},'{{value.value | replace:"'", "\'" | escape_once}}')" href="javascript:;" title="{{value.label | escape_once}}">{{value.label}} ({{value.count}})</a>
                   {% elsif filter.style == 'Radio' %}
-                    <a translatable{% if value.selected %} class="checked"{% endif %} onclick="toggleRadioFilter({{filter.id}},'{{value.value | replace:"'", "\'" | escape_once}}')" href="javascript:" title="{{value.label | escape_once}}">{{value.label}} ({{value.count}})</a>
+                    <a translatable{% if value.selected or value.value == collection_id %} class="checked"{% endif %} onclick="toggleRadioFilter({{filter.id}},'{{value.value | replace:"'", "\'" | escape_once}}')" href="javascript:;" title="{{value.label | escape_once}}">{{value.label}} ({{value.count}})</a>
                   {% endif %}
                   </div>
                 </li>
@@ -126,15 +128,28 @@
               {% endif %}
             {% else %}
               {% for value in filter.values %}
+                {% if filter.attribute == 'Ready to ship' %}
+                  {% assign value_label = translation.filter.ready_to_ship | default: "Ready to ship" %}
+                {% elsif filter.attribute == 'Availability' %}
+                  {% if value.value == 1 %}
+                    {% assign value_label = translation.filter.in_stock | default: "In Stock" %}
+                  {% elsif value.value == 0 %}
+                    {% assign value_label = translation.filter.out_of_stock | default: "Out of Stock" %}
+                  {% endif %}
+                {% else %}
+                  {% assign value_label = value.label %}
+                {% endif %}
                 {% if filter.style == 'Checkbox' %}
-                  <li><a{% unless filter.attribute == 'Vendor' %} translatable{% endunless %}{% if value.selected %} class="checked"{% endif %} onclick="toggleCheckboxFilter({{filter.id}},'{{value.value | replace:"'", "\'" | escape_once}}')" href="javascript:" title="{{value.label | escape_once}}">{{value.label}} ({{value.count}})</a></li>
+                  <li>
+                    <a{% unless filter.attribute == 'Vendor' %} translatable{% endunless %}{% if value.selected %} class="checked"{% endif %} onclick="toggleCheckboxFilter({{filter.id}},'{{value.value | replace:"'", "\'" | escape_once}}')" href="javascript:;" title="{{value_label | escape_once}}">{{value_label}} ({{value.count}})</a></li>
                 {% elsif filter.style == 'Radio' %}
-                  <li><a{% unless filter.attribute == 'Vendor' %} translatable{% endunless %}{% if value.selected %} class="checked"{% endif %} onclick="toggleRadioFilter({{filter.id}},'{{value.value | replace:"'", "\'" | escape_once}}')" href="javascript:" title="{{value.label | escape_once}}">{{value.label}} ({{value.count}})</a></li>
+                  <li>
+                    <a{% unless filter.attribute == 'Vendor' %} translatable{% endunless %}{% if value.selected %} class="checked"{% endif %} onclick="toggleRadioFilter({{filter.id}},'{{value.value | replace:"'", "\'" | escape_once}}')" href="javascript:;" title="{{value_label | escape_once}}">{{value_label}} ({{value.count}})</a></li>
                 {% elsif filter.style contains 'Swatch' %}
                   {% assign attribute = filter.attribute | replace: 'option:', '' | downcase %}
                   {% assign value_handle = value.value | downcase %}
                   <li>
-                    <a translatable{% if value.selected %} class="checked"{% endif %} onclick="toggleCheckboxFilter({{filter.id}},'{{value.value | replace:"'", "\'" | escape_once}}')" href="javascript:" title="{{value.label | escape_once}}">
+                    <a translatable{% if value.selected %} class="checked"{% endif %} onclick="toggleCheckboxFilter({{filter.id}},'{{value.value | replace:"'", "\'" | escape_once}}')" href="javascript:;" title="{{value.label | escape_once}}">
                       {% if swatches[attribute] and swatches[attribute][value_handle] %}
                         {% if swatches[attribute][value_handle].mode == 1 %}
                           <span class="gf-option-one-color" style="background-color:{{ swatches[attribute][value_handle].color_1 }}"></span>{% if filter.style contains 'Swatch - Text' %} {{value.label}}{% endif %}

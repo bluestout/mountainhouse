@@ -1,4 +1,4 @@
-<div id="page-blog-section" class="infography-content">
+<div id="page-infography-section" class="infography-content">
     {% if section.settings.show_banner and section.settings.header_banner_image != blank %}
         {% include 'page-brand'%}
     {% endif %}
@@ -16,17 +16,17 @@
                                 <a href="{{ block.settings.item_url }}">{{ block.settings.item_title }}</a>
                             </p>
                             {% if block.settings.item_image != blank %}
-                                {% include 'image-element', image: block.settings.item_featured_image, back_to_image:true %}
+                                {% include 'image-element', image: block.settings.item_featured_image, back_to_image:true, alt: block.settings.item_title %}
                                 <div class="image_overlay">
                                     <a href="javascript:;" class="play">
-                                        <img src="{{ 'play_btn.png' | asset_url }}">
+                                        <img src="{{ 'play_btn.png' | asset_url }}" alt="{{ block.settings.item_title }}">
                                         <span>WATCH<br><strong>Inforgraphy</strong></span>
                                         <div class="js-image-popup" style="display: none; background: transparent;">
                                             <div class="video-popup">
                                                 {% if block.settings.read_more_status %}
                                                     <a class="read_more" class="right" href="{{ block.settings.page_url }}">Read more</a>
                                                 {% endif %}
-                                                <img src="{{ block.settings.item_image | img_url: 'original' }}" class="responsive__image  download-{{block.settings.download_status}}">
+                                                <img src="{{ block.settings.item_image | img_url: 'original' }}" class="responsive__image  download-{{block.settings.download_status}}" alt="{{ block.settings.item_title }}">
                                             </div>
                                         </div>
                                     </a>
@@ -39,7 +39,7 @@
                                 <a href="{{ block.settings.page_url }}">{{ block.settings.item_title }}</a>
                             </p>
                             {% if block.settings.item_image != blank %}
-                                {% include 'image-element', image: block.settings.item_featured_image, back_to_image:true %}
+                                {% include 'image-element', image: block.settings.item_featured_image, back_to_image:true, alt: block.settings.item_title %}
                                 <div class="image_overlay">
                                     <a href="javascript:;" class="play">
                                         <div class="js-image-popup" style="display: none; background: transparent;">
@@ -47,7 +47,7 @@
                                                 {% if block.settings.read_more_status %}
                                                     <a class="read_more" target="_blank" href="{{ block.settings.page_url }}">Read more</a>
                                                 {% endif %}
-                                                <img src="{{ block.settings.item_image | img_url: 'original' }}" class="responsive__image download-{{block.settings.download_status}}">
+                                                <img src="{{ block.settings.item_image | img_url: 'original' }}" class="responsive__image download-{{block.settings.download_status}}" alt="{{ block.settings.item_title }}">
                                             </div>
                                         </div>
                                     </a>

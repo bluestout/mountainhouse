@@ -1,5 +1,4 @@
-{{ 'globo.formbuilder.css' | asset_url | stylesheet_tag }}<script src="https://www.google.com/recaptcha/api.js?render=explicit&hl=en" async defer></script>
-<script>
+{{ 'globo.formbuilder.css' | asset_url | stylesheet_tag }}<script>
 	var Globo = Globo || {};
     Globo.FormBuilder = Globo.FormBuilder || {}
     Globo.FormBuilder.url = "https://form.globosoftware.net"
@@ -185,10 +184,10 @@
                         {% endfor %}
                     </div>
                     {% if Globo.FormBuilder.shop.pricing.features.removeCopyright == false %}
-                    <p style="text-align: right;font-size:small;">Made by <a target="_blank" rel="nofollow" href="https://apps.shopify.com/powerful-form-builder">Powerful Contact Form Builder</a> </p>
+                    <p style="text-align: right;font-size:small;">Made by <a target="_blank" rel="nofollow" href="https://apps.shopify.com/form-builder-contact-form">Powerful Contact Form Builder</a> </p>
                     {% endif %}
                     <div class="message error">
-                        <div class="content">Failed ddd</div>
+                        <div class="content"></div>
                         <div class="dismiss" onclick="Globo.dismiss(this)">
                             <svg viewBox="0 0 20 20" class="" focusable="false" aria-hidden="true"><path d="M11.414 10l4.293-4.293a.999.999 0 1 0-1.414-1.414L10 8.586 5.707 4.293a.999.999 0 1 0-1.414 1.414L8.586 10l-4.293 4.293a.999.999 0 1 0 1.414 1.414L10 11.414l4.293 4.293a.997.997 0 0 0 1.414 0 .999.999 0 0 0 0-1.414L11.414 10z" fill-rule="evenodd"></path></svg>
                         </div>
@@ -231,10 +230,10 @@
                 {% endif %}
             </div>
             {% if Globo.FormBuilder.shop.pricing.features.removeCopyright == false %}
-            <p style="text-align: right;font-size:small;">Made by <a target="_blank" rel="nofollow" href="https://apps.shopify.com/powerful-form-builder">Powerful Contact Form Builder</a> </p>
+            <p style="text-align: right;font-size:small;">Made by <a target="_blank" rel="nofollow" href="https://apps.shopify.com/form-builder-contact-form">Powerful Contact Form Builder</a> </p>
             {% endif %}
             <div class="message error">
-                <div class="content">Failed ddd</div>
+                <div class="content"></div>
                 <div class="dismiss" onclick="Globo.dismiss(this)">
                     <svg viewBox="0 0 20 20" class="" focusable="false" aria-hidden="true"><path d="M11.414 10l4.293-4.293a.999.999 0 1 0-1.414-1.414L10 8.586 5.707 4.293a.999.999 0 1 0-1.414 1.414L8.586 10l-4.293 4.293a.999.999 0 1 0 1.414 1.414L10 11.414l4.293 4.293a.997.997 0 0 0 1.414 0 .999.999 0 0 0 0-1.414L11.414 10z" fill-rule="evenodd"></path></svg>
                 </div>

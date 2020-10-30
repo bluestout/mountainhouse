@@ -1,27 +1,26 @@
-<div id="page-blog-section">
+<div id="page-amb-section">
   {% if section.settings.show_banner and section.settings.header_banner_image != blank %}
      {% include 'page-brand'%}
   {% endif %}
 
   {% assign items_per_row = section.settings.items_per_row %}
   {% assign page = 0 %}
+  <div class="filter">
+    <label>Filter By </label>
+    <select class="select-filter">
+      <option value="all" selected>All Adventures</option>
+      {% assign blocks_str = '' %}
+      {% for block in section.blocks %}
+          {% assign blocks_str = blocks_str | append : pages[block.settings.item_url].metafields["global"]["Ambassador-filters"] | append: ',' %}
+      {% endfor %}
+      {% assign blocks = blocks_str | split: ',' | uniq %}
+      {% for block in blocks %}
+        {% assign val = block | replace: ' ', '_' %}
+        <option value="{{val}}">{{block}}</option>
+      {% endfor %}
+    </select>
+  </div>  
   <div class="container blog-content">
-
-    <div class="filter">
-      <label>Filter By </label>
-      <select>
-        <option value="all" selected>All Adventures</option>
-        {% assign blocks_str = '' %}
-        {% for block in section.blocks %}
-            {% assign blocks_str = blocks_str | append : pages[block.settings.item_url].metafields["global"]["Ambassador-filters"] | append: ',' %}
-        {% endfor %}
-        {% assign blocks = blocks_str | split: ',' | uniq %}
-        {% for block in blocks %}
-          {% assign val = block | replace: ' ', '_' %}
-          <option value="{{val}}">{{block}}</option>
-        {% endfor %}
-      </select>
-    </div>
     <div class="sixteen columns" data-blog-size="" style="padding: 50px 0px;">
       {% if section.blocks.size >0 %}
         {% for block in section.blocks %}
@@ -30,7 +29,7 @@
 
           {% assign size = category | size %}
           {% if page > section.settings.blog_posts_per_page %}
-            <div class="{{ class }} blog-item blogBox moreBox {% if items_per_row == 2 %}eight columns{% elsif items_per_row == 3 %}one-third column{% else %}four columns{% endif %} article medium-down--one-whole" style="display: none;">
+            <div class="{{ class }} filter-item blog-item blogBox moreBox {% if items_per_row == 2 %}eight columns{% elsif items_per_row == 3 %}one-third column{% else %}four columns{% endif %} article medium-down--one-whole" style="display: none;">
               {% if pages[block.settings.item_url].metafields["global"]["Featured-image"] != blank %}
                 <a href="{{ block.settings.item_url  }}" class="zoom">
                     <div class="image-element__wrap" style='background: url({{ pages[block.settings.item_url].metafields["global"]["Featured-image"] | image_url: "original" }}) no-repeat 50% 50% / cover; height: 320px;'>
@@ -49,7 +48,7 @@
               </p>
             </div>
           {% else %}
-            <div class="{{ class }} blog-item blogBox moreBox {% if items_per_row == 2 %}eight columns{% elsif items_per_row == 3 %}one-third column{% else %}four columns{% endif %} article medium-down--one-whole" >
+            <div class="{{ class }} filter-item blog-item blogBox moreBox {% if items_per_row == 2 %}eight columns{% elsif items_per_row == 3 %}one-third column{% else %}four columns{% endif %} article medium-down--one-whole" >
               {% if pages[block.settings.item_url].metafields["global"]["Featured-image"] != blank %}
                 <a href="{{ block.settings.item_url  }}" class="zoom">
                     <div class="image-element__wrap" style='background: url({{ pages[block.settings.item_url].metafields["global"]["Featured-image"] | image_url: "original" }}) no-repeat 50% 50% / cover; height: 320px;'>

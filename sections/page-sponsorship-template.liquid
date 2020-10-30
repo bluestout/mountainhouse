@@ -1,4 +1,4 @@
-<div id="page-blog-section">
+<div id="page-sponsorship-section">
     {% if section.settings.show_banner and section.settings.header_banner_image != blank %}
         {% include 'page-brand'%}
     {% endif %}
@@ -13,7 +13,7 @@
                         <div class="blog-item blogBox moreBox {% if items_per_row == 2 %}eight columns{% elsif items_per_row == 3 %}one-third column{% else %}four columns{% endif %} article medium-down--one-whole" style="display: none;">
                             {% if block.settings.item_image != blank %}
                                 <a href="{{ block.settings.item_url  }}">
-                                    {% include 'image-element', image: block.settings.item_image %}
+                                    {% include 'image-element', image: block.settings.item_image, alt: block.settings.item_title %}
                                 </a>
                             {% endif %}
                             <div class="sub_title" style="margin-top: 20px;">
@@ -27,7 +27,7 @@
                         <div class="blog-item blogBox moreBox {% if items_per_row == 2 %}eight columns{% elsif items_per_row == 3 %}one-third column{% else %}four columns{% endif %} article medium-down--one-whole" >
                             {% if block.settings.item_image != blank %}
                                 <a href="{{ block.settings.item_url  }}">
-                                    {% include 'image-element', image: block.settings.item_image %}
+                                    {% include 'image-element', image: block.settings.item_image, alt: block.settings.item_title %}
                                 </a>
                             {% endif %}
                             <div class="sub_title" style="margin-top: 20px;">
@@ -48,7 +48,7 @@
     </div>
     <div class="page-content">
         {{ page.content }}
-        <p class="bottom-link">Or, are you a marketer? <a href="/pages/affiliate-program">Request a proposal</a></p>
+        <p class="bottom-link">Or, are you a marketer? <a href="/pages/contact-us">Request a proposal</a></p>
     </div>
 
 </div>

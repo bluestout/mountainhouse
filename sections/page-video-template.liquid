@@ -1,4 +1,4 @@
-<div id="page-blog-section">
+<div id="page-video-section">
     {% if section.settings.show_banner and section.settings.header_banner_image != blank %}
         {% include 'page-brand'%}
     {% endif %}
@@ -28,16 +28,16 @@
                     {% assign page =  page | plus: 1 %}
                     {% assign class = block.settings.tags | replace: ' ', '_' | replace: ',', ' ' %}
                     {% if page > section.settings.blog_posts_per_page %}
-                        <div class="{{ class }} video-item blogBox moreBox {% if items_per_row == 2 %}eight columns{% elsif items_per_row == 3 %}one-third column{% else %}four columns{% endif %} article medium-down--one-whole" style="display: none;">
+                        <div class="{{ class }} filter-item video-item blogBox moreBox {% if items_per_row == 2 %}eight columns{% elsif items_per_row == 3 %}one-third column{% else %}four columns{% endif %} article medium-down--one-whole" style="display: none;">
                             <p class="sub_title" style="margin-top: 20px;">
                                 <a href="{{ block.settings.item_url }}">{{ block.settings.item_title }}</a>
                             </p>
                             {% if block.settings.item_image != blank %}
                                 <a href="{{ block.settings.item_url  }}">
-                                    {% include 'image-element', image: block.settings.item_image, back_to_image:true %}
+                                    {% include 'image-element', image: block.settings.item_image, back_to_image:true, alt: block.settings.item_title %}
                                     <div class="video_overlay">
                                         <a href="javascript:;" class="play">
-                                            <img src="{{ 'play_btn.png' | asset_url }}">
+                                            <img src="{{ 'play_btn.png' | asset_url }}" alt="{{ block.settings.item_title }}">
                                             <span>WATCH<br><strong>Intro Video</strong></span>
                                         </a>
                                     </div>
@@ -45,16 +45,16 @@
                             {% endif %} 
                         </div> 
                     {% else %}
-                        <div class="{{ class }} video-item blogBox moreBox {% if items_per_row == 2 %}eight columns{% elsif items_per_row == 3 %}one-third column{% else %}four columns{% endif %} article medium-down--one-whole" >
+                        <div class="{{ class }} filter-item video-item blogBox moreBox {% if items_per_row == 2 %}eight columns{% elsif items_per_row == 3 %}one-third column{% else %}four columns{% endif %} article medium-down--one-whole" >
                             <p class="sub_title" style="margin-top: 20px;">
                                 <a href="{{ block.settings.item_url }}">{{ block.settings.item_title }}</a>
                             </p>
                             {% if block.settings.item_image != blank %}
                                 <a href="{{ block.settings.item_url  }}">
-                                    {% include 'image-element', image: block.settings.item_image, back_to_image:true %}
+                                    {% include 'image-element', image: block.settings.item_image, back_to_image:true, alt: block.settings.item_title %}
                                     <div class="video_overlay">
                                         <a href="javascript:;" class="play">
-                                          <img src="{{ 'play_btn.png' | asset_url }}">
+                                          <img src="{{ 'play_btn.png' | asset_url }}" alt="{{ block.settings.item_title }}">
                                           <span>WATCH<br><strong> Video</strong></span>
                                         </a>
                                         {% include 'popup-video-slide' pop_video: block%}

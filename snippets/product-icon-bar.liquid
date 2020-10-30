@@ -3,7 +3,27 @@
 {% elsif section.settings.bg_color != blank %}
   {% assign color = section.settings.bg_color %}
 {% else %}
-{% assign color = '#000' %}
+  {% assign color = '#000' %}
+{% endif %}
+
+{% if product.metafields["global"]["icon-bar-title-color"] != blank %}
+  {% assign title_color = product.metafields["global"]["icon-bar-title-color"] %}
+{% elsif section.settings.title_color != blank %}
+  {% assign title_color = section.settings.title_color %}
+{% else %}
+  {% assign title_color = '#FFFFFF' %}
+{% endif %}
+
+{% if type == 'top' %}
+  {% assign blocks_str = product.metafields["global"]["top-icons"] | replace: '<p>', '<--splite-->' | remove: '</p>' %}
+  {% assign blocks_str = blocks_str | remove_first: '<--splite-->' %}
+  {% assign blocks = blocks_str | split: '<--splite-->' %}
+{% endif %}
+
+{% if type == 'bottom' %}
+  {% assign blocks_str = product.metafields["global"]["bottom-icons"] | replace: '<p>', '<--splite-->' | remove: '</p>' %}
+  {% assign blocks_str = blocks_str | remove_first: '<--splite-->' %}
+  {% assign blocks = blocks_str | remove: '&nbsp;' | split: '<--splite-->' %}
 {% endif %}
 
 {% style %}
@@ -13,16 +33,21 @@
 
     .icon-bar .columns div div{
         margin-top : 4px;
-        color: {{section.settings.title_color}};	
+        color: {{ title_color }};	
     }
     .icon-bar .columns div img{
         max-width  : 30px;
         max-height : 33px;
+        {% if product.metafields["global"]["icons-color"] != 'origin' %}
+          filter: invert(1);
+        {% endif %}
     }
     .icon-bar .columns div svg{
       max-width  : 30px;
       max-height : 33px;
-      filter: brightness(100);
+      {% if product.metafields["global"]["icons-color"] != 'origin' %}
+        filter: brightness(100);
+      {% endif %}
       float: left;
     }
     .bar-large .columns{
@@ -35,17 +60,15 @@
 {% assign size_val = 0 %}
 {% assign i = 1 %}
 
-{% for block in section.blocks %}
-  {% if block.type == 'icon' and block.settings.product == product.handle%}
-    {% for item in  (1..4) %}
-      {% assign icon_handle = type | append: '_icon_title_' | append: item %}
-        {% if block.settings[icon_handle] != blank %}
-          {% assign size_val =  size_val | plus: 1 %}
-        {% endif %}
-    {% endfor %}
-    
+{% for block in blocks %}
+  {% if block != blank %}
+    {% assign modulo = forloop.index | modulo: 2 %}
+    {% unless modulo == 0 %}
+      {% assign size_val =  size_val | plus: 1 %}
+    {% endunless %}
   {% endif %}
 {% endfor %}
+
 {%if size_val == 2%}
     {% assign class_name = 'one-two' %}
 {% elsif size_val == 3 %}
@@ -59,27 +82,21 @@
     <div class="sixteen">
       <div class="section list-collection-wrapper">
         <div class="list-collections clearfix equal-columns--outside-trim equal-columns--clear">
-          {% for icon_block in section.blocks %}
-            {% if icon_block.type == 'icon' and icon_block.settings.product == product.handle%}
-            {% for i in  (1..4) %}
-
-              {% assign icon_handle = type | append: '_icon_title_' | append: i %}
-              {% assign image_handle = type | append: '_icon_image_' | append: i %}
-              {% assign svg_handle = type | append: '_icon_svg_' | append: i %}
-                {% if icon_block.settings[icon_handle] != blank %}
-                  <div class="{{ class_name }} columns small-down--one-whole">
-                    <div >
-                      {% if icon_block.settings[svg_handle] != blank %}
-                        {{ icon_block.settings[svg_handle] }}
-                      {% else %}
-                        <img src="{{ icon_block.settings[image_handle] | img_url: 'original' }}">
-                      {% endif %}
-                      <div>{{ icon_block.settings[icon_handle] }}</div>
-                    </div>
-                  </div> 
-                {% endif %}
-            {% endfor %}
-            {% endif %}
+          {% for icon_block in blocks %}
+            {% assign modulo = forloop.index | modulo: 2 %}
+            {% unless modulo == 0 %}
+                <div class="{{ class_name }} columns small-down--one-whole">
+                  <div >
+                    {% if icon_block contains '.svg' %}
+                      <img src="{{ icon_block }}" alt="{{ forloop.index }}">
+                    {% else %}
+                      {{ icon_block }}
+                    {% endif %}
+                    
+                    <div>{{ blocks[forloop.index] }}</div>
+                  </div>
+                </div> 
+            {% endunless %}
           {% endfor %}
         </div>
       </div>

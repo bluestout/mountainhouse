@@ -6,16 +6,17 @@
     <div class="slider-gallery products-slider products-length-{{ item_limit }}"
         data-products-per-slide="{{ item_per_slide }}" data-products-limit="{{ item_limit }}" data-products-available="{{ item_limit }}">
     {% for block in section.blocks %}
-    
+
     {% assign item_per_slide = item_per_slide | plus: 0 %}
         <div class="gallery-cell  no-margin
         {% if item_limit > item_per_slide %}visible-{{ item_per_slide }}{% else %}visible-{{ item_limit }}{% endif %}
         ">
         <div class="product-wrap">
             <div class="relative product_image">
-            <a href="{{blogs[block.settings.blog_widget_select].url}}">
-                <img src="{{ block.settings.slide_image |  img_url: "original"  }}">
-                <p class="overlay-title">{{block.settings.blog_widget_select}}</p>
+                {% assign blog = blogs[block.settings.blog_widget_select] %}
+            <a href="#" data-blog="{{blog.title | handleize}}" class="blog-handle">
+                <img src="{{ block.settings.slide_image |  img_url: "original" }}" alt="{{ blog.title }}">
+                <p class="overlay-title">{{blog.title}}</p>
             </a>
             </div>
         </div>

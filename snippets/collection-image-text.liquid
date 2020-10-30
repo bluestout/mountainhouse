@@ -19,9 +19,7 @@
     </div>
     <div class="featured-link--half">
       <div class="info text-align--{{section.settings.frontpage_text_align}}">
-        <a {% if section.settings.image_text_link != blank %}href="{{ section.settings.image_text_link }}"{% endif %} class="collection_title">
-          {{ section.settings.image_text_title }}
-        </a>
+        <h2 class="collection_title text-align--center">{{ section.settings.image_text_title }}</h2>
         {% if section.settings.image_text_desc != blank %}
           <div class="description">{{ section.settings.image_text_desc }}</div>
         {% endif %}

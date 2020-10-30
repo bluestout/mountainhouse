@@ -48,7 +48,7 @@
                   {% include 'image-element', image: item.product.featured_image, alt: item.title, object_fit: settings.align_height, max_height: settings.collection_height %}
                   {% else %}
                   <div class="image-element__wrap">
-                    <img src="https://cdn.shopify.com/s/images/themes/product-1.png" data-sizes="auto">
+                    <img src="https://cdn.shopify.com/s/images/themes/product-1.png" data-sizes="auto" alt="{{ item.title | escape }}">
                   </div>
                   {% endif %}
                 </a>
@@ -130,6 +130,7 @@
             <div class="subtotal">
               <h6 class="uppercase">summary</h6>
               <div class="feature_divider"></div>
+              {% comment %}
               {% if shipping_status == true %}
                 <div class="free-shipping-progress">
                   {% assign progress = rate_value | divided_by: max_price %}
@@ -145,6 +146,7 @@
                   </div>
                 </div>
               {% endif %}
+              {% endcomment %}
 
               {% if cart.cart_level_discount_applications != blank %}
                 <p class="cart_discounts js-cart_discounts sale">
@@ -158,7 +160,9 @@
                 </p>
 
               {% endif %}
-
+              <div class="checkout-note">
+                <textarea id="note" name="note" rows="2" placeholder="Order Notes" class="clearfix" spellcheck="false"></textarea>
+              </div>
               <p class="cart_subtotal js-cart_subtotal">
                 <span class="right">
                   <span class="money"><span style="display:none" class="tdf-cart-total-flag"></span>{{ cart.total_price | money }}</span>

@@ -219,7 +219,7 @@
 {% include 'product-icon-bar', type: 'top'%}
 
 {% if product.metafields["global"]["integration-category"] != blank or product.metafields["global"]["integration-description"] != blank %}
-    {% include 'product-ingredient' %}
+    {% include 'product-ingredient-extend' %}
 {% endif %}
 
 {% if product.metafields["global"]["product-advertise-image"] != blank %}
@@ -232,7 +232,7 @@
 {% schema %}
 {
   "name": "Product",
-  "class": "product-template",
+  "class": "product-template-ingredient",
   "settings": [
     {
       "type": "checkbox",

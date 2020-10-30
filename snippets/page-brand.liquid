@@ -15,14 +15,14 @@
   <header class="banner center page_banner  dark-overlay-{{ section.settings.image_darken }}">
 
   </header>
-  {% if section.settings.display_collection_content or section.settings.display_collection_title %}
-    {% if title != blank or content != blank %} 
+  {% if section.settings.display_collection_content or section.settings.display_collection_title or section.settings.header_banner_icon%}
+    {% if title != blank or content != blank or section.settings.header_banner_icon %} 
       <div class="caption captionOverlay--true position--{{section.settings.collection_title_position}} caption-transparency-{{ section.settings.caption_background_transparency }}" style="background-color: {{section.settings.cap_bg_color}};">
         {% if section.settings.red_caption %}
           <div class="right-caption"></div>
         {% endif %}
         {% if section.settings.header_banner_icon != blank %}
-          <img src="{{ section.settings.header_banner_icon | img_url: 'original' }}" class="img brand--logo position--{{section.settings.text_align}}">
+          <img src="{{ section.settings.header_banner_icon | img_url: 'original' }}" class="img brand--logo position--{{section.settings.text_align}}" alt="{{ title }}">
         {% endif%}
         {% if section.settings.display_collection_title %}
           <h2 class="headline text-align--{{section.settings.text_align}}" style="color: {{section.settings.cap_title_color}};">{{ title }}</h2>

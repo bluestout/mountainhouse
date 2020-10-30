@@ -2,6 +2,7 @@
 {%- assign assets_url = 'product-1.png' | asset_img_url: '50x' | split: 'product-1_50x.png' -%}
 {%- assign files_url  = 'product-1.png' | file_img_url: '50x' | split: 'product-1_50x.png' -%}
   window.moneyFormat = "{{ shop.money_format | replace:'"',"'" }}";
+  window.GloboMoneyFormat = "{{ shop.money_format | replace:'"',"'" }}";
   window.shopCurrency = "{{ shop.currency }}";
   window.assetsUrl = '{{ assets_url[0] }}';
   window.filesUrl = '{{ files_url[0] }}';
@@ -15,16 +16,22 @@
       name: "{{ shop.name | escape }}",
       url: "{{ shop.url }}",
       domain: "{{ shop.permanent_domain }}",
+      locale: {{request.locale.iso_code | json}},
+      is_multicurrency: {% assign is_multicurrency = shop.enabled_currencies | size %}{% if is_multicurrency > 1 %}true{% else %}false{% endif %},
+      currency: {{shop.currency | json}},
+      current_currency: {{cart.currency.iso_code | json}},
       product_image: {width: 500, height: 500},
       no_image_url: "https://cdn.shopify.com/s/images/themes/product-1.png",
       themeStoreId: 0,
       swatches: {{ shop.metafields.globo.swatches | json }},
-      images: ["10-cans.png","404_img.png","beefd.png","bg.jpg","bg.png","bg_title_black.png","bg_title_blue.png","bg_title_red.png","blog_logo.png","bowl1_c04a7b4d-4288-4a7d-a360-fa7ec32cd5a6_400x.png","bowl2_400x.png","bucket-hover.png","buckets-amp-kits.png","calories_ico.png","cart.png","chevron-left.png","collection-bg-1.png","collection-bg-2.png","collection-bg-3.png","entrees.png","favicon.png","Group-6.png","Group-7.png","Group.png","ico-ico_ask.png","ico-ico_delivery_black.png","ico-ico_gluten_free.png","ico-ico_natural.png","ico-ico_no_artificial_colors.png","ico-ico_no_artificial_flavors_black.png","ico-ico_wish.png","ico-ico_without_cooking.png","icons.png","ico_bucket.png","kit-hover.png","mashroom_1.png","mountains.png","notfound.jpg","password-page-background.jpg","play_btn.png","pork.png","pouch-hover.png","pouch.png","pouches.png","pro-pak-hover.png","pro-pak.png","prod_icon1.png","prod_icon2.png","prod_icon4.png","prod_icon5.png","protein_ico.png","rice.png","search.png","select-chevron.png","select.png","select_light.png","simple-sensations.png","soldout.png","spicy_2nd_800x.png","tomato_PNG12518.png","toppng.com-sliced-brown-mushroom-png-clip-art-image-champignon-mushroom-593x293.png","user.png"]    },
+      translation: {{ shop.metafields.globo.translation | json }},
+      redirects: {{ shop.metafields.globo.redirects | json }},
+      images: ["10-cans.png","404_img.png","beefd.png","bg.jpg","bg.png","bg_title_black.png","bg_title_blue.png","bg_title_red.png","blog_logo.png","bowl1_c04a7b4d-4288-4a7d-a360-fa7ec32cd5a6_400x.png","bowl2_400x.png","bucket-hover.png","buckets-amp-kits.png","calories_ico.png","cart.png","chevron-left.png","collection-bg-1.png","collection-bg-2.png","collection-bg-3.png","entrees.png","favicon.png","gluten-free.png","Group-6.png","Group-7.png","Group.png","ico-ico_ask.png","ico-ico_delivery_black.png","ico-ico_gluten_free.png","ico-ico_natural.png","ico-ico_no_artificial_colors.png","ico-ico_no_artificial_flavors_black.png","ico-ico_wish.png","ico-ico_without_cooking.png","icons.png","ico_bucket.png","kit-hover.png","mashroom_1.png","mountains.png","no-artificial-flavors.png","no-preservatives.png","notfound.jpg","password-page-background.jpg","play_btn.png","pork.png","pouch-hover.png","pouch.png","pouches.png","pro-pak-hover.png","pro-pak.png","prod_icon1.png","prod_icon2.png","prod_icon4.png","prod_icon5.png","protein_ico.png","rice.png","right_25face71-d3dc-4455-b904-ad89ca207051_1000x.png","search.png","select-chevron.png","select.png","select_light.png","simple-sensations.png","soldout.png","spicy_2nd_800x.png","tomato_PNG12518.png","toppng.com-sliced-brown-mushroom-png-clip-art-image-champignon-mushroom-593x293.png","user.png"]    },
     filter: {
       id: {{ shop.metafields.globo.filters | json }}[page_id] || {{ shop.metafields.globo.filters | json }}['default'] || 0,
       layout: 3,
       showCount: 1,
-      isLoadMore: 2    },
+      isLoadMore: 0    },
     collection: {
       id: {{ collection.id | default: 0 }},
       handle: '{{ collection.handle }}',
@@ -33,7 +40,8 @@
       vendor: "{{ collection.current_vendor }}",
       type: "{{ collection.current_type }}",
       term: "{{ search.terms | escape }}",
-      limit: 6
+      limit: 12,
+      products_count: {{collection.products_count | default: 0}}
     },
     customer: {% if customer %}{id: {{customer.id}}, tags: {{customer.tags | json}}}{% else %}false{% endif %},
     selector: {
