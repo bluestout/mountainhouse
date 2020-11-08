@@ -160,9 +160,11 @@
                 </p>
 
               {% endif %}
+              {% if settings.display_special_instructions %}
               <div class="checkout-note">
                 <textarea id="note" name="note" rows="2" placeholder="Order Notes" class="clearfix" spellcheck="false"></textarea>
               </div>
+              {% endif %}
               <p class="cart_subtotal js-cart_subtotal">
                 <span class="right">
                   <span class="money"><span style="display:none" class="tdf-cart-total-flag"></span>{{ cart.total_price | money }}</span>
