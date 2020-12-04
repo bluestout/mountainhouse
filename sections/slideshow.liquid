@@ -39,7 +39,7 @@
       
       {% assign mobile_crop = 'mobile-banner--crop-' | append: block.settings.mobile_image_crop %}
 
-      <div class="gallery-cell slide-{{ forloop.index }} {{ block.type }}" {{ block.shopify_attributes }} data-block-id="{{block.id}}" style="background-color: {{ section.settings.slide_bg_color }};">
+      <div class="gallery-cell {% if block.type != 'image' %}video-slide{% endif %} slide-{{ forloop.index }} {{ block.type }}" {{ block.shopify_attributes }} data-block-id="{{block.id}}" style="background-color: {{ section.settings.slide_bg_color }};">
         {% if block.type == 'image' %}
           {% if block.settings.image != nil %}
             {% include 'image-element', image: block.settings.image, mobile_img: block.settings.mobile_image alt: block.settings.image.alt, stretch_width: true, additional_classes: mobile_crop %}
@@ -65,7 +65,10 @@
               <div class="caption-content
                             caption-background-{{block.settings.caption_background}}
                             caption-transparency-{{ block.settings.caption_background_transparency }}
-                            align-{{block.settings.text_align}}" style="background-color: {{ block.settings.caption_bg_color }};">
+                            align-{{block.settings.text_align}}" 
+                            {% if block.settings.caption_background %}
+                              style="background-color: {{ block.settings.caption_bg_color }};"
+                            {% endif %}>
                   {% if block.settings.pretext != blank %}
                     <div class="pretext">
                       {{ block.settings.pretext }}
@@ -126,10 +129,10 @@
 
           {% if video contains 'youtube' %}
             {% assign useLazyframe = true %}
-            {%- capture iframeURL -%}https://www.youtube.com/embed/{{video.id}}?&autoplay={{numberAutoplay}}&loop={{numberAutoloop}}&playlist={{playlistLoop}}{%- endcapture -%}
+            {%- capture iframeURL -%}https://www.youtube.com/embed/{{video.id}}?&autoplay={{numberAutoplay}}&loop={{numberAutoloop}}&muted=1&playlist={{playlistLoop}}{%- endcapture -%}
           {% elsif video contains 'vimeo' %}
             {% assign useLazyframe = true %}
-            {%- capture iframeURL -%}https://player.vimeo.com/video/{{video.id}}?autoplay={{numberAutoplay}}&loop={{numberAutoloop}}{%- endcapture -%}
+            {%- capture iframeURL -%}https://player.vimeo.com/video/{{video.id}}?autoplay={{numberAutoplay}}&loop={{numberAutoloop}}&muted=1{%- endcapture -%}
           {% else %}
             {% assign useLazyframe = false %}
           {% endif %}

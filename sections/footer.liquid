@@ -89,7 +89,7 @@
                 <div class="toggle_content">
                   <ul>
                     {% for link in linklists[block.settings.menu].links %}
-                      <li><p><a href="{{ link.url }}">{{ link.title }}</a></p></li>
+                      <li><p><a href="{{ link.url }}" {% if link.title contains 'Dealer' %}target="_blank"{% endif %}>{{ link.title }}</a></p></li>
                     {% endfor %}
                   </ul>
                 </div>

@@ -224,11 +224,10 @@
                       <span>{{ 'layout.general.savings' | t }}</span>
                   </li>
                   {% endif %}
-                  {% if settings.display_special_instructions and settings.go_to_checkout %}
                   <li>
                     <textarea id="note" name="note" rows="2" placeholder="{{ 'layout.general.cart_note' | t }}" class="clearfix">{{ cart.note }}</textarea>
                   </li>
-                  {% endif %}
+
                   {% if settings.display_tos_checkbox and settings.go_to_checkout %}
                   <li>
                     <p class="tos">

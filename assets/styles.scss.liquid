@@ -11000,6 +11000,9 @@ input[type="button"].highlight-false--dark {
         padding-bottom: 43.5%;
         display: table;
         width: 100%;
+        @include respond-to("medium-down"){
+          padding-bottom: 55%;
+        }
       }
     }
     img {
@@ -11030,11 +11033,7 @@ input[type="button"].highlight-false--dark {
       border-radius: 0;
       background: {{ settings.arrow_color }}
     }
-    @include respond-to('small-down') {
-      display: block;
-      bottom: 5px;
-      transform: translateY(-150%)!important;
-    }
+
   }
 }
 

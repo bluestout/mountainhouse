@@ -6,7 +6,8 @@
         settings : {
             reCaptcha : {
                 siteKey : ''
-            }
+            },
+            hideWaterMark : false
         },
         pricing:{
             features:{
@@ -183,8 +184,8 @@
                         </div>
                         {% endfor %}
                     </div>
-                    {% if Globo.FormBuilder.shop.pricing.features.removeCopyright == false %}
-                    <p style="text-align: right;font-size:small;">Made by <a target="_blank" rel="nofollow" href="https://apps.shopify.com/form-builder-contact-form">Powerful Contact Form Builder</a> </p>
+                    {% if Globo.FormBuilder.shop.pricing.features.removeCopyright == false and Globo.FormBuilder.shop.settings.hideWaterMark == false %}
+                    <p style="text-align: right;font-size:small;" >Made by <a target="_blank" rel="nofollow" href="https://apps.shopify.com/form-builder-contact-form">Powerful Contact Form Builder</a> </p>
                     {% endif %}
                     <div class="message error">
                         <div class="content"></div>
@@ -229,7 +230,7 @@
                     </div>
                 {% endif %}
             </div>
-            {% if Globo.FormBuilder.shop.pricing.features.removeCopyright == false %}
+            {% if Globo.FormBuilder.shop.pricing.features.removeCopyright == false and Globo.FormBuilder.shop.settings.hideWaterMark == false %}
             <p style="text-align: right;font-size:small;">Made by <a target="_blank" rel="nofollow" href="https://apps.shopify.com/form-builder-contact-form">Powerful Contact Form Builder</a> </p>
             {% endif %}
             <div class="message error">

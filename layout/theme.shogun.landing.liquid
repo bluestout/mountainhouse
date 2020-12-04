@@ -9,9 +9,18 @@ This file can be re-written at any time.
   
 <head>
   
+      
+    {% render 'orbislabs_sitemap_noindex' %}
+    
+    {%- if template == 'page.search-result' -%}
+    <meta name="robots" content="noindex" />
+    {%- endif -%}
+
     <meta charset="utf-8">
     <meta http-equiv="cleartype" content="on">
+    {% comment %}
     <meta name="robots" content="index,follow">
+    {% endcomment %}
 
     <!-- Mobile Specific Metas -->
     <meta name="HandheldFriendly" content="True">
@@ -31,40 +40,12 @@ This file can be re-written at any time.
     <link rel="preconnect dns-prefetch" href="https://cdn.shopifycloud.com" />
 
     <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-P59LKQN');</script>
+    })(window,document,'script','dataLayer','GTM-NSKVSPM');</script>
     <!-- End Google Tag Manager -->
-
-    <!-- Start Google Analytics -->
-    <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-    ga('create', 'UA-118277366-1', 'auto');
-    var mvga_basketitems = [
-    ];
-
-    var mvga_orderitems = [
-    ];
-
-    var mvga_productlist = [];
-
-    //var mvga_tracker = new MVGA_Tracker( '', '', '', '', mvga_basketitems, mvga_orderitems );
-
-    ga( 'send', 'pageview', { 'page':'/\/' } );
-
-    </script>
-    <!-- End Google Analytics -->
-
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P59LKQN"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-
 
     <!-- Bing Ads tracking pixel -->
     <script>(function(w,d,t,r,u){var f,n,i;w[u]=w[u]||[],f=function(){var o={ti:"15253329"};o.q=w[u],w[u]=new UET(o),w[u].push("pageLoad")},n=d.createElement(t),n.src=r,n.async=1,n.onload=n.onreadystatechange=function(){var s=this.readyState;s&&s!=="loaded"&&s!=="complete"||(f(),n.onload=n.onreadystatechange=null)},i=d.getElementsByTagName(t)[0],i.parentNode.insertBefore(n,i)})(window,document,"script","//bat.bing.com/bat.js","uetq");</script>
@@ -135,16 +116,19 @@ This file can be re-written at any time.
       {{ "customer_area.js" | shopify_asset_url | script_tag }}
     {% endif %}
     {% render 'treedify' %}{{ content_for_header }}
-{% include 'globo.filter.script' %}
+    {% include 'globo.filter.script' %}
 
     {% include 'social-meta-info' %}
     {% if collection.previous_product %}<link rel="prev" href="{{ collection.previous_product }}">{% endif %}
     {% if collection.next_product %}<link rel="next" href="{{ collection.next_product }}">{% endif %}
 
-  {% include 'shogun-head' %}
+  
 
-  <script async src="https://apps.bazaarvoice.com/deployments/mountainhouse/main_site/production/en_US/bv.js"></script>
+  <!--<script async src="https://apps.bazaarvoice.com/deployments/<client_name>/<site_ID>/<environment>/<locale>/bv.js"></script>-->
 
+
+
+  {% render 'shogun-head' %}
 </head>
 
 
@@ -233,39 +217,10 @@ This file can be re-written at any time.
 <script src="{{ 'sections.js' | asset_url }}"></script>
 <script src="{{ 'utilities.js' | asset_url }}"></script>
 <script src="{{ 'app.js' | asset_url }}"></script>
-<script src="{{ 'instantclick.min.js' | asset_url }}" type="tpl" data-no-instant></script>
-<script data-no-instant>
-
-      function inIframe() {
-        try {
-          return window.self !== window.top;
-        } catch (e) {
-          return true;
-        }
-      }
-
-      if (!inIframe()){
-        InstantClick.on('change', function() {
-
-          $('head script[src*="shopify"]').each(function() {
-            var script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.src = $(this).attr('src');
-
-            $('body').append(script);
-          });
-
-          $('body').removeClass('fancybox-active');
-          $.fancybox.destroy();
-
-          InstantClick.init();
-
-        });
-      }
-      </script>
 <script>
       {{ settings.custom_scripts }}
     </script>
+<script>(function(){var s = document.createElement('script'),e = ! document.body ? document.querySelector('head') : document.body;s.src = 'https://acsbapp.com/apps/app/assets/js/acsb.js';s.async = s.defer = true;s.onload = function(){acsbJS.init({statementLink : '',feedbackLink : 'https://graybox.co/contact',footerHtml : 'Web Accessibility Solution By GRAYBOX',hideMobile : false,hideTrigger : false,language : 'en',position : 'left',leadColor : '#003da5',triggerColor : '#003da5',triggerRadius : '50%',triggerPositionX : 'left',triggerPositionY : 'bottom',triggerIcon : 'wheel_chair3',triggerSize : 'medium',triggerOffsetX : 20,triggerOffsetY : 20,mobile : {triggerSize : 'small',triggerPositionX : 'left',triggerPositionY : 'center',triggerOffsetX : 0,triggerOffsetY : 0,triggerRadius : '0'}});};e.appendChild(s);}());</script>
   <style type="text/css">
     body, html {
       width: 100% !important;

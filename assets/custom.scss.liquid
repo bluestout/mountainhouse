@@ -63,6 +63,8 @@ $breakpoints: (
 }
 
 .homepage-slideshow{
+  position: relative;
+
   &.video__slideshow{
     .flickity-page-dots {
       min-width: 555px;
@@ -115,13 +117,19 @@ $breakpoints: (
           width: 10px;
           height: 10px;
           border: 2px solid #D2D2D2;
+          
           &.is-selected {
           background:#D2D2D2;
+          
         }
       }
     }
   }
   .gallery-cell {
+    z-index: 10;
+    iframe{
+      z-index: -1;
+    }
     .image-element__wrap{
       position: relative;
       overflow: hidden;
@@ -129,10 +137,16 @@ $breakpoints: (
         content: " ";
         padding-bottom: 43.5%;
         display: table;
+        @include respond-to("medium-down"){
+          content: none;
+        }
       }
       img{
         position: absolute;
         top: 0;
+        @include respond-to("medium-down"){
+          position: initial;
+        }
       }
     }
     iframe{
@@ -150,6 +164,9 @@ $breakpoints: (
     top: auto;
     min-width: auto;
     opacity: 1;
+    @include respond-to("medium-down"){
+      display: none;
+    }
     svg {
       width: 56px;
       height: 56px;
@@ -180,6 +197,9 @@ $breakpoints: (
     top: 50%;
     transform: translateY(-50%);
     bottom: auto;
+    @include respond-to("medium-down"){
+      display: block;
+    }
     .dot {
       width: 13px;
       height: 13px;
@@ -188,8 +208,14 @@ $breakpoints: (
       border-radius: 50%;
       margin: 5px 0;
       opacity: 1 !important;
+      @include respond-to("medium-down"){
+        border-color: #b40a25;
+      }
       &.is-selected {
         background: #FFF;
+        @include respond-to("medium-down"){
+          background-color: #b40a25;
+        }
       }
     }
   }
@@ -439,6 +465,7 @@ $breakpoints: (
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
+      align-items: end;
     } 
     
     @include respond-to("small-down"){
@@ -458,7 +485,7 @@ $breakpoints: (
       @media screen and (max-width: 1220px) {
         width: calc(33.3% - 20px);
       }
-      @include respond-to("small-down"){
+      @include respond-to("medium-down"){
         width: calc(100%);
       }
       .product-wrap {
@@ -1312,7 +1339,7 @@ div.products-slide-section{
         text-transform: uppercase;
         @media only screen and (max-width: 480px) {
           font-size: 16px;
-          line-height: 22px;
+          line-height: 17px;
           bottom: 55px;
         }
       }
@@ -2578,10 +2605,15 @@ div.products-slide-section{
   }
   .main{
     margin-top: 50px;
-    h1, h2, h3, h4, h5, h6 {
+    h1, h2, h3, h4, h5 {
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
       font-weight: 900;
       letter-spacing: 0.5px;
+    }
+    h6{
+      font-size: 13px;
+      font-weight: normal;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
     h1{
       font-size: 34px;

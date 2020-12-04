@@ -15,7 +15,7 @@
     {{ '//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js' | script_tag }}
     {{ checkout_scripts }}
 
-  {% include 'shogun-head' %}
+  
   <style>
   @media (min-width: 1000px) {
     .page--banner .banner {
@@ -28,8 +28,16 @@
       top: 50%;
       transform: translateY(-50%);
     }
+    .update_note{
+      margin-top: 20px;
+    }
+    .field__message--success{
+      display: none;
+    }
   }
   </style>
+
+  {% render 'shogun-head' %}
 </head>
   <body>
     {{ skip_to_content_link }}
@@ -51,22 +59,26 @@
           </header>
           <main class="main__content" role="main">
             {{ content_for_layout }}
-
-            {% if settings.display_special_instructions and checkout.note != blank %}
+            {%- comment -%}
+            {% if checkout.note != blank %}
             <div class="section">
               <div class="section__header">
                 <h2 class="section__title">{{ 'cart.general.note' | t }}</h2>
               </div>
               <div class="section__content">
-                <div class="fieldset">
-                  <div class="field">
-                    <textarea name="checkout[note]" class="input-full field__input" id="CartSpecialInstructions" maxlength="250" aria-describedby="cart" aria-labelledby="cart" readonly>{{ checkout.note }}</textarea>
-                    <!--<a href="#" class="update_note">Update Note</a>-->
+                
+                  <div class="fieldset">
+                    <div class="field">
+                      <textarea name="checkout[note]" class="input-full field__input" id="CartSpecialInstructions" rows="5" maxlength="250" aria-describedby="cart" aria-labelledby="cart">{{ checkout.note }}</textarea>
+                      <p class="field__message field__message--success" id="error-for-email_or_phone">The order note is updated.</p>
+                      <a href="#" class="btn update_note">Update Note</a>
+                    </div>
                   </div>
-                </div>
+                
               </div>
             </div>
             {% endif %}
+            {%- endcomment -%}
           </main>
           <footer class="main__footer" role="contentinfo">
             {{ content_for_footer }}
@@ -85,16 +97,17 @@
  <script> Shopify = window.Shopify || {}; Shopify.shop = Shopify.shop || 'mountainhouse.myshopify.com'; (function (doc) { if (window.location.href.indexOf('checkouts') == -1) { return; } var sc, node; sc = doc.createElement("script"); sc.type = "text/javascript"; sc.async = !0; sc.src = '/apps/sap/fe/loader_2.js?shop=mountainhouse.myshopify.com'; node = doc.getElementsByTagName("script")[0]; node.parentNode.insertBefore(sc, node); })(document); </script> 
     {{ tracking_code }}
   </body>
-  <script type="text/javascript">
+  <!-- <script type="text/javascript">
   $(document).ready(function(){
-    $('.update_note').on('click', function(){
+    $('.update_note').on('click', function(e){
+      e.preventDefault();
       $.ajax({
         url: '/cart/update.js',
         type: 'POST',
         dataType: 'json',
-        data: 'note=' + $('#CartSpecialInstructions').val(),
+        data: 'note="'+$('#CartSpecialInstructions').val()+'"',
         success: function(result) {
-
+          $('.field__message--success').show();
         },
         error: function(error) {
 
@@ -102,5 +115,5 @@
       });
     });
   });
-  </script>
+  </script> -->
 </html>
