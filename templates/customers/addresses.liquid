@@ -96,7 +96,7 @@
         <div class="address_table">
           <div id="view_address_{{address.id}}" class="customer_address">
             <b>Addresses</b>
-            <a href="#" class="f-right" onclick="Shopify.CustomerAddress.toggleNewForm(); return false;">{{ 'customer.addresses.add_new' | t }}</a>
+            <a href="/account/logout" class="logout hide medium-down--show">Log out</a> <a href="#" class="f-right" onclick="Shopify.CustomerAddress.toggleNewForm(); return false;">{{ 'customer.addresses.add_new' | t }}</a>
             <div class="feature_divider"></div>
             {% for address in customer.addresses reversed  %}
             <div class="eight alpha columns">

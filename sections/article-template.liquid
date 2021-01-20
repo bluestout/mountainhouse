@@ -89,7 +89,7 @@
             {% else %}
               {% assign author_name = 'blogs.article.by_author' | t: author: article.author %}
             {% endif %}
-              <span><a href="/search?type=article&q={{ author_name}}">{{ a.author }}{{ author_name }}</a></span>
+              <span>{% comment %}<a href="/search?type=article&q={{ author_name}}">{% endcomment %}{{ a.author }}{{ author_name }}{% comment %}</a>{% endcomment %}</span>
             {% endif %}
 
             {% if section.settings.blog_date %}

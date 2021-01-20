@@ -1216,7 +1216,7 @@ $(document).ready(function(){
     $(".search_link .search_menu").addClass("show");
   });
 
-  $("#customer_orders table tbody tr").hide();
+  //$("#customer_orders table tbody tr").hide();
 
   $("#customer_orders .view-all").click(function(){
     $("#customer_orders table tbody tr").fadeIn();
@@ -1368,7 +1368,9 @@ $(document).ready(function(){
     });
   }
   
-  
+  $('.mpfy-search-form').submit(function (e) {
+    e.preventDefault();
+  })
   
   $('.search_link').mouseover(function(){
     $(this).find('.search_menu').show();
@@ -1638,7 +1640,7 @@ $(document).on('click', '#pagination a',  function (e) {
 function load_more() {
   var i = 0;
   var url = location.href;
-  var link = `${url}?page=2`;
+  var link = url+'?page=2';
   $('#loadMore a').attr('href', link);
   var val = $(".blogBox").length - $(".blogBox:hidden").length;
   $(".moreBox").slice(0, val-1).show();
@@ -1652,7 +1654,7 @@ function load_more() {
   var j = 1;
   $("#loadMore").on('click', function (e) {
     e.preventDefault();
-    var link = `${url}?page=${j+2}`;
+    var link = url+'?page='+(j+2);
     j++;
     location.hash = $(this).find('a').attr('href');
     $(this).find('a').attr('href', link)
@@ -1692,7 +1694,7 @@ function get_kit_products( people_for_food, day_for_food ) {
 
     }
 
-    setTimeout(() => {
+    setTimeout(function(){
       for (let i = 0; i < response.products.length; i++) {
         for (let j = 0; j < response.products.length; j++) {
           if (response.products[i].kit_num < response.products[j].kit_num) {

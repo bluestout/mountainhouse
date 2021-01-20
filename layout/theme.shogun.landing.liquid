@@ -123,12 +123,13 @@ This file can be re-written at any time.
     {% if collection.next_product %}<link rel="next" href="{{ collection.next_product }}">{% endif %}
 
   
-
-  <!--<script async src="https://apps.bazaarvoice.com/deployments/<client_name>/<site_ID>/<environment>/<locale>/bv.js"></script>-->
-
+    {% comment %}
+  <script async src="https://apps.bazaarvoice.com/deployments/mountainhouse/main_site/production/en_US/bv.js"></script>
+  {% endcomment %}
 
 
   {% render 'shogun-head' %}
+
 </head>
 
 

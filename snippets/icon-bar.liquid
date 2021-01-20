@@ -11,12 +11,16 @@
     .icon-bar .columns div svg{
       max-width  : 30px;
       max-height : 33px;
-      {% if section.settings.icon_color != 'origin_val' %}
-        filter: brightness(100);
-      {% endif %}
+      
 
       float: left;
     }
+
+    {% if section.settings.icon_color != 'origin_val' %}
+    .icon-bar .columns div svg g,.icon-bar .columns div svg path{
+      fill: white!important;
+    }
+    {% endif %}
     .bar-large .columns{
         margin: 50px 0px;
     }

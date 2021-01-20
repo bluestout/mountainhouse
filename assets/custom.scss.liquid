@@ -184,7 +184,7 @@ $breakpoints: (
       left: auto;
       svg {
         path {
-          transform: translate(20px, 35px);
+
         }
       }
     }
@@ -409,15 +409,19 @@ $breakpoints: (
     }
   }
   form {
-    div{
-      div{
+    & > div{
+      & > div{
         & > div{
           padding: 0px!important;
-          display: table!important;
+          position: relative;
+          &:last-child{
+            position: absolute!important;
+            right: 5px;
+            top: 6px;
+          }
           & > div{
-            display: table;
             input[type="email"]{
-              width: 420px;
+              width: 100%;
               max-width: 100%;
               height: 50px!important;
               max-height: 50px;
@@ -427,15 +431,13 @@ $breakpoints: (
           }
           button{
             vertical-align: top!important;
-            top: 6px!important;
-            left: -25px!important;
             background: #ba0c2f!important;
             border-radius: 0px!important;
             font-family: 'Cocogoose'!important;
             font-weight: 300!important;
             letter-spacing: 1.72px!important;
             white-space: nowrap!important;
-            font-size: 12px!important;
+            font-size: 12px!important; 
             text-transform: uppercase!important;
             height: 16px!important;
           }
@@ -474,9 +476,9 @@ $breakpoints: (
     .thumbnail {
       background: #FFF;
       padding-bottom: 10px;
-      display: flex;
+
       @include respond-to("small-down"){
-        margin-bottom: 20px;
+        margin-bottom: 20px; 
         margin-top: 0;
       }
       &.odd{
@@ -3495,6 +3497,10 @@ ul.tabs{
   .logout{
     float: right;
     margin-right: 15px;
+    @include respond-to("medium-down"){
+      margin-left: 15px;
+      margin-right: 0;
+    }
   }
   .cusotmer_orders, .customer_address{
     padding-bottom: 20px;
@@ -4675,6 +4681,7 @@ a[href="display_content"]{
     height: 0px;
     right: 50%;
     transform: translateX(50%);
+    top: 0;
   }
   font-weight: bold;
   font-size: 17px;
@@ -4684,6 +4691,7 @@ a[href="display_content"]{
   left: 0;
   right: 0;
   z-index: 99;
+  padding: 20px 5px;
   div {
     color: #ffffff;
     padding: 8px 16px;
@@ -4837,17 +4845,22 @@ a[href="display_content"]{
 .icon-bar{
   .columns{
     text-align: center;
+    justify-content: center;
+    display: flex;
     div{
        text-transform: uppercase;
        float: none;
         display: inline-flex;
         margin: auto;
         height: 51px;
+        justify-content: center;
+        display: flex;
+        align-items: center;
         img, svg{
-          margin: auto;
           float: left;
           max-width: 30px;
           max-height: 30px;
+          margin: 0;
         }
         div{
           text-align: left;
@@ -5055,6 +5068,28 @@ a[href="display_content"]{
 .product-image-section{
   .product-image{
     .featured-link--half{
+      float: left;
+      &:first-child{
+        position: absolute;
+        height: 100%; 
+        right: 0;
+        @include respond-to("medium-down"){
+          position: relative;
+          height: 275px;
+        }
+        .banner{
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
+          .image-element__wrap{
+            height: 100%!important;
+            width: 100%;
+            position: absolute;
+          }
+        }
+      }
       @include respond-to("medium-down"){
         width: 100%;
       }

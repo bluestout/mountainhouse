@@ -31,7 +31,7 @@
     
     <main class="eleven columns account-main">
       <div id="customer_orders">
-        <b>Order History</b> <a class="view-all right">view all</a>
+        <b>Order History</b> <a href="/account/logout" class="logout hide medium-down--show">Log out</a> <a class="view-all right">View all</a>
         <div class="feature_divider"></div>
         {% if customer.orders.size != 0 %}
         <table width="100%">

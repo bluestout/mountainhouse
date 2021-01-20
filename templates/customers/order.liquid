@@ -33,6 +33,7 @@
       
       <div id="customer_orders">
         <b>{{ 'customer.order.title' | t: name: order.name }}</b> <span>( {{ 'customer.order.date' | t: date: order.created_at | date: "%B %d, %Y %I:%M%p" }} )</span>
+        <a href="/account/logout" class="logout hide medium-down--show">Log out</a> 
         <div class="feature_divider"></div>
         {% if order.cancelled %}
           <div class="errors">
